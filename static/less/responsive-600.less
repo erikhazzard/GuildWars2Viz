@@ -1,0 +1,31 @@
+/* ========================================================================    
+ *
+ * style-responsive-600.css
+ * ------------
+ *
+ * CSS overrides styles for screens with max width of 540px 
+ *
+ * ======================================================================== */
+@media screen and (max-width: 600px) {
+    @left-wrapper-width: 42%;
+    .facet-options-wrapper {
+        width: @left-wrapper-width;
+    }
+    .right-content-container-wrapper {
+        left: @left-wrapper-width;
+    }
+
+    .navbar h1 {
+        font-size:1.7em;
+    }
+
+    .facet-header .currentValue {
+        display: none;
+    }
+    .data-item .header h2 a {
+        right: 0;
+    }
+    .data-item .header .date {
+        display: none;
+    }
+}

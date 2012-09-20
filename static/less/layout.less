@@ -1,0 +1,172 @@
+/* ========================================================================    
+ *
+ * style.css
+ * ------------
+ *
+ * Main CSS style file, applied to all pages
+ *
+ * ======================================================================== */
+/* Google Fonts */
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Cantarell&.css");
+/*Font awesome */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../font/fontawesome-webfont.eot');
+  src: url('../font/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+     url('../font/fontawesome-webfont.woff') format('woff'),
+     url('../font/fontawesome-webfont.ttf') format('truetype'),
+     url('../font/fontawesome-webfont.svgz#FontAwesomeRegular') format('svg'),
+     url('../font/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ========================================================================    
+ *
+ *                              LAYOUT
+ *
+ * ======================================================================== */
+#site-wrapper {
+    .absolute-full-layout;
+}
+
+/* ========================================================================    
+ *
+ * Top header
+ *
+ * ======================================================================== */
+@site-top-wrapper-height: 80px;
+
+#site-top-wrapper {
+    height: @site-top-wrapper-height;
+}
+
+/* ========================================================================    
+ *
+ * Site content wrapper
+ *
+ * ======================================================================== */
+#site-content-wrapper {
+    .absolute-full-layout;
+    top: @site-top-wrapper-height;
+}
+
+/* ========================================================================    
+ *
+ * Left Side 
+ *
+ * ======================================================================== */
+@site-left-side-wrapper-width: 20%;
+#site-left-side-wrapper {
+    .absolute-full-layout;
+    right: auto;
+    width: @site-left-side-wrapper-width;
+}
+/* ========================================================================    
+ * Deck
+ * ======================================================================== */
+#deck {
+    font-size: .9em;
+    min-height: 300px;
+    min-width: 200px;
+}
+
+
+/* ========================================================================    
+ *
+ * Right Side
+ *
+ * ======================================================================== */
+@site-right-side-wrapper-width: 20%;
+#site-right-side-wrapper {
+    .absolute-full-layout;
+    left: @site-left-side-wrapper-width;
+}
+
+/* ========================================================================    
+ * Popup
+ * ======================================================================== */
+#popup-container-wrapper{
+    background:rgba(255,255,255,.8);
+    bottom:0;
+    display:none;
+    left:0;
+    position:absolute;
+    right:0;
+    top:0;
+    z-index:9999;
+}
+#popup-container {
+    .rounded-corners(3px);
+    box-shadow: @dark-box-shadow;
+    -moz-box-shadow: @dark-box-shadow;
+    -webkit-box-shadow: @dark-box-shadow;
+    border: 1px solid #ABABAB;
+    bottom:10%;
+    left:20%;
+    position:absolute;
+    right:20%;
+    top: 15%;
+    z-index:999;
+}
+    #popup-container-inner {
+        .rounded-corners(3px);
+        background: #eeeeee;
+        border:1px solid #ffffff;
+        bottom:0;
+        left:0;
+        position:absolute;
+        right:0;
+        top:0;
+    }
+    #popup-container-wrapper h2 {
+        padding:10px 0 0 5px;
+    }
+    #popup { 
+        border:1px solid #bcbcbc;
+        bottom: 0;
+        left:0;
+        margin:5px;
+        position: absolute;
+        right:0;
+        top: 100px;
+    }
+
+/* ========================================================================    
+ *
+ * REUSABLE CLASSES 
+ *
+ * ======================================================================== */
+.align-right { text-align:right; }
+
+.bold { font-weight:bold; }
+.center { text-align:center; }
+.center-image { display:block; text-align:center; }
+.clear { clear:both; }
+.hidden-element { display: none; }
+.visibility-none { opacity: 0; }
+.email {
+    unicode-bidi: bidi-override;
+    direction:rtl;
+}
+.font-small { font-size:.9em; }
+.grey-text {
+    color: #aeaeae;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+.grey-text a { color:#909090; }
+.grey-text a:hover { color:#707070; text-decoration:underline; }
+
+.margin-top { margin:4em 0 0 0; }
+.search-query {
+  padding-right: 14px;
+  padding-right: 4px \9;
+  padding-left: 14px;
+  padding-left: 4px \9;
+  /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+  margin-bottom: 0;
+  -webkit-border-radius: 14px;
+     -moz-border-radius: 14px;
+          border-radius: 14px;
+}

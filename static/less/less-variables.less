@@ -1,0 +1,130 @@
+/* ========================================================================    
+ *
+ * less_variables.css
+ * ------------
+ *
+ * Contains site-wide variables used to configure styles
+ *
+ * ======================================================================== */
+/* Fonts */
+@normal-font: 'Cantarell', Arial, Verdana, sans-serif;
+@header-font :  'Oxygen', Arial, Verdana, sans-serif;
+
+/* ------------------------------------------------------------------------
+ *
+ * Layout Related 
+ *
+ * ------------------------------------------------------------------------ */
+@navbar-height: 60px;
+@left-wrapper-width: 320px;
+@search-height: 50px;
+@options-button-wrapper-height: 55px;
+@facet-wrapper-height: 45px;
+
+/* right side */
+@breadcrumbs-height: 40px;
+@breadcrumbs-total-width: 140px;
+
+/* breadcrumbs */
+@breadcrumb-padding: 1em;
+
+/* data items */
+@data-item-header-height: 2em;
+/* ------------------------------------------------------------------------
+ *
+ * General theme variables
+ * 
+ * ------------------------------------------------------------------------ */
+/* Colors */
+@color-black: #2c2d32;
+@color-blue: #4081dc;
+@grey-border-color: #cdcdcd;
+@inner-content-background-color: #fdfdfd;
+@inner-content-grey-border: #d7d7d7;
+
+@light-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+@dark-box-shadow: 0 0 22px rgba(0, 0, 0, 0.9);
+
+@text-shadow-white: 0 1px 2px #ffffff;
+@text-shadow-black: 0 1px 2px @color-black;
+
+/* ------------------------------------------------------------------------
+ * Mixins
+ * ------------------------------------------------------------------------ */
+.background-gradient(@start: #000000, @end: #ffffff, @orient: top) {
+    background-image: -moz-linear-gradient(@orient, @start, @end);
+    background-image: -ms-linear-gradient(@orient, @start, @end);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from( @start), to( @end));
+    background-image: -webkit-linear-gradient(@orient, @start, @end);
+    background-image: -o-linear-gradient(@orient, @start, @end);
+    background-image: linear-gradient(@orient, @start, @end);
+    background-repeat: repeat-x;
+}
+.rounded-corners(@radius: 3px){
+    border-radius: @radius !important;
+    -webkit-border-radius: @radius !important;
+    -moz-border-radius: @radius !important;
+}
+/* full width / height positioned absolute */
+.absolute-full-layout(@padding: 0){
+    bottom:@padding;
+    left:@padding;
+    position:absolute;
+    right:@padding;
+    top:@padding;
+}
+
+
+/* Buttons */
+.button(){
+    .background-gradient(#fdfdfd, #e6e9ec, top);
+    border-bottom: 1px solid #d0d0d0;
+    border-top: 1px solid #ffffff;
+}
+.button-hover(){
+    .background-gradient(#4789df, #2a67d1, top);
+    border-top: 1px solid #336699;
+    border-bottom: 1px solid #4477aa;
+    cursor: pointer;
+    color: #ffffff;
+    text-shadow: @text-shadow-black;
+}
+.button-active(){
+    box-shadow: 0 0px 4px rgba(0,0,0,.3) inset,
+                0 0 14px rgba(0,0,0,.4) inset !important;
+    border: 1px solid rgba(0,0,0,.6);
+    cursor: pointer;
+}
+
+.button-blue-active(){
+    box-shadow: 0 0px 5px rgba(0,0,0,.4) inset,
+                0 0 14px rgba(0,0,0,.4) inset !important;
+    .background-gradient(#2a67d1,#4789df, top);
+    border: 1px solid rgba(0,30,60,.6);
+    cursor: pointer;
+    color: #ffffff;
+    text-shadow: @text-shadow-black;
+}
+
+
+/* Dark buttons */
+.button-dark(){
+    .background-gradient(#393b3e, #272a2c, top);
+    border-bottom: 1px solid #232323;
+    border-top: 1px solid #4b4d50;
+    color: #a8aaac;
+    text-shadow: @text-shadow-black;
+}
+.button-dark-hover(){
+    .button-dark;
+    .background-gradient(#4a4c4f, #383b3d, top);
+    border: 1px solid rgba(0,0,0,.7);
+    color: #ffffff;
+}
+.button-dark-active(){
+    .background-gradient(#272a2c,#393b3e,top);
+    box-shadow: 0 0px 5px rgba(0,0,0,.4) inset,
+                0 0 14px rgba(0,0,0,.4) inset !important;
+    border: 1px solid rgba(0,0,0,.8);
+}
+

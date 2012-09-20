@@ -1,0 +1,30 @@
+/* ========================================================================    
+ *
+ * style-responsive-800.css
+ * ------------
+ *
+ * CSS overrides styles for screens with max width of 540px 
+ *
+ * ======================================================================== */
+@media screen and (max-width: 800px) {
+    @left-wrapper-width: 280px;
+    .facet-options-wrapper {
+        width: @left-wrapper-width;
+    }
+    .right-content-container-wrapper {
+        left: @left-wrapper-width;
+    }
+
+    .facet-header .currentValue {
+
+    }
+    .data-item .header h2 a {
+        right: 105px;
+    }
+    .data-item .header .date {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space:nowrap; 
+        width: 100px;
+    }
+}

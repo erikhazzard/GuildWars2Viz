@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+    <title>Deck Viz</title>
+    <!-- CSS -->
+    <link href='/static/css/style-all.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<!-- ======================================================================
+
+    LAYOUT
+
+    ======================================================================= -->
+<div id='site-wrapper'>
+    <!-- Top Wrapper -->
+    <div id='site-top-wrapper'>
+    </div>
+    
+    <!-- Right Side (visualizations) -->
+    <div id='svg-wrapper' style='margin: 1em;'>
+        <!-- TODO - bootstrap this in code -->
+        <svg id='svg-el-class-viz' width=400 height=145></svg>
+    </div>
+</div>
+
+<!-- ======================================================================
+
+    TEMPLATES
+
+    ======================================================================= -->
+
+<!-- ======================================================================
+
+    SCRIPTS
+
+    ======================================================================= -->
+<!-- Third party -->
+<script src='/static/lib/all3rdjs.min.js'></script>
+
+<!-- ======================================================================
+    Our scripts
+    ======================================================================= -->
+
+<script src='/static/js/namespace.js'></script>
+<script src='/static/js/viz.js'></script>
+
+<!-- PRODUCTION
+<script src='/static/js/build/deckviz.min.js'></script>
+-->
+
+<script>
+
+//TODO: use different scripts based on environment. In testing, we want to call 
+//  this manually so we can run unit tests
+$(document).ready(function(){
+    GW2VIZ.init();
+});
+</script>
+
+
+<!-- Google Tracking -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2994714-13']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>

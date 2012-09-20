@@ -1,0 +1,4 @@
+Flask==0.8
+xmldict==0.4
+gevent==0.13.7
+gunicorn==0.14.5
