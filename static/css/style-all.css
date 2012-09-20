@@ -2758,7 +2758,7 @@ button.ui-button::-moz-focus-inner {
 }
 html,
 body {
-  background: #f4f4f4 url(../img/bg.gif);
+  background: #f4f4f4 url(../img/bg-dark.png);
   color: #2c2d32;
   font-family: 'Cantarell', Arial, Verdana, sans-serif;
   font-size: 1em;
