@@ -42,8 +42,8 @@ GW2VIZ.visualizations.classes = (params) =>
     height = svg.attr('height')
 
     #Add group for viz
-    yAxisGroup = svg.append('svg:g')
-    chartGroup = svg.append('svg:g')
+    yAxisGroup = svg.append('svg:g').attr({'class': 'axisGroup'})
+    chartGroup = svg.append('svg:g').attr({'class': 'barWrapper'})
 
     #Get data
     #--------Percentages
@@ -60,7 +60,7 @@ GW2VIZ.visualizations.classes = (params) =>
     #------------------------------------
     #Group config
     #------------------------------------
-    padding = { top: 10, right: 10, bottom: 10, left: 34 }
+    padding = { top: 10, right: 10, bottom: 20, left: 34 }
 
     barGroupWidth = width - padding.left - padding.right
 
@@ -68,12 +68,17 @@ GW2VIZ.visualizations.classes = (params) =>
     #   Padding space between bars
     barPadding = 2
     #   Radius for bar 
-    barRadius = 2
+    barRadius = 3
     barStartLeft = 10
 
+    #Get the highest data value
     dataMax = _.max(DATA, (datum)=>
         return datum.value
     ).value
+
+    #Add some padding to it
+    dataMax += 4
+
     #------------------------------------
     #x / y scale
     #------------------------------------
@@ -83,25 +88,38 @@ GW2VIZ.visualizations.classes = (params) =>
         .domain([0, DATA.length])
 
     yScale = d3.scale.linear()
-        .range([0, height - padding.top])
+        .range([0, height - padding.top - padding.bottom])
         .domain([0, dataMax])
     #------------------------------------
     #Add bars
     #------------------------------------
-    dataBars = chartGroup.selectAll('rect')
+    dataBarGroups = chartGroup.selectAll('g.chartBars')
        .data(DATA)
 
-    #Add each bar
+    #Add each bar group
+    dataBarGroups.enter()
+        .append('svg:g').attr({'class': 'chartBars'})
+
+    #Cleanup
+    dataBarGroups.exit().remove()
+
+    #Get rect bars
+    dataBars = dataBarGroups.selectAll('rect.bar')
+        .data(DATA)
+
+    #Add bars
+    #------------------------------------
     dataBars.enter()
         .append('svg:rect')
         .attr({
+            'class': 'bar',
             width: (barGroupWidth / DATA.length) - barPadding,
             x: (d,i)=>
                 return xScale(i)
             height: (d,i)=>
-                return 7
+                return 0
             y: (d,y)=>
-                return height
+                return height - padding.top - padding.bottom
             rx: barRadius
         })
         .style({
@@ -109,43 +127,54 @@ GW2VIZ.visualizations.classes = (params) =>
                 return d.color
         })
 
+    #Cleanup
+    dataBars.exit().remove()
+
     #animate it with transition
     #   These are the final values
     dataBars.transition()
-        .duration(300)
+        .duration(500)
         .ease('linear')
         .attr({
             height: (d,i)=>
                 return yScale(d.value)
             y: (d,y)=>
-                return height - yScale(d.value)
+                return height - yScale(d.value) - padding.bottom - padding.top
         })
 
+    #Text labels
     #------------------------------------
-    #Add axis
-    #------------------------------------
-    #Bottom axis
-    svg.append("line")
-        .attr({
-            x1: padding.left - barPadding
-            x2: width - padding.right
-            y1: height - .5
-            y2: height - .5
-        })
-        .style("stroke", "#232323")
+    #Get rect bars
+    barLabels = dataBarGroups.selectAll('text')
+        .data(DATA)
+
+    barLabels.enter()
+        .append('svg:text')
+            .attr({
+                x: (d,i)=>
+                    return xScale(i) + 6
+                y: height - padding.bottom - padding.top - 3
+            }).style({
+                'font-size': '.6em',
+                fill: '#f0f0f0',
+                'text-shadow': '0 1px 1px #000000'
+            }).text((d,i)=>
+                return d.value + '%'
+            )
+    
 
     #------------------------------------
     #y axis (on left side)
     #------------------------------------
     tickYScale = d3.scale.linear()
         #Goes from highest occurence of cards with that mana cost to 0
-        .range([0, height])
+        .range([0, height-padding.top-padding.bottom])
         .domain([dataMax, 0])
 
     #Create axis for ticks
     yAxisTicks = d3.svg.axis()
         .scale(tickYScale)
-        .ticks(10)
+        .ticks(5)
         .orient("left")
         #give it a tick size to make it go across the graph
         .tickSize(-width)
@@ -156,11 +185,19 @@ GW2VIZ.visualizations.classes = (params) =>
         .call(yAxisTicks)
     yAxisGroup.selectAll("path")
         .style("fill", "none")
-        .style("stroke", "#000000")
+        .style("stroke", "#505050")
     yAxisGroup.selectAll("line")
         .style("fill", "none")
-        .style("stroke", "#404040")
+        .style("stroke", "#606060")
         .style('stroke-width', 1)
         #Note: the horizontal lines stack on each other, so we'll get
         #   a slightly darker line for each of the ticks in this group
         .style("opacity", .4)
+    yAxisGroup.selectAll("text")
+        .style({
+            fill: "#ababab",
+            'font-size': '.6em',
+            'text-shadow': '0 0 1px #000000'
+        }).text((d,i)=>
+            return d + '%'
+        )

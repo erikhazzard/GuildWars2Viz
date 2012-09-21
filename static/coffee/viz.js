@@ -1,12 +1,16 @@
 var _this = this;
 
 GW2VIZ.visualizations.classes = function(params) {
-  var DATA, barGroupWidth, barPadding, barRadius, barStartLeft, chartGroup, dataBars, dataMax, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
+  var DATA, barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, chartGroup, dataBarGroups, dataBars, dataMax, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
   svg = d3.select('#svg-el-class-viz');
   width = svg.attr('width');
   height = svg.attr('height');
-  yAxisGroup = svg.append('svg:g');
-  chartGroup = svg.append('svg:g');
+  yAxisGroup = svg.append('svg:g').attr({
+    'class': 'axisGroup'
+  });
+  chartGroup = svg.append('svg:g').attr({
+    'class': 'barWrapper'
+  });
   DATA = [
     {
       name: 'Engineer',
@@ -45,29 +49,36 @@ GW2VIZ.visualizations.classes = function(params) {
   padding = {
     top: 10,
     right: 10,
-    bottom: 10,
+    bottom: 20,
     left: 34
   };
   barGroupWidth = width - padding.left - padding.right;
   barPadding = 2;
-  barRadius = 2;
+  barRadius = 3;
   barStartLeft = 10;
   dataMax = _.max(DATA, function(datum) {
     return datum.value;
   }).value;
+  dataMax += 4;
   xScale = d3.scale.linear().range([padding.left + barStartLeft, width]).domain([0, DATA.length]);
-  yScale = d3.scale.linear().range([0, height - padding.top]).domain([0, dataMax]);
-  dataBars = chartGroup.selectAll('rect').data(DATA);
+  yScale = d3.scale.linear().range([0, height - padding.top - padding.bottom]).domain([0, dataMax]);
+  dataBarGroups = chartGroup.selectAll('g.chartBars').data(DATA);
+  dataBarGroups.enter().append('svg:g').attr({
+    'class': 'chartBars'
+  });
+  dataBarGroups.exit().remove();
+  dataBars = dataBarGroups.selectAll('rect.bar').data(DATA);
   dataBars.enter().append('svg:rect').attr({
+    'class': 'bar',
     width: (barGroupWidth / DATA.length) - barPadding,
     x: function(d, i) {
       return xScale(i);
     },
     height: function(d, i) {
-      return 7;
+      return 0;
     },
     y: function(d, y) {
-      return height;
+      return height - padding.top - padding.bottom;
     },
     rx: barRadius
   }).style({
@@ -75,23 +86,38 @@ GW2VIZ.visualizations.classes = function(params) {
       return d.color;
     }
   });
-  dataBars.transition().duration(300).ease('linear').attr({
+  dataBars.exit().remove();
+  dataBars.transition().duration(500).ease('linear').attr({
     height: function(d, i) {
       return yScale(d.value);
     },
     y: function(d, y) {
-      return height - yScale(d.value);
+      return height - yScale(d.value) - padding.bottom - padding.top;
     }
   });
-  svg.append("line").attr({
-    x1: padding.left - barPadding,
-    x2: width - padding.right,
-    y1: height - .5,
-    y2: height - .5
-  }).style("stroke", "#232323");
-  tickYScale = d3.scale.linear().range([0, height]).domain([dataMax, 0]);
-  yAxisTicks = d3.svg.axis().scale(tickYScale).ticks(10).orient("left").tickSize(-width);
+  barLabels = dataBarGroups.selectAll('text').data(DATA);
+  barLabels.enter().append('svg:text').attr({
+    x: function(d, i) {
+      return xScale(i) + 6;
+    },
+    y: height - padding.bottom - padding.top - 3
+  }).style({
+    'font-size': '.6em',
+    fill: '#f0f0f0',
+    'text-shadow': '0 1px 1px #000000'
+  }).text(function(d, i) {
+    return d.value + '%';
+  });
+  tickYScale = d3.scale.linear().range([0, height - padding.top - padding.bottom]).domain([dataMax, 0]);
+  yAxisTicks = d3.svg.axis().scale(tickYScale).ticks(5).orient("left").tickSize(-width);
   yAxisGroup.attr("transform", "translate(" + [padding.left, 0] + ")").classed("yaxis", true).call(yAxisTicks);
-  yAxisGroup.selectAll("path").style("fill", "none").style("stroke", "#000000");
-  return yAxisGroup.selectAll("line").style("fill", "none").style("stroke", "#404040").style('stroke-width', 1).style("opacity", .4);
+  yAxisGroup.selectAll("path").style("fill", "none").style("stroke", "#505050");
+  yAxisGroup.selectAll("line").style("fill", "none").style("stroke", "#606060").style('stroke-width', 1).style("opacity", .4);
+  return yAxisGroup.selectAll("text").style({
+    fill: "#ababab",
+    'font-size': '.6em',
+    'text-shadow': '0 0 1px #000000'
+  }).text(function(d, i) {
+    return d + '%';
+  });
 };

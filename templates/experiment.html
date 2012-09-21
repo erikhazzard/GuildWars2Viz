@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Donut Chart</title>
+    <script src='/static/lib/all3rdjs.min.js'></script>
+    <link href='/static/css/style-all.css' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+
+body {
+  font: 10px sans-serif;
+}
+
+    </style>
+  </head>
+  <body>
+      <svg id='svg-el' width=800 height=600>
+        <defs id='filters'>
+            <filter x="-0.30000001"
+               y="-0.5"
+               width="1.6"
+               height="2"
+               color-interpolation-filters="sRGB"
+               id="waterColor1">
+              <feGaussianBlur
+                 result="result8"
+                 stdDeviation="15"
+                 id="feGaussianBlur3948" />
+              <feTurbulence
+                 baseFrequency="0.028"
+                 numOctaves="5"
+                 type="fractalNoise"
+                 result="result7"
+                 seed="27"
+                 id="feTurbulence3950" />
+              <feComposite
+                 in2="result8"
+                 operator="over"
+                 in="result7"
+                 result="result6"
+                 id="feComposite3952" />
+              <feColorMatrix
+                 values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 6 -4 "
+                 result="result9"
+                 id="feColorMatrix3954" />
+              <feDisplacementMap
+                 in2="result9"
+                 scale="50"
+                 xChannelSelector="A"
+                 yChannelSelector="A"
+                 in="result7"
+                 result="result4"
+                 id="feDisplacementMap3956" />
+              <feComposite
+                 in2="result4"
+                 operator="in"
+                 in="result8"
+                 result="result2"
+                 id="feComposite3958" />
+              <feComposite
+                 in2="result9"
+                 operator="in"
+                 in="result2"
+                 result="fbSourceGraphic"
+                 id="feComposite3960" />
+              <feComposite
+                 in2="fbSourceGraphic"
+                 operator="arithmetic"
+                 k1="0.5"
+                 k2="1"
+                 k3="0"
+                 k4="0"
+                 in="fbSourceGraphic"
+                 result="result91"
+                 id="feComposite3962" />
+              <feBlend
+                 in2="result91"
+                 mode="multiply"
+                 in="fbSourceGraphic"
+                 id="feBlend3964" />
+            </filter> 
+
+            <filter
+               color-interpolation-filters="sRGB"
+               id="waterColor2">
+              <feTurbulence
+                 baseFrequency="0.143"
+                 numOctaves="5"
+                 type="fractalNoise"
+                 id="feTurbulence4819" />
+              <feColorMatrix
+                 result="result1"
+                 values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 5 -3"
+                 id="feColorMatrix4821" />
+              <feComposite
+                 in2="SourceAlpha"
+                 operator="in"
+                 id="feComposite4823" />
+              <feMorphology
+                 result="result3"
+                 radius="2.7"
+                 operator="dilate"
+                 id="feMorphology4825" />
+              <feTurbulence
+                 result="result91"
+                 baseFrequency="0.121"
+                 numOctaves="2"
+                 id="feTurbulence4827" />
+              <feDisplacementMap
+                 in2="result91"
+                 scale="10"
+                 xChannelSelector="R"
+                 yChannelSelector="A"
+                 in="result3"
+                 result="result4"
+                 id="feDisplacementMap4829" />
+              <feFlood
+                 result="result92"
+                 flood-color="rgb(255,255,255)"
+                 flood-opacity="1"
+                 id="feFlood4831" />
+              <feComposite
+                 in2="result4"
+                 operator="in"
+                 result="result2"
+                 id="feComposite4833" />
+              <feComposite
+                 in2="SourceGraphic"
+                 operator="over"
+                 in="result2"
+                 id="feComposite4835" />
+            </filter>
+            <filter
+                   color-interpolation-filters="sRGB"
+                   id="jaggedEdge">
+                  <feTurbulence
+                     baseFrequency="0.08"
+                     type="fractalNoise"
+                     seed="0"
+                     numOctaves="5"
+                     id="feTurbulence5171" />
+                  <feGaussianBlur
+                     result="result91"
+                     stdDeviation="0.5"
+                     id="feGaussianBlur5173" />
+                  <feDisplacementMap
+                     in2="result91"
+                     scale="20"
+                     xChannelSelector="R"
+                     yChannelSelector="G"
+                     in="SourceGraphic"
+                     result="result1"
+                     id="feDisplacementMap5175" />
+                  <feComposite
+                     in2="SourceGraphic"
+                     operator="atop"
+                     in="result1"
+                     id="feComposite5177" />
+                </filter>
+        </defs>
+      </svg>
+
+    <script type="text/javascript">
+
+
+    var radius = 150,
+        color = d3.scale.category20c();
+
+var data_array = {
+    gender: [
+        ["male", 63],
+        ["female", 37]
+    ],
+    race: [
+        ["Asura", 15.31],
+        ["Charr", 14.32],
+        ["Human", 34.81],
+        ["Norn", 20.25],
+        ["Sylvari", 15.31]
+    ],
+    profession: [
+        [10.21, 10.21, 11.31, 12.40, 12.40, 13.39, 14.49, 15.59],
+        ["Engineer", "Mesmer", "Necromancer", "Guardian",
+        "Thief", "Elementalist", "Ranger", "Warrior"]
+    ],
+    tradeskill: [
+        [8.2, 10.74, 10.74, 13.51, 13.51, 13.51, 13.51, 16.28],
+        ["Artificer", "Armorsmith", "Huntsman", "Chef",
+        "Jeweler", "Leatherworker", "Tailor", "Weaponsmith"],
+        ['#68c7ff', '#eca539', '#d9824d', '#a6a638',
+        '#4ab3d1', '#87aa66', '#87aaac', '#d84e4c']
+    ]
+};
+    data = [{"label":"Asura", "value":15.31}, 
+        {"label":"Charr", "value":14.32}, 
+        {"label":"Human", "value":34.81},
+        {"label":"Norn", "value":20.25},
+        {"label":"Sylvari", "value":15.31}
+    ]
+
+    //Create patterns to use in the charts
+    //Create visualization
+    var vis = d3.select('#svg-el') 
+        .append('svg:g')
+            //move the center of the pie chart from 0, 0 to radius, radius
+            .attr({
+                id: "race-donut",
+                transform: "translate(" + radius + "," + radius + ")"
+            })
+            .data([data])
+
+    //Race patterns
+    var defs = vis.append('svg:defs').attr('id', 'bgPatterns');
+    var i=0,len=0;
+    for(i=0,len=data.length;i<len;i++){
+        defs.append('svg:pattern')
+            .attr({
+                id: "race" + data[i].label,
+                patternUnits: "userSpaceOnUse",
+                width: radius,
+                height: radius
+            })
+            .append('svg:image')
+                .attr({
+                    "xlink:href": "/static/img/viz/" 
+                        + data[i].label.toLowerCase() + ".png",
+                    x:0,
+                    y:0,
+                    width: radius,
+                    height: radius
+                })
+    }
+
+    //-----------------------------------
+    //Config
+    //-----------------------------------
+    var raceLabelFontSize = 17;
+        
+
+    //Arc for visualization
+    var arc = d3.svg.arc()
+        .innerRadius(radius / 2)
+        .outerRadius(radius);
+    
+    //this will create arc data for us given a list of values
+    var pie = d3.layout.pie()
+        //we must tell it out to access the value of each element in our data array
+        .value(function(d) { return d.value; });
+
+    var arcs = vis.selectAll("g.slice")
+        //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 
+        .data(pie)
+        .enter()
+            //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+            .append("svg:g")
+                //allow us to style things in the slices (like text)
+                .attr("class", "slice");
+
+        //Append just the stroke and white fill
+        arcs.append("svg:path")
+            //set the color for each slice to be chosen from the color function defined above
+            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+            .attr("d", arc)
+            .style({
+                fill: "#ffffff",
+                stroke: "#707070",
+                "stroke-width": 2
+            })
+
+        //Append just the stroke and white fill, give it a filter too
+        arcs.append("svg:path")
+            .attr("d", arc)
+            .style({
+                fill: "#ffffff",
+                filter: "url(#jaggedEdge)",
+                stroke: "#707070",
+                "stroke-opacity": 0.6,
+                "stroke-width": 1
+            })
+
+        //Append the watercolored background image
+        arcs.append("svg:path")
+            //set the color for each slice to be chosen from the color function defined above
+            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+            .attr("d", arc)
+            .style({
+                fill: function(d){
+                    return "url(#race" + d.data.label + ")";
+                },
+                stroke: "#343434",
+                filter: "url(#waterColor1)",
+                "stroke-width": 2
+            })
+
+        //add a label to each slice
+        //  label with some effects as the base
+        arcs.append("svg:text")
+            .attr({
+                "transform": function(d) { 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    //this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + arc.centroid(d) + ")";
+                },
+                //center the text on it's origin
+                "text-anchor": "middle"
+            }).style({
+                fill: "#ababab",
+                filter: "url(#waterColor2)",
+                "font-size": raceLabelFontSize + 5 + "px",
+                opacity: 0.7,
+                "text-shadow": "0 0 1px #000000"
+            })
+            //get the label from our original data array
+            .text(function(d, i) { return data[i].label; });
+
+        //"final" label for race name
+        arcs.append("svg:text")
+            .attr({
+                "transform": function(d) { 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    //this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + arc.centroid(d) + ")";
+                },
+                //center the text on it's origin
+                "text-anchor": "middle"
+            }).style({
+                fill: "#ffffff",
+                "font-weight": "bold",
+                "font-size": raceLabelFontSize + 'px',
+                "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
+            })
+            //get the label from our original data array
+            .text(function(d, i) { return data[i].label; });
+
+        //add a label for % of total
+        //-------------------------------
+        arcs.append("svg:text")
+            .attr({
+                "transform": function(d) { 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    //this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + [
+                        arc.centroid(d)[0],
+                        arc.centroid(d)[1] + raceLabelFontSize 
+                        ] + ")";
+                },
+                //center the text on it's origin
+                "text-anchor": "middle"
+            }).style({
+                fill: "#ffffff",
+                "font-size": "1.1em",
+                "text-shadow": "0 0 3px #000000"
+            })
+            //get the label from our original data array
+            .text(function(d, i) { return Math.round(data[i].value) + '%'; });
+        
+    </script>
+  </body>
+</html>

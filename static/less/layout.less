@@ -7,7 +7,7 @@
  *
  * ======================================================================== */
 /* Google Fonts */
-@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Cantarell&.css");
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Averia+Libre:400,700&.css");
 /*Font awesome */
 @font-face {
   font-family: 'FontAwesome';
@@ -50,37 +50,14 @@
     .absolute-full-layout;
     top: @site-top-wrapper-height;
 }
-
 /* ========================================================================    
  *
- * Left Side 
+ * SVG Styles
  *
  * ======================================================================== */
-@site-left-side-wrapper-width: 20%;
-#site-left-side-wrapper {
-    .absolute-full-layout;
-    right: auto;
-    width: @site-left-side-wrapper-width;
-}
-/* ========================================================================    
- * Deck
- * ======================================================================== */
-#deck {
-    font-size: .9em;
-    min-height: 300px;
-    min-width: 200px;
-}
-
-
-/* ========================================================================    
- *
- * Right Side
- *
- * ======================================================================== */
-@site-right-side-wrapper-width: 20%;
-#site-right-side-wrapper {
-    .absolute-full-layout;
-    left: @site-left-side-wrapper-width;
+svg text {
+    font-family: 'Averia Libre', Arial, serif; 
+    text-shadow: 0 -1px 1px #ffffff;
 }
 
 /* ========================================================================    
