@@ -1,0 +1,152 @@
+var createChart = function(options){
+    //-----------------------------------
+    //Config
+    //-----------------------------------
+    var labelSize = options.labelSize;
+    var radius = options.radius;
+    var innerRadius = options.innerRadius || false;
+    var chartType = options.chartType;
+
+    //Update pattern size
+    d3.selectAll('.patternRace').attr({
+        width: radius, height: radius
+    });
+        
+    //Create patterns to use in the charts
+    //Create visualization
+    var chartGroup = svg.append('svg:g')
+        //move the center of the pie chart from 0, 0 to radius, radius
+        .attr({
+            id: chartType + "-donut",
+            transform: "translate(" + [width/2, height/2] + ")"
+        })
+        .data([data[chartType]])
+
+    //Arc for visualization
+    arc = d3.svg.arc()
+        .outerRadius(radius);
+    if(innerRadius){
+        arc.innerRadius(innerRadius);
+    }
+    
+    //this will create arc data for us given a list of values
+    pie = d3.layout.pie()
+        //we must tell it out to access the value of each element in our data array
+        .value(function(d) { return d.value; });
+
+    //Create the slicees
+    arcs = chartGroup.selectAll("g.slice")
+        //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 
+        .data(pie)
+        .enter()
+            //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+            .append("svg:g")
+                //allow us to style things in the slices (like text)
+                .attr("class", "slice");
+
+        //Append just the stroke and white fill
+        arcs.append("svg:path")
+            //set the color for each slice to be chosen from the color function defined above
+            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+            .attr("d", arc)
+            .style({
+                fill: "#ffffff",
+                stroke: "#707070",
+                "stroke-width": 2
+            })
+
+        //Append just the stroke and white fill, give it a filter too
+        arcs.append("svg:path")
+            .attr("d", arc)
+            .style({
+                fill: "#ffffff",
+                filter: "url(#jaggedEdge)",
+                stroke: "#707070",
+                "stroke-opacity": 0.6,
+                "stroke-width": 1
+            })
+
+        //Append the watercolored background image
+        arcs.append("svg:path")
+            //set the color for each slice to be chosen from the color function defined above
+            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+            .attr("d", arc)
+            .style({
+                fill: function(d){
+                    return "url(#" + chartType + d.data.label + ")";
+                },
+                stroke: "#343434",
+                filter: "url(#waterColor1)",
+                "stroke-width": 2
+            })
+
+        //-------------------------------
+        //add a label to each slice
+        //-------------------------------
+        //  label with some effects as the base
+        arcs.append("svg:text")
+            .attr({
+                "transform": function(d) { 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    //this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + arc.centroid(d) + ")";
+                },
+                //center the text on it's origin
+                "text-anchor": "middle"
+            }).style({
+                fill: "#ababab",
+                filter: "url(#waterColor2)",
+                "font-size": labelSize + 5 + "px",
+                opacity: 0.7,
+                "text-shadow": "0 0 1px #000000"
+            })
+            //get the label from our original data array
+            .text(function(d, i) { return data[chartType][i].label; });
+
+        //"final" label for name
+        arcs.append("svg:text")
+            .attr({
+                "transform": function(d) { 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    //this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + arc.centroid(d) + ")";
+                },
+                //center the text on it's origin
+                "text-anchor": "middle"
+            }).style({
+                fill: "#ffffff",
+                "font-weight": "bold",
+                "font-size": labelSize + 'px',
+                "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
+            })
+            //get the label from our original data array
+            .text(function(d, i) { return data[chartType][i].label; });
+
+        //add a label for % of total
+        //-------------------------------
+        arcs.append("svg:text")
+            .attr({
+                "transform": function(d) { 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    //this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + [
+                        arc.centroid(d)[0],
+                        arc.centroid(d)[1] + labelSize 
+                        ] + ")";
+                },
+                //center the text on it's origin
+                "text-anchor": "middle"
+            }).style({
+                fill: "#ffffff",
+                "font-size": "1.1em",
+                "text-shadow": "0 0 3px #000000"
+            })
+            //get the label from our original data array
+            .text(function(d, i) { return Math.round(data[chartType][i].value) + '%'; });
+};
