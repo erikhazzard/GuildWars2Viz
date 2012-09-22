@@ -1,9 +1,53 @@
 (function() {
   var _this = this;
 
+  GW2VIZ.visualizations.barHighlightOver = function(params) {
+    var barClass, barWrapper, chartType, d, i, label, posX, posY, value;
+    chartType = params.chartType;
+    d = params.d;
+    i = params.i;
+    if (d.data) {
+      label = d.data.label;
+      value = d.data.value;
+    } else {
+      label = d.label;
+      value = d.value;
+    }
+    barWrapper = d3.select('#barWrapper-' + chartType + '-' + label);
+    barWrapper.select('.bar').style({
+      opacity: 0.7
+    });
+    barClass = barWrapper.select('.barFilter').attr('class');
+    posX = parseInt(barClass.match(/posX[0-9]+/)[0].replace(/posX/, ''));
+    posY = parseInt(barClass.match(/posY[0-9]+/)[0].replace(/posY/, ''));
+    barWrapper.select('.barFilter').attr({
+      x: posX,
+      y: posY
+    });
+    $('#' + chartType + '-meta').html('<img src="/static/img/viz/' + label + '.png" height=28 width=28 /> ' + '<span class="label">' + label + '</span> <span class="value">' + value + '%</span>');
+    return true;
+  };
+
+  GW2VIZ.visualizations.barHighlightOut = function(params) {
+    var chartType, d, i, label;
+    chartType = params.chartType;
+    d = params.d;
+    i = params.i;
+    if (d.data) {
+      label = d.data.label;
+    } else {
+      label = d.label;
+    }
+    d3.select('#barWrapper-' + chartType + '-' + label + ' .barFilter').attr({
+      x: -5000,
+      y: -5000
+    });
+    return $('#' + chartType + '-meta').html('');
+  };
+
   GW2VIZ.visualizations.barViz = function(params) {
     var createChart;
-    createChart = GW2VIZ.visualizations.createChart;
+    createChart = GW2VIZ.visualizations.barCreateChart;
     createChart({
       chartType: 'profession'
     });
@@ -15,7 +59,7 @@
     });
   };
 
-  GW2VIZ.visualizations.createChart = function(params) {
+  GW2VIZ.visualizations.barCreateChart = function(params) {
     var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, bars, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, filteredBars, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
     chartType = params.chartType;
     colors = {
@@ -151,6 +195,19 @@
       fill: 'none'
     });
     dataBars.exit().remove();
+    bars.on('mouseover', function(d, i) {
+      return GW2VIZ.visualizations.barHighlightOver({
+        chartType: chartType,
+        d: d,
+        i: i
+      });
+    }).on('mouseout', function(d, i) {
+      return GW2VIZ.visualizations.barHighlightOut({
+        chartType: chartType,
+        d: d,
+        i: i
+      });
+    });
     barLabels = dataBarGroups.selectAll('text').data(data);
     barLabels.enter().append('svg:text').attr({
       x: function(d, i) {
@@ -163,6 +220,18 @@
       'text-shadow': '0 1px 1px #000000'
     }).text(function(d, i) {
       return d.value + '%';
+    }).on('mouseover', function(d, i) {
+      return GW2VIZ.visualizations.barHighlightOver({
+        chartType: chartType,
+        d: d,
+        i: i
+      });
+    }).on('mouseout', function(d, i) {
+      return GW2VIZ.visualizations.barHighlightOut({
+        chartType: chartType,
+        d: d,
+        i: i
+      });
     });
     tickYScale = d3.scale.linear().range([0, height - padding.top - padding.bottom]).domain([dataMax, 0]);
     yAxisTicks = d3.svg.axis().scale(tickYScale).ticks(5).orient("left").tickSize(-width);

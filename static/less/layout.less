@@ -28,6 +28,7 @@
  * ======================================================================== */
 #site-wrapper {
     .absolute-full-layout;
+    overflow: auto;
 }
 
 /* ========================================================================    
@@ -95,31 +96,61 @@ svg text {
     width: 500px;
     z-index: 500;
 }
-    #right-content h2 {
-        margin:0 0 .2em 0;
+    #right-content .barMetaWrapper { position: relative; overflow: auto; width:100%; }
+    #right-content .barMetaTitle {
+        float: left;
+        font-family: @header-font;
+        font-size: 1.8em;
+        font-weight:bold;
+        margin:0 .4em .2em 0;
+        overflow: auto;
+        position: relative;
     }
+        #right-content .barMeta {
+            float: left;
+            font-family: @normal-font;
+            font-weight: normal;
+            font-size: 1.4em;
+            margin: 0 0 .2em 1em;
+            padding: .2em 0 0 0;
+        }
+        #right-content .barMeta .value {
+            color: #404040;
+            font-family: @header-font;
+            font-size: 1.2em;
+            font-weight:bold;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
 /* ========================================================================    
  * Footer
  * ======================================================================== */
 #footer-wrapper {
     .absolute-full-layout;
+    position: fixed;
     font-size: .9em;
-    height: 34px;
+    height: 18px;
     top: auto;
-    z-index: 600;
+    z-index: 400;
 }
     #footer-other {
         .absolute-full-layout;
+        background: #f0f0f0;
         bottom: auto;
-        border-bottom: 1px solid #a0a0a0;
-        padding: 0 .5em;
+        border-top: 1px solid #cdcdcd;
+        border-left: 1px solid #cdcdcd;
         height: 18px;
+        left: auto;
+        padding: 0 .5em;
         text-align: right;
+        width: 500px;
         z-index:200;
     }
     #footer-legal {
-        color: #a7a7a7;
-        margin:18px 0 0 0;
+        color: #e0e0e0;
+        font-size:.8em;
+        max-width: 80%;
         z-index: 100;
     }
 /* ========================================================================    

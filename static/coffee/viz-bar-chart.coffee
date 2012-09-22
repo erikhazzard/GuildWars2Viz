@@ -5,8 +5,63 @@
 # Contains the visualization code
 #
 # ===========================================================================
+GW2VIZ.visualizations.barHighlightOver = (params)=>
+    #Function which highlights the passed in bar
+    chartType = params.chartType
+    d = params.d
+    i = params.i
+
+    #Get value from data
+    if d.data
+        label = d.data.label
+        value = d.data.value
+    else
+        label = d.label
+        value = d.value
+
+    #Update bars
+    barWrapper = d3.select('#barWrapper-' + chartType + '-' + label)
+    barWrapper.select('.bar')
+        .style({opacity: 0.7})
+
+    #Get x and y for filtered bar
+    barClass = barWrapper.select('.barFilter').attr('class')
+    posX = parseInt(barClass.match(/posX[0-9]+/)[0].replace(/posX/,''))
+    posY = parseInt(barClass.match(/posY[0-9]+/)[0].replace(/posY/,''))
+    #Move the bar off scren
+    barWrapper.select('.barFilter')
+        #.style({opacity: 1})
+        #.style({display: 'block'})
+        .attr({ x: posX, y: posY })
+
+    #Update meta info
+    $('#' + chartType + '-meta').html(
+        '<img src="/static/img/viz/' + label + '.png" height=28 width=28 /> ' + '<span class="label">' + label + '</span> <span class="value">' + value + '%</span>')
+
+    return true
+
+GW2VIZ.visualizations.barHighlightOut = (params)=>
+    #Function which highlights the passed in bar
+    chartType = params.chartType
+    d = params.d
+    i = params.i
+    if d.data
+        label = d.data.label
+    else
+        label = d.label
+
+    #Update bar
+    d3.select('#barWrapper-' + chartType + '-' + label + ' .barFilter')
+        #.style({opacity: 0})
+        #.style({display: 'none'})
+        #reset position off screen
+        .attr({ x: -5000, y: -5000 })
+
+    #Update meta info
+    $('#' + chartType + '-meta').html('')
+
 GW2VIZ.visualizations.barViz = (params) =>
-    createChart = GW2VIZ.visualizations.createChart
+    createChart = GW2VIZ.visualizations.barCreateChart
     createChart({
         chartType: 'profession'
     })
@@ -17,7 +72,7 @@ GW2VIZ.visualizations.barViz = (params) =>
         chartType: 'race'
     })
 
-GW2VIZ.visualizations.createChart = (params) =>
+GW2VIZ.visualizations.barCreateChart = (params) =>
     #Create the bar charts
     #Check params
     chartType = params.chartType
@@ -200,22 +255,26 @@ GW2VIZ.visualizations.createChart = (params) =>
             fill: 'none'
         })
 
-
     #Cleanup
     dataBars.exit().remove()
 
-    ##animate it with transition
-    ##   These are the final values
-    #
-    #bars.selectAll('.bar')
-    #    #NOTE: Could use transiiton here
-    #    #.transition()
-    #    .attr({
-    #        height: (d,i)=>
-    #            return yScale(d.value)
-    #        y: (d,y)=>
-    #            return height - yScale(d.value) - padding.bottom - padding.top
-    #    })
+    #------------------------------------
+    #INTERACTION
+    #------------------------------------
+    bars.on('mouseover', (d,i)=>
+            GW2VIZ.visualizations.barHighlightOver({
+                chartType:chartType,
+                d: d
+                i: i
+            })
+        )
+        .on('mouseout', (d,i)=>
+            GW2VIZ.visualizations.barHighlightOut({
+                chartType:chartType,
+                d: d
+                i: i
+            })
+        )
 
     #Text labels
     #------------------------------------
@@ -225,19 +284,31 @@ GW2VIZ.visualizations.createChart = (params) =>
 
     barLabels.enter()
         .append('svg:text')
-            .attr({
-                x: (d,i)=>
-                    return xScale(i) + 6
-                y: height - padding.bottom - padding.top - 3
-            }).style({
-                'font-size': '.9em',
-                fill: '#f0f0f0',
-                'text-shadow': '0 1px 1px #000000'
-            }).text((d,i)=>
-                return d.value + '%'
-            )
+        .attr({
+            x: (d,i)=>
+                return xScale(i) + 6
+            y: height - padding.bottom - padding.top - 3
+        }).style({
+            'font-size': '.9em',
+            fill: '#f0f0f0',
+            'text-shadow': '0 1px 1px #000000'
+        }).text((d,i)=>
+            return d.value + '%'
+        ).on('mouseover', (d,i)=>
+            GW2VIZ.visualizations.barHighlightOver({
+                chartType:chartType,
+                d: d
+                i: i
+            })
+        )
+        .on('mouseout', (d,i)=>
+            GW2VIZ.visualizations.barHighlightOut({
+                chartType:chartType,
+                d: d
+                i: i
+            })
+        )
     
-
     #------------------------------------
     #y axis (on left side)
     #------------------------------------

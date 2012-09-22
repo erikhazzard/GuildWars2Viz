@@ -168,7 +168,7 @@
       thisTextGroup = chartGroup.selectAll('.textGroup');
       allLabels = chartGroup.selectAll('.textGroup .label');
       arcs.on('mouseover', function(d, i) {
-        var barClass, barWrapper, curGroup, posX, posY;
+        var curGroup;
         chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 9,
           'stroke': '#000000',
@@ -197,16 +197,10 @@
         iconGroup.style({
           opacity: 0.3
         });
-        barWrapper = d3.select('#barWrapper-' + chartType + '-' + d.data.label);
-        barWrapper.select('.bar').style({
-          opacity: 0.7
-        });
-        barClass = barWrapper.select('.barFilter').attr('class');
-        posX = parseInt(barClass.match(/posX[0-9]+/)[0].replace(/posX/, ''));
-        posY = parseInt(barClass.match(/posY[0-9]+/)[0].replace(/posY/, ''));
-        return barWrapper.select('.barFilter').attr({
-          x: posX,
-          y: posY
+        return GW2VIZ.visualizations.barHighlightOver({
+          chartType: chartType,
+          d: d,
+          i: i
         });
       }).on('mouseout', function(d, i) {
         chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
@@ -230,9 +224,10 @@
         iconGroup.style({
           opacity: startingIconOpacity
         });
-        return d3.select('#barWrapper-' + chartType + '-' + d.data.label + ' .barFilter').attr({
-          x: -5000,
-          y: -5000
+        return GW2VIZ.visualizations.barHighlightOut({
+          chartType: chartType,
+          d: d,
+          i: i
         });
       });
       if (callback) return callback();

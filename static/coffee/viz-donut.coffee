@@ -321,19 +321,11 @@ GW2VIZ.visualizations.donutViz = (params) =>
             iconGroup.style({opacity: 0.3})
 
             #UPDATE bar
-            barWrapper = d3.select('#barWrapper-' + chartType + '-' + d.data.label)
-            barWrapper.select('.bar')
-                .style({opacity: 0.7})
-
-            #Get x and y for filtered bar
-            barClass = barWrapper.select('.barFilter').attr('class')
-            posX = parseInt(barClass.match(/posX[0-9]+/)[0].replace(/posX/,''))
-            posY = parseInt(barClass.match(/posY[0-9]+/)[0].replace(/posY/,''))
-            #Move the bar off scren
-            barWrapper.select('.barFilter')
-                #.style({opacity: 1})
-                #.style({display: 'block'})
-                .attr({ x: posX, y: posY })
+            GW2VIZ.visualizations.barHighlightOver({
+                chartType:chartType,
+                d: d
+                i: i
+            })
 
         ).on('mouseout', (d,i)=>
             #SLICE
@@ -367,12 +359,12 @@ GW2VIZ.visualizations.donutViz = (params) =>
             #Show icons back to original opacity
             iconGroup.style({opacity: startingIconOpacity})
 
-            #Update bar
-            d3.select('#barWrapper-' + chartType + '-' + d.data.label + ' .barFilter')
-                #.style({opacity: 0})
-                #.style({display: 'none'})
-                #reset position off screen
-                .attr({ x: -5000, y: -5000 })
+            #Update bar chart
+            GW2VIZ.visualizations.barHighlightOut({
+                chartType:chartType,
+                d: d
+                i: i
+            })
         )
         #Call the callback if pased in
         if callback
