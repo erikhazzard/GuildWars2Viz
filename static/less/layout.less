@@ -7,7 +7,7 @@
  *
  * ======================================================================== */
 /* Google Fonts */
-@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Averia+Libre:400,700&.css");
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Alegreya+SC:400,700|Alegreya|Averia+Libre:400,700&.css");
 /*Font awesome */
 @font-face {
   font-family: 'FontAwesome';
@@ -39,28 +39,62 @@
 
 #site-top-wrapper {
     .absolute-full-layout;
-    height: @site-top-wrapper-height;
+    bottom: auto;
+    background: url(../img/assets/header.gif) no-repeat 50% 0;
+    height: 301px;
+    z-index: 100;
+}
+    #logo-wrapper {
+        position: absolute;
+        left: 660px;
+        top:20px;
+    }
+        #logo-wrapper h2 {
+            font-size: 2.5em;
+            color: #ffffff;
+            text-shadow: 0 0 2px #000000;
+        }
+
+#loading {
+    .absolute-full-layout;
+    bottom: auto;
+    height: 100px;
+    right: auto;
+    width: 800px;
+    z-index:9999;
 }
 
 /* ========================================================================    
  *
- * Site content wrapper
+ * Site content 
  *
  * ======================================================================== */
-#site-content-wrapper {
+#left-content {
     .absolute-full-layout;
-    top: @site-top-wrapper-height;
+    width: 800px;
+    z-index: 1000;
 }
+
 /* ========================================================================    
  *
  * SVG Styles
  *
  * ======================================================================== */
 svg text {
-    font-family: 'Averia Libre', Arial, serif; 
+    font-family: @normal-font;
     text-shadow: 0 -1px 1px #ffffff;
 }
 
+/* ========================================================================    
+ * Footer
+ * ======================================================================== */
+#footer {
+    .absolute-full-layout;
+    font-size: .9em;
+    height: 24px;
+    top: auto;
+    z-index: 99;
+}
 /* ========================================================================    
  * Popup
  * ======================================================================== */

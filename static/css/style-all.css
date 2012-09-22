@@ -1,4 +1,4 @@
-@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Averia+Libre:400,700&.css");
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono|Alegreya+SC:400,700|Alegreya|Averia+Libre:400,700&.css");
 /* ========================================================================    
  *
  * less_variables.css
@@ -2762,9 +2762,9 @@ body {
     background:#f4f4f4 url(../img/bg.gif);
     */
 
-  background: #ffffff url(../img/assests/sitebg.jpg) top right no-repeat;
+  background: #ffffff url(../img/assets/sitebg.jpg) top right no-repeat;
   color: #2c2d32;
-  font-family: Arial, Verdana, sans-serif;
+  font-family: 'Alegreya', Arial, Verdana, sans-serif;
   font-size: 1em;
   margin: 0;
   padding: 0;
@@ -2798,12 +2798,12 @@ h4,
 h5,
 h6,
 #header {
-  font-family: 'Oxygen', Arial, Verdana, sans-serif;
+  font-family: 'Alegreya SC', Arial, Verdana, sans-serif;
   margin: 0;
   padding: 0;
 }
 h1 {
-  font-family: 'Oxygen', Arial, Verdana, sans-serif;
+  font-family: 'Alegreya SC', Arial, Verdana, sans-serif;
   font-size: 2em;
   font-weight: bold;
 }
@@ -2856,7 +2856,7 @@ select {
   box-shadow: 0 1px 4px #e0e0e0 inset;
   border: 1px solid #a0a0a0;
   color: #2c2d32;
-  font-family: Arial, Verdana, sans-serif, Arial, Verdana, sans-serif;
+  font-family: 'Alegreya', Arial, Verdana, sans-serif, Arial, Verdana, sans-serif;
   font-size: 1em;
   padding: 2px;
 }
@@ -3087,20 +3087,46 @@ pre,
   position: absolute;
   right: 0;
   top: 0;
-  height: 80px;
+  bottom: auto;
+  background: url(../img/assets/header.gif) no-repeat 50% 0;
+  height: 301px;
+  z-index: 100;
 }
-/* ========================================================================    
- *
- * Site content wrapper
- *
- * ======================================================================== */
-#site-content-wrapper {
+#logo-wrapper {
+  position: absolute;
+  left: 660px;
+  top: 20px;
+}
+#logo-wrapper h2 {
+  font-size: 2.5em;
+  color: #ffffff;
+  text-shadow: 0 0 2px #000000;
+}
+#loading {
   bottom: 0;
   left: 0;
   position: absolute;
   right: 0;
   top: 0;
-  top: 80px;
+  bottom: auto;
+  height: 100px;
+  right: auto;
+  width: 800px;
+  z-index: 9999;
+}
+/* ========================================================================    
+ *
+ * Site content 
+ *
+ * ======================================================================== */
+#left-content {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 800px;
+  z-index: 1000;
 }
 /* ========================================================================    
  *
@@ -3108,8 +3134,22 @@ pre,
  *
  * ======================================================================== */
 svg text {
-  font-family: 'Averia Libre', Arial, serif;
+  font-family: 'Alegreya', Arial, Verdana, sans-serif;
   text-shadow: 0 -1px 1px #ffffff;
+}
+/* ========================================================================    
+ * Footer
+ * ======================================================================== */
+#footer {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: .9em;
+  height: 24px;
+  top: auto;
+  z-index: 99;
 }
 /* ========================================================================    
  * Popup

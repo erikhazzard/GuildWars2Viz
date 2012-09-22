@@ -89,21 +89,23 @@
     svg = d3.select('#svg-el-donut');
     donutGroup = svg.append('svg:g').attr({
       id: 'donutGroup',
-      transform: "translate(" + [0, 0] + ") scale(0.9)"
+      transform: "translate(" + [0, 20] + ") scale(0.94)"
     });
     width = svg.attr('width');
     height = svg.attr('height');
     filterSupport = Modernizr.svgfilters;
     createChart = function(options) {
-      var arc, arcs, bgLabelModifier, chartGroup, chartType, edgeSlice, innerRadius, labelSize, pie, pieFill, radius, startTextOpacity, textGroup, usePiePattern;
+      var allLabels, allTextGroups, arc, arcs, bgLabelModifier, callback, chartGroup, chartType, edgeSlice, iconGroup, imageSize, innerRadius, labelSize, pie, pieFill, radius, startingIconOpacity, startingTextOpacity, textGroup, thisTextGroup, usePiePattern;
       labelSize = options.labelSize;
       radius = options.radius;
       innerRadius = options.innerRadius || false;
       chartType = options.chartType;
       usePiePattern = options.usePiePattern;
       pieFill = options.pieFill;
+      callback = options.callback;
       bgLabelModifier = 5;
-      startTextOpacity = 0.2;
+      startingTextOpacity = 0;
+      startingIconOpacity = 0.6;
       d3.selectAll('.patternRace').attr({
         width: radius,
         height: radius
@@ -123,8 +125,9 @@
       });
       arcs.append("svg:path").attr("d", arc).style({
         fill: "#ffffff",
-        stroke: "#707070",
-        "stroke-width": 2
+        stroke: "#505050",
+        filter: "url(#waterColor2)",
+        "stroke-width": 4
       });
       edgeSlice = arcs.append("svg:path").attr({
         d: arc,
@@ -156,12 +159,37 @@
         "stroke-width": 2,
         "stroke-opacity": 1
       });
+      iconGroup = arcs.append('svg:g').attr({
+        'class': function(d, i) {
+          return 'iconGroup iconGroup' + i;
+        }
+      }).style({
+        opacity: startingIconOpacity
+      });
+      imageSize = {
+        height: 54,
+        width: 54
+      };
+      iconGroup.append("svg:image").attr({
+        "xlink:href": function(d, i) {
+          return "/static/img/viz/" + data[chartType][i].label + ".png";
+        },
+        x: 0,
+        y: 0,
+        width: imageSize.width + 'px',
+        height: imageSize.height + 'px',
+        transform: function(d) {
+          d.innerRadius = 0;
+          d.outerRadius = radius;
+          return "translate(" + [arc.centroid(d)[0] - (imageSize.width / 2), arc.centroid(d)[1] - (imageSize.height / 2)] + ")";
+        }
+      });
       textGroup = arcs.append('svg:g').attr({
         'class': function(d, i) {
           return 'textGroup textGroup' + i;
         }
       }).style({
-        opacity: startTextOpacity
+        opacity: startingTextOpacity
       });
       textGroup.append("svg:text").attr({
         "transform": function(d, i) {
@@ -200,7 +228,7 @@
         fill: "#ffffff",
         "font-weight": "bold",
         "font-size": labelSize + 'px',
-        "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
+        "text-shadow": "0 0 3px #000000, 0 0 18px #000000"
       }).text(function(d, i) {
         return data[chartType][i].label;
       });
@@ -218,53 +246,63 @@
       }).text(function(d, i) {
         return Math.round(data[chartType][i].value) + '%';
       });
-      return arcs.on('mouseover', function(d, i) {
-        chartGroup.select('.edgeSlice' + i).transition().duration(500).style({
+      allTextGroups = d3.selectAll('.textGroup');
+      thisTextGroup = chartGroup.selectAll('.textGroup');
+      allLabels = chartGroup.selectAll('.textGroup .label');
+      arcs.on('mouseover', function(d, i) {
+        var curGroup;
+        chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 9,
           'stroke': '#000000',
           'stroke-opacity': 0.8
         });
-        d3.selectAll('.textGroup').style({
-          opacity: startTextOpacity
+        allTextGroups.style({
+          opacity: startingTextOpacity
         });
-        chartGroup.selectAll('.textGroup').style({
+        thisTextGroup.style({
           opacity: 0.9
         });
-        chartGroup.selectAll('.textGroup' + i).style({
+        curGroup = chartGroup.selectAll('.textGroup' + i);
+        curGroup.style({
           opacity: 1
         });
-        chartGroup.selectAll('.textGroup' + i + ' .label').style({
+        curGroup.selectAll('.label').style({
           'font-size': labelSize + 6
         });
-        chartGroup.selectAll('.textGroup' + i + ' .bgLabel').style({
+        curGroup.selectAll('.bgLabel').style({
           'font-size': labelSize + bgLabelModifier + 6
-        });
-        return chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
+        }).attr({
           transform: function(d, i) {
             return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i * 3)) + ")";
           }
         });
+        return iconGroup.style({
+          opacity: 0.3
+        });
       }).on('mouseout', function(d, i) {
-        chartGroup.select('.edgeSlice' + i).transition().duration(500).style({
+        chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 1,
           'stroke': '#707070',
           'stroke-opacity': 0.6
         });
-        chartGroup.selectAll('.textGroup .label').style({
+        allLabels.style({
           'font-size': labelSize
         });
         chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
           transform: function(d, i) {
             return "translate(" + arc.centroid(d) + ") rotate(0)";
           }
-        });
-        chartGroup.selectAll('.textGroup' + i + ' .bgLabel').style({
+        }).style({
           'font-size': labelSize + bgLabelModifier
         });
-        return chartGroup.selectAll('.textGroup').style({
-          opacity: startTextOpacity
+        thisTextGroup.style({
+          opacity: startingTextOpacity
+        });
+        return iconGroup.style({
+          opacity: startingIconOpacity
         });
       });
+      if (callback) return callback();
     };
     createChart({
       labelSize: 14,
@@ -288,10 +326,16 @@
     });
     return createChart({
       labelSize: 17,
-      radius: 344,
+      radius: 350,
       innerRadius: 272,
       chartType: 'tradeskill',
-      usePiePattern: true
+      usePiePattern: true,
+      callback: function() {
+        return $('#loading').css({
+          opacity: 0,
+          display: 'none'
+        });
+      }
     });
   };
 

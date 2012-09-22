@@ -47,7 +47,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
     #Create group for donut charts and make it slightly smaller
     donutGroup = svg.append('svg:g').attr({
         id: 'donutGroup',
-        transform: "translate(" + [0,0] + ") scale(0.9)"
+        transform: "translate(" + [0,20] + ") scale(0.94)"
     })
     width = svg.attr('width')
     height = svg.attr('height')
@@ -70,10 +70,12 @@ GW2VIZ.visualizations.donutViz = (params) =>
         chartType = options.chartType
         usePiePattern = options.usePiePattern
         pieFill = options.pieFill
+        callback = options.callback
 
         #Base variables
         bgLabelModifier = 5
-        startTextOpacity = 0.2
+        startingTextOpacity = 0
+        startingIconOpacity = 0.6
 
         #Update pattern size
         d3.selectAll('.patternRace').attr({
@@ -123,8 +125,9 @@ GW2VIZ.visualizations.donutViz = (params) =>
             .attr("d", arc)
             .style({
                 fill: "#ffffff",
-                stroke: "#707070",
-                "stroke-width": 2
+                stroke: "#505050",
+                filter: "url(#waterColor2)",
+                "stroke-width": 4
             })
 
         #Append just the stroke and white fill, give it a filter too
@@ -166,8 +169,42 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 "stroke-opacity": 1
             })
 
+        #---------------------------
+        #ICONS
+        #---------------------------
+        iconGroup = arcs.append('svg:g')
+            .attr({
+                'class': (d,i)=>
+                    return 'iconGroup iconGroup' + i
+            }).style({
+                opacity: startingIconOpacity
+            })
+
+        imageSize = {
+            height: 54,
+            width: 54
+        }
+        #Icon image
+        iconGroup.append("svg:image")
+            .attr({
+                "xlink:href": (d,i)=>
+                    return "/static/img/viz/" + data[chartType][i].label + ".png"
+                x:0, y:0
+                width: imageSize.width + 'px',
+                height: imageSize.height + 'px',
+                #Make sure we change fontsize for this label
+                transform: (d)=>
+                    #we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0
+                    d.outerRadius = radius
+                    #this gives us a pair of coordinates like [50, 50]
+                    return "translate(" + [
+                        arc.centroid(d)[0] - (imageSize.width / 2),
+                        arc.centroid(d)[1] - (imageSize.height / 2)
+                        ] + ")"
+            })
         #-------------------------------
-        #add a label to each slice
+        #LABEL
         #-------------------------------
         #  label with some effects as the base
         textGroup = arcs.append('svg:g')
@@ -175,7 +212,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 'class': (d,i)=>
                     return 'textGroup textGroup' + i
             }).style({
-                opacity: startTextOpacity
+                opacity: startingTextOpacity
             })
 
         #Background label, transparent and larger font
@@ -238,7 +275,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 fill: "#ffffff",
                 "font-weight": "bold",
                 "font-size": labelSize + 'px',
-                "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
+                "text-shadow": "0 0 3px #000000, 0 0 18px #000000"
             })
             #get the label from our original data array
             .text((d, i)=>
@@ -275,11 +312,16 @@ GW2VIZ.visualizations.donutViz = (params) =>
         #---------------------------
         #INTERACTION
         #---------------------------
+        #Save d3 selections so we dont make DOM look ups in each event
+        allTextGroups = d3.selectAll('.textGroup')
+        thisTextGroup = chartGroup.selectAll('.textGroup')
+        allLabels = chartGroup.selectAll('.textGroup .label')
+
         arcs.on('mouseover', (d,i)=>
             #Update slice
             #-----------------------
             chartGroup.select('.edgeSlice' + i)
-                .transition().duration(500)
+                .transition().duration(300)
                 .style({
                 'stroke-width': 9,
                 'stroke': '#000000',
@@ -290,27 +332,31 @@ GW2VIZ.visualizations.donutViz = (params) =>
             #LABEL
             #-----------------------
             #LABEL Opacity
-            d3.selectAll('.textGroup').style({ opacity:startTextOpacity })
-            chartGroup.selectAll('.textGroup').style({ opacity:0.9 })
-            chartGroup.selectAll('.textGroup' + i).style({ opacity: 1 })
-
-            chartGroup.selectAll('.textGroup' + i + ' .label').style({
+            allTextGroups.style({ opacity:startingTextOpacity })
+            thisTextGroup.style({ opacity:0.9 })
+            #Get the current selected item
+            curGroup = chartGroup.selectAll('.textGroup' + i)
+            curGroup.style({ opacity: 1 })
+            curGroup.selectAll('.label').style({
                 'font-size': labelSize + 6
             })
 
             #Update the big bglabel
-            chartGroup.selectAll('.textGroup' + i + ' .bgLabel').style({
+            curGroup.selectAll('.bgLabel').style({
                 'font-size': labelSize + bgLabelModifier + 6
-            })
-            chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
+            }).attr({
                 transform: (d,i)=>
                     return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i*3)) + ")"
             })
+
+            #Fade out icons
+            iconGroup.style({opacity: 0.3})
+
         ).on('mouseout', (d,i)=>
             #SLICE
             #Update slice
             chartGroup.select('.edgeSlice' + i)
-                .transition().duration(500)
+                .transition().duration(300)
                 .style({
                     'stroke-width': 1,
                     'stroke': '#707070',
@@ -319,22 +365,30 @@ GW2VIZ.visualizations.donutViz = (params) =>
 
             #LABELS
             #Reset the label font size
-            chartGroup.selectAll('.textGroup .label').style({
+            allLabels.style({
                 'font-size': labelSize
             })
             #Reset the bg label font size
             chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
                 transform: (d,i)=>
                     return "translate(" + arc.centroid(d) + ") rotate(0)"
-            })
-            chartGroup.selectAll('.textGroup' + i + ' .bgLabel').style({
+            }).style({
                 'font-size': labelSize + bgLabelModifier
             })
+
             #LABEL Opacity
-            chartGroup.selectAll('.textGroup').style({
-                opacity:startTextOpacity
+            thisTextGroup.style({
+                opacity:startingTextOpacity
             })
+
+            #Show icons back to original opacity
+            iconGroup.style({opacity: startingIconOpacity})
         )
+        #Call the callback if pased in
+        if callback
+            callback()
+
+    #END FUNCTION
 
     #====================================================================
     #  
@@ -376,7 +430,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
     # TRADESKILL ( third donut )
     createChart({
         labelSize: 17,
-        radius: 344,
+        radius: 350,
         innerRadius: 272,
         chartType: 'tradeskill',
         usePiePattern: true,
@@ -388,6 +442,9 @@ GW2VIZ.visualizations.donutViz = (params) =>
         #    '#377EB8', '#984EA3', '#A65628',
         #    '#c2ad4d','#E41A1C'
         #]
+        callback: ()=>
+            #Hide loading message
+            $('#loading').css({opacity: 0, display: 'none' })
     })
 
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-    <title>Deck Viz</title>
+    <title>Guildwars 2 Visualization</title>
     <!-- CSS -->
     <link href='/static/css/style-all.css' rel='stylesheet' type='text/css'>
 </head>
@@ -14,323 +14,346 @@
 
     ======================================================================= -->
 <div id='site-wrapper'>
+    <!-- Loading Text -->
+
     <!-- Top Wrapper -->
     <div id='site-top-wrapper'>
-        <img src='/static/img/assests/GW2_Logotype.jpg' height=50 />
+        <div id='logo-wrapper'>
+            <img src='/static/img/assets/gw_logo_type.png' />
+            <h2>Visualization</h2>
+        </div>
     </div>
     
-    <!-- Right Side (visualizations) -->
-    <div id='svg-wrapper'> 
-        <!-- TODO -->
-          <svg id='svg-el-donut' width=700 height=700>
-            <defs id='filters'>
-                <filter x="-0.30000001"
-                   y="-0.5"
-                   width="1.6"
-                   height="2"
-                   color-interpolation-filters="sRGB"
-                   id="waterColor1">
-                  <feGaussianBlur
-                     result="result8"
-                     stdDeviation="15"
-                     id="feGaussianBlur3948" />
-                  <feTurbulence
-                     baseFrequency="0.028"
-                     numOctaves="5"
-                     type="fractalNoise"
-                     result="result7"
-                     seed="27"
-                     id="feTurbulence3950" />
-                  <feComposite
-                     in2="result8"
-                     operator="over"
-                     in="result7"
-                     result="result6"
-                     id="feComposite3952" />
-                  <feColorMatrix
-                     values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 6 -4 "
-                     result="result9"
-                     id="feColorMatrix3954" />
-                  <feDisplacementMap
-                     in2="result9"
-                     scale="50"
-                     xChannelSelector="A"
-                     yChannelSelector="A"
-                     in="result7"
-                     result="result4"
-                     id="feDisplacementMap3956" />
-                  <feComposite
-                     in2="result4"
-                     operator="in"
-                     in="result8"
-                     result="result2"
-                     id="feComposite3958" />
-                  <feComposite
-                     in2="result9"
-                     operator="in"
-                     in="result2"
-                     result="fbSourceGraphic"
-                     id="feComposite3960" />
-                  <feComposite
-                     in2="fbSourceGraphic"
-                     operator="arithmetic"
-                     k1="0.5"
-                     k2="1"
-                     k3="0"
-                     k4="0"
-                     in="fbSourceGraphic"
-                     result="result91"
-                     id="feComposite3962" />
-                  <feBlend
-                     in2="result91"
-                     mode="multiply"
-                     in="fbSourceGraphic"
-                     id="feBlend3964" />
-                </filter> 
-
-                <filter
-                   color-interpolation-filters="sRGB"
-                   id="waterColor2">
-                  <feTurbulence
-                     baseFrequency="0.143"
-                     numOctaves="5"
-                     type="fractalNoise"
-                     id="feTurbulence4819" />
-                  <feColorMatrix
-                     result="result1"
-                     values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 5 -3"
-                     id="feColorMatrix4821" />
-                  <feComposite
-                     in2="SourceAlpha"
-                     operator="in"
-                     id="feComposite4823" />
-                  <feMorphology
-                     result="result3"
-                     radius="2.7"
-                     operator="dilate"
-                     id="feMorphology4825" />
-                  <feTurbulence
-                     result="result91"
-                     baseFrequency="0.121"
-                     numOctaves="2"
-                     id="feTurbulence4827" />
-                  <feDisplacementMap
-                     in2="result91"
-                     scale="10"
-                     xChannelSelector="R"
-                     yChannelSelector="A"
-                     in="result3"
-                     result="result4"
-                     id="feDisplacementMap4829" />
-                  <feFlood
-                     result="result92"
-                     flood-color="rgb(255,255,255)"
-                     flood-opacity="1"
-                     id="feFlood4831" />
-                  <feComposite
-                     in2="result4"
-                     operator="in"
-                     result="result2"
-                     id="feComposite4833" />
-                  <feComposite
-                     in2="SourceGraphic"
-                     operator="over"
-                     in="result2"
-                     id="feComposite4835" />
-                </filter>
-                <filter
+    <div id='left-content'>
+        <!-- Right Side (visualizations) -->
+        <div id='svg-wrapper'> 
+            <!-- TODO -->
+              <svg id='svg-el-donut' width=800 height=700>
+                <defs id='filters'>
+                    <filter x="-0.30000001"
+                       y="-0.5"
+                       width="1.6"
+                       height="2"
                        color-interpolation-filters="sRGB"
-                       id="jaggedEdge">
-                      <feTurbulence
-                         baseFrequency="0.08"
-                         type="fractalNoise"
-                         seed="0"
-                         numOctaves="5"
-                         id="feTurbulence5171" />
+                       id="waterColor1">
                       <feGaussianBlur
+                         result="result8"
+                         stdDeviation="15"
+                         id="feGaussianBlur3948" />
+                      <feTurbulence
+                         baseFrequency="0.028"
+                         numOctaves="4"
+                         type="fractalNoise"
+                         result="result7"
+                         seed="27"
+                         id="feTurbulence3950" />
+                      <feComposite
+                         in2="result8"
+                         operator="over"
+                         in="result7"
+                         result="result6"
+                         id="feComposite3952" />
+                      <feColorMatrix
+                         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 6 -4 "
+                         result="result9"
+                         id="feColorMatrix3954" />
+                      <feDisplacementMap
+                         in2="result9"
+                         scale="50"
+                         xChannelSelector="A"
+                         yChannelSelector="A"
+                         in="result7"
+                         result="result4"
+                         id="feDisplacementMap3956" />
+                      <feComposite
+                         in2="result4"
+                         operator="in"
+                         in="result8"
+                         result="result2"
+                         id="feComposite3958" />
+                      <feComposite
+                         in2="result9"
+                         operator="in"
+                         in="result2"
+                         result="fbSourceGraphic"
+                         id="feComposite3960" />
+                      <feComposite
+                         in2="fbSourceGraphic"
+                         operator="arithmetic"
+                         k1="0.5"
+                         k2="1"
+                         k3="0"
+                         k4="0"
+                         in="fbSourceGraphic"
                          result="result91"
-                         stdDeviation="0.5"
-                         id="feGaussianBlur5173" />
+                         id="feComposite3962" />
+                      <feBlend
+                         in2="result91"
+                         mode="multiply"
+                         in="fbSourceGraphic"
+                         id="feBlend3964" />
+                    </filter> 
+
+                    <filter
+                       color-interpolation-filters="sRGB"
+                       id="waterColor2">
+                      <feTurbulence
+                         baseFrequency="0.143"
+                         numOctaves="5"
+                         type="fractalNoise"
+                         id="feTurbulence4819" />
+                      <feColorMatrix
+                         result="result1"
+                         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 5 -3"
+                         id="feColorMatrix4821" />
+                      <feComposite
+                         in2="SourceAlpha"
+                         operator="in"
+                         id="feComposite4823" />
+                      <feMorphology
+                         result="result3"
+                         radius="2.7"
+                         operator="dilate"
+                         id="feMorphology4825" />
+                      <feTurbulence
+                         result="result91"
+                         baseFrequency="0.121"
+                         numOctaves="2"
+                         id="feTurbulence4827" />
                       <feDisplacementMap
                          in2="result91"
-                         scale="20"
+                         scale="10"
                          xChannelSelector="R"
-                         yChannelSelector="G"
-                         in="SourceGraphic"
-                         result="result1"
-                         id="feDisplacementMap5175" />
+                         yChannelSelector="A"
+                         in="result3"
+                         result="result4"
+                         id="feDisplacementMap4829" />
+                      <feFlood
+                         result="result92"
+                         flood-color="rgb(255,255,255)"
+                         flood-opacity="1"
+                         id="feFlood4831" />
+                      <feComposite
+                         in2="result4"
+                         operator="in"
+                         result="result2"
+                         id="feComposite4833" />
                       <feComposite
                          in2="SourceGraphic"
-                         operator="atop"
-                         in="result1"
-                         id="feComposite5177" />
+                         operator="over"
+                         in="result2"
+                         id="feComposite4835" />
                     </filter>
+                    <filter
+                           color-interpolation-filters="sRGB"
+                           id="jaggedEdge">
+                          <feTurbulence
+                             baseFrequency="0.08"
+                             type="fractalNoise"
+                             seed="0"
+                             numOctaves="5"
+                             id="feTurbulence5171" />
+                          <feGaussianBlur
+                             result="result91"
+                             stdDeviation="0.5"
+                             id="feGaussianBlur5173" />
+                          <feDisplacementMap
+                             in2="result91"
+                             scale="20"
+                             xChannelSelector="R"
+                             yChannelSelector="G"
+                             in="SourceGraphic"
+                             result="result1"
+                             id="feDisplacementMap5175" />
+                          <feComposite
+                             in2="SourceGraphic"
+                             operator="atop"
+                             in="result1"
+                             id="feComposite5177" />
+                        </filter>
 
-                <!-- Gender -->
-                  <linearGradient id="genderMaleGradient">
-                    <stop offset="10%" stop-color="#000077" />
-                    <stop offset="85%" stop-color="#4C6CED" />
-                  </linearGradient>
-                  <linearGradient id="genderFemaleGradient">
-                  <!--
-                    <stop offset="10%" stop-color="#eccc4c" />
-                    <stop offset="95%" stop-color="#94802F" />
+                    <!-- Gender -->
+                      <linearGradient id="genderMaleGradient">
+                        <stop offset="10%" stop-color="#000077" />
+                        <stop offset="85%" stop-color="#4C6CED" />
+                      </linearGradient>
+                      <linearGradient id="genderFemaleGradient">
+                      <!--
+                        <stop offset="10%" stop-color="#eccc4c" />
+                        <stop offset="95%" stop-color="#94802F" />
+                        -->
+                        <stop offset="10%" stop-color="#82377E" />
+                        <stop offset="95%" stop-color="#EC00E1" />
+                      </linearGradient>
+
+                    <!-- Race gradients -->
+                      <linearGradient id="raceHumanGradient">
+                        <stop offset="5%" stop-color="#dd2f0a" />
+                        <stop offset="95%" stop-color="#6c2024" />
+                      </linearGradient>
+                      <linearGradient id="raceAsuraGradient">
+                        <stop offset="0%" stop-color="#5194cb" />
+                        <stop offset="30%" stop-color="#6db4e4" />
+                        <stop offset="60%" stop-color="#607b94" />
+                        <stop offset="90%" stop-color="#344861" />
+                        <stop offset="100%" stop-color="#96a3b1" />
+                      </linearGradient>
+                      <linearGradient id="raceSylvariGradient" 
+                        x1="30%" y1="40%" x2="70%" y2="80%" >
+                        <stop offset="0%" stop-color="#233813" />
+                        <stop offset="40%" stop-color="#74c000" />
+                        <stop offset="60%" stop-color="#636758" />
+                        <stop offset="90%" stop-color="#343434" />
+                        <stop offset="100%" stop-color="#545b4d" /> 
+                      </linearGradient>
+                      <linearGradient id="raceNornGradient">
+                        <stop offset="5%" stop-color="#143c3b" />
+                        <stop offset="20%" stop-color="#343434" />
+                        <stop offset="50%" stop-color="#00ffe6" />
+                        <stop offset="60%" stop-color="#02eed7" />
+                        <stop offset="85%" stop-color="#343434" />
+                        <stop offset="100%" stop-color="#143c3b" />
+                      </linearGradient>
+                      <linearGradient id="raceCharrGradient">
+                        <stop offset="5%" stop-color="#270c00" />
+                        <stop offset="95%" stop-color="#a95d33" />
+                      </linearGradient>
+
+                    <!-- Profession gradients -->
+                      <linearGradient id="professionMesmerGradient" 
+                        x1="30%" y1="40%" x2="70%" y2="80%" >
+                        <stop offset="0%" stop-color="#584147" />
+                        <stop offset="15%" stop-color="#b257a9" />
+                        <stop offset="50%" stop-color="#b423b6" />
+                        <stop offset="60%" stop-color="#ae52a1" />
+                        <stop offset="90%" stop-color="#522e50" />
+                        <stop offset="100%" stop-color="#584147" />
+                      </linearGradient>
+                      <linearGradient id="professionWarriorGradient" 
+                        x1="10%" y1="40%" x2="70%" y2="80%" >
+                        <stop offset="0%" stop-color="#7c6c5f" />
+                        <stop offset="5%" stop-color="#7c5331" />
+                        <stop offset="10%" stop-color="#964d0b" />
+                        <stop offset="30%" stop-color="#b06b24" />
+                        <stop offset="75%" stop-color="#e39336" />
+                        <stop offset="90%" stop-color="#343434" />
+                        <stop offset="100%" stop-color="#9d7649" />
+                      </linearGradient>
+                      <linearGradient id="professionRangerGradient" 
+                        x1="10%" y1="40%" x2="70%" y2="80%" >
+                        <stop offset="0%" stop-color="#d6d096" />
+                        <stop offset="10%" stop-color="#69651e" />
+                        <stop offset="45%" stop-color="#3b7e37" />
+                        <stop offset="90%" stop-color="#3b7e37" />
+                        <stop offset="100%" stop-color="#3c3403" />
+                      </linearGradient>
+                      <linearGradient id="professionElementalistGradient">
+                        <stop offset="5%" stop-color="#6d421e" />
+                        <stop offset="30%" stop-color="#9a5a2c" />
+                        <stop offset="35%" stop-color="#d80000" />
+                        <stop offset="65%" stop-color="#81e6fb" />
+                        <stop offset="70%" stop-color="#ffffff" />
+                        <stop offset="80%" stop-color="#4871bf" />
+                        <stop offset="98%" stop-color="#297fff" />
+                      </linearGradient>
+                      <linearGradient id="professionGuardianGradient">
+                        <stop offset="5%" stop-color="#185449" />
+                        <stop offset="30%" stop-color="#35aa94" />
+                        <stop offset="45%" stop-color="#a1e4c5" />
+                        <stop offset="70%" stop-color="#afe8e5" />
+                        <stop offset="75%" stop-color="#ffffff" />
+                        <stop offset="81%" stop-color="#47caa1" />
+                        <stop offset="89%" stop-color="#35aa94" />
+                        <stop offset="95%" stop-color="#47caa1" />
+                      </linearGradient>
+                      <linearGradient id="professionThiefGradient">
+                        <stop offset="5%" stop-color="#000000" />
+                        <stop offset="40%" stop-color="#404040" />
+                        <stop offset="55%" stop-color="#e70505" />
+                        <stop offset="65%" stop-color="#343434" />
+                        <stop offset="95%" stop-color="#101010" />
+                      </linearGradient>
+                      <linearGradient id="professionNecromancerGradient">
+                        <stop offset="5%" stop-color="#101010" />
+                        <stop offset="10%" stop-color="#0c3012" />
+                        <stop offset="30%" stop-color="#05542f" />
+                        <stop offset="55%" stop-color="#49f9a2" />
+                        <stop offset="65%" stop-color="#006245" />
+                        <stop offset="75%" stop-color="#000000" />
+                        <stop offset="85%" stop-color="#05542f" />
+                        <stop offset="95%" stop-color="#101010" />
+                      </linearGradient>
+                      <linearGradient id="professionEngineerGradient">
+                        <stop offset="5%" stop-color="#3a2e23" />
+                        <stop offset="50%" stop-color="#a29682" />
+                        <stop offset="95%" stop-color="#a2815e" />
+                      </linearGradient>
+
+                    <!-- TRADESKILLS -->
+                      <linearGradient id="tradeskillArmorsmithGradient">
+                        <stop offset="5%" stop-color="#000000" />
+                        <stop offset="25%" stop-color="#404040" />
+                        <stop offset="95%" stop-color="#ababab" />
+                      </linearGradient>
+
+                      <linearGradient id="tradeskillHuntsmanGradient">
+                        <stop offset="10%" stop-color="#343434" />
+                        <stop offset="30%" stop-color="#73895d" />
+                        <stop offset="95%" stop-color="#9dbd7d" />
+                      </linearGradient>
+
+                      <linearGradient id="tradeskillWeaponsmithGradient">
+                        <stop offset="5%" stop-color="#5c0a0b" />
+                        <stop offset="90%" stop-color="#E41A1C" />
+                      </linearGradient>
+
+                      <linearGradient id="tradeskillChefGradient">
+                        <stop offset="5%" stop-color="#183751" />
+                        <stop offset="90%" stop-color="#377EB8" />
+                      </linearGradient>
+
+                      <linearGradient id="tradeskillJewelerGradient">
+                        <stop offset="5%" stop-color="#4b2650" />
+                        <stop offset="90%" stop-color="#984EA3" />
+                      </linearGradient>
+
+                      <linearGradient id="tradeskillLeatherworkerGradient">
+                        <stop offset="5%" stop-color="#572d15" />
+                        <stop offset="90%" stop-color="#A65628" />
+                      </linearGradient>
+
+                      <linearGradient id="tradeskillTailorGradient">
+                        <stop offset="5%" stop-color="#5b5124" />
+                        <stop offset="90%" stop-color="#c2ad4d" />
+                      </linearGradient>
+
+                      <!--
+
+                        pieFill: ['#3eddc7', '#454545', '#73895d',
+                            '#377EB8', '#984EA3', '#A65628',
+                            '#c2ad4d','#E41A1C'
+                        ]
                     -->
-                    <stop offset="10%" stop-color="#82377E" />
-                    <stop offset="95%" stop-color="#EC00E1" />
-                  </linearGradient>
+                </defs>
+              </svg>
+        </div>
+    </div>
 
-                <!-- Race gradients -->
-                  <linearGradient id="raceHumanGradient">
-                    <stop offset="5%" stop-color="#dd2f0a" />
-                    <stop offset="95%" stop-color="#6c2024" />
-                  </linearGradient>
-                  <linearGradient id="raceAsuraGradient">
-                    <stop offset="0%" stop-color="#5194cb" />
-                    <stop offset="30%" stop-color="#6db4e4" />
-                    <stop offset="60%" stop-color="#607b94" />
-                    <stop offset="90%" stop-color="#344861" />
-                    <stop offset="100%" stop-color="#96a3b1" />
-                  </linearGradient>
-                  <linearGradient id="raceSylvariGradient" 
-                    x1="30%" y1="40%" x2="70%" y2="80%" >
-                    <stop offset="0%" stop-color="#233813" />
-                    <stop offset="40%" stop-color="#74c000" />
-                    <stop offset="60%" stop-color="#636758" />
-                    <stop offset="90%" stop-color="#343434" />
-                    <stop offset="100%" stop-color="#545b4d" /> 
-                  </linearGradient>
-                  <linearGradient id="raceNornGradient">
-                    <stop offset="5%" stop-color="#143c3b" />
-                    <stop offset="20%" stop-color="#343434" />
-                    <stop offset="50%" stop-color="#00ffe6" />
-                    <stop offset="60%" stop-color="#02eed7" />
-                    <stop offset="85%" stop-color="#343434" />
-                    <stop offset="100%" stop-color="#143c3b" />
-                  </linearGradient>
-                  <linearGradient id="raceCharrGradient">
-                    <stop offset="5%" stop-color="#270c00" />
-                    <stop offset="95%" stop-color="#a95d33" />
-                  </linearGradient>
+    <!-- The bar charts live here -->
+    <div id='right-content'>
+    </div>
 
-                <!-- Profession gradients -->
-                  <linearGradient id="professionMesmerGradient" 
-                    x1="30%" y1="40%" x2="70%" y2="80%" >
-                    <stop offset="0%" stop-color="#584147" />
-                    <stop offset="15%" stop-color="#b257a9" />
-                    <stop offset="50%" stop-color="#b423b6" />
-                    <stop offset="60%" stop-color="#ae52a1" />
-                    <stop offset="90%" stop-color="#522e50" />
-                    <stop offset="100%" stop-color="#584147" />
-                  </linearGradient>
-                  <linearGradient id="professionWarriorGradient" 
-                    x1="10%" y1="40%" x2="70%" y2="80%" >
-                    <stop offset="0%" stop-color="#7c6c5f" />
-                    <stop offset="5%" stop-color="#7c5331" />
-                    <stop offset="10%" stop-color="#964d0b" />
-                    <stop offset="30%" stop-color="#b06b24" />
-                    <stop offset="75%" stop-color="#e39336" />
-                    <stop offset="90%" stop-color="#343434" />
-                    <stop offset="100%" stop-color="#9d7649" />
-                  </linearGradient>
-                  <linearGradient id="professionRangerGradient" 
-                    x1="10%" y1="40%" x2="70%" y2="80%" >
-                    <stop offset="0%" stop-color="#d6d096" />
-                    <stop offset="10%" stop-color="#69651e" />
-                    <stop offset="45%" stop-color="#3b7e37" />
-                    <stop offset="90%" stop-color="#3b7e37" />
-                    <stop offset="100%" stop-color="#3c3403" />
-                  </linearGradient>
-                  <linearGradient id="professionElementalistGradient">
-                    <stop offset="5%" stop-color="#6d421e" />
-                    <stop offset="30%" stop-color="#9a5a2c" />
-                    <stop offset="35%" stop-color="#d80000" />
-                    <stop offset="65%" stop-color="#81e6fb" />
-                    <stop offset="70%" stop-color="#ffffff" />
-                    <stop offset="80%" stop-color="#4871bf" />
-                    <stop offset="98%" stop-color="#297fff" />
-                  </linearGradient>
-                  <linearGradient id="professionGuardianGradient">
-                    <stop offset="5%" stop-color="#185449" />
-                    <stop offset="30%" stop-color="#35aa94" />
-                    <stop offset="45%" stop-color="#a1e4c5" />
-                    <stop offset="70%" stop-color="#afe8e5" />
-                    <stop offset="75%" stop-color="#ffffff" />
-                    <stop offset="81%" stop-color="#47caa1" />
-                    <stop offset="89%" stop-color="#35aa94" />
-                    <stop offset="95%" stop-color="#47caa1" />
-                  </linearGradient>
-                  <linearGradient id="professionThiefGradient">
-                    <stop offset="5%" stop-color="#000000" />
-                    <stop offset="40%" stop-color="#404040" />
-                    <stop offset="55%" stop-color="#e70505" />
-                    <stop offset="65%" stop-color="#343434" />
-                    <stop offset="95%" stop-color="#101010" />
-                  </linearGradient>
-                  <linearGradient id="professionNecromancerGradient">
-                    <stop offset="5%" stop-color="#101010" />
-                    <stop offset="10%" stop-color="#0c3012" />
-                    <stop offset="30%" stop-color="#05542f" />
-                    <stop offset="55%" stop-color="#49f9a2" />
-                    <stop offset="65%" stop-color="#006245" />
-                    <stop offset="75%" stop-color="#000000" />
-                    <stop offset="85%" stop-color="#05542f" />
-                    <stop offset="95%" stop-color="#101010" />
-                  </linearGradient>
-                  <linearGradient id="professionEngineerGradient">
-                    <stop offset="5%" stop-color="#3a2e23" />
-                    <stop offset="50%" stop-color="#a29682" />
-                    <stop offset="95%" stop-color="#a2815e" />
-                  </linearGradient>
-
-                <!-- TRADESKILLS -->
-                  <linearGradient id="tradeskillArmorsmithGradient">
-                    <stop offset="5%" stop-color="#000000" />
-                    <stop offset="25%" stop-color="#404040" />
-                    <stop offset="95%" stop-color="#ababab" />
-                  </linearGradient>
-
-                  <linearGradient id="tradeskillHuntsmanGradient">
-                    <stop offset="10%" stop-color="#343434" />
-                    <stop offset="30%" stop-color="#73895d" />
-                    <stop offset="95%" stop-color="#9dbd7d" />
-                  </linearGradient>
-
-                  <linearGradient id="tradeskillWeaponsmithGradient">
-                    <stop offset="5%" stop-color="#5c0a0b" />
-                    <stop offset="90%" stop-color="#E41A1C" />
-                  </linearGradient>
-
-                  <linearGradient id="tradeskillChefGradient">
-                    <stop offset="5%" stop-color="#183751" />
-                    <stop offset="90%" stop-color="#377EB8" />
-                  </linearGradient>
-
-                  <linearGradient id="tradeskillJewelerGradient">
-                    <stop offset="5%" stop-color="#4b2650" />
-                    <stop offset="90%" stop-color="#984EA3" />
-                  </linearGradient>
-
-                  <linearGradient id="tradeskillLeatherworkerGradient">
-                    <stop offset="5%" stop-color="#572d15" />
-                    <stop offset="90%" stop-color="#A65628" />
-                  </linearGradient>
-
-                  <linearGradient id="tradeskillTailorGradient">
-                    <stop offset="5%" stop-color="#5b5124" />
-                    <stop offset="90%" stop-color="#c2ad4d" />
-                  </linearGradient>
-
-                  <!--
-
-                    pieFill: ['#3eddc7', '#454545', '#73895d',
-                        '#377EB8', '#984EA3', '#A65628',
-                        '#c2ad4d','#E41A1C'
-                    ]
-                -->
-            </defs>
-          </svg>
-
+    <div id='footer-wrapper'>
+        <div id='footer-other'>
+            Created by 
+            <a href='http://vasir.net' title='Erik Hazzard'>Erik Hazzard</a>
+            |
+            This visualization's <a href='/static/img/viz/gw2_data.jpg' title='Data Source'>Data Source</a>
+        </div>
+        <div id='footer-legal'>
+        NOTE: This is unofficial and not related to Arenanet or NCSoft in any way.
+© 2011 ArenaNet, Inc. All rights reserved. Guild Wars 2, and all associated logos and designs are trademarks or registered trademarks of NCsoft Corporation. 
+        </div>
     </div>
 </div>
 
@@ -373,7 +396,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-2994714-13']);
+  _gaq.push(['_setAccount', 'UA-2994714-14']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -381,6 +404,7 @@ $(document).ready(function(){
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
+
 </script>
 </body>
 </html>
