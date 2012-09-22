@@ -327,6 +327,14 @@
                         <stop offset="90%" stop-color="#c2ad4d" />
                       </linearGradient>
 
+                      <linearGradient id="tradeskillArtificerGradient">
+                        <stop offset="5%" stop-color="#343434" />
+                        <stop offset="15%" stop-color="#74bfb5" />
+                        <stop offset="50%" stop-color="#3dd5c1" />
+                        <stop offset="90%" stop-color="#9ad7cb" />
+                      </linearGradient>
+
+
                       <!--
 
                         pieFill: ['#3eddc7', '#454545', '#73895d',
@@ -341,6 +349,13 @@
 
     <!-- The bar charts live here -->
     <div id='right-content'>
+        <!-- SVG elements -->
+        <h2>Races</h2>
+        <svg id='svg-el-race' width=440 height=120 ></svg>
+        <h2>Professions</h2>
+        <svg id='svg-el-profession' width=440 height=120 ></svg>
+        <h2>Tradeskills</h2>
+        <svg id='svg-el-tradeskill' width=440 height=120 ></svg>
     </div>
 
     <div id='footer-wrapper'>
@@ -348,7 +363,11 @@
             Created by 
             <a href='http://vasir.net' title='Erik Hazzard'>Erik Hazzard</a>
             |
-            This visualization's <a href='/static/img/viz/gw2_data.jpg' title='Data Source'>Data Source</a>
+            <a href='http://twitter.com/enoex' title='@enoex'>@enoex</a> 
+            |
+            <a href='https://github.com/enoex' title='Github account for Erik Hazzard'>Github</a>
+            |
+            This visualization's <a href='/static/img/viz/gw2_data.jpg' target='_blank' title='Data Source'>Data Source</a>
         </div>
         <div id='footer-legal'>
         NOTE: This is unofficial and not related to Arenanet or NCSoft in any way.
@@ -377,6 +396,7 @@
 
 <script src='/static/js/namespace.js'></script>
 <script src='/static/js/viz-donut.js'></script>
+<script src='/static/js/viz-bar-chart.js'></script>
 
 <!-- PRODUCTION
 <script src='/static/js/build/deckviz.min.js'></script>

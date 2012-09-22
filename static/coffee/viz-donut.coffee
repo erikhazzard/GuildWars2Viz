@@ -7,39 +7,7 @@
 # ===========================================================================
 GW2VIZ.visualizations.donutViz = (params) =>
     #Data object
-    data = {
-        gender: [
-            {label: "Male", value: 63},
-            {label: "Female", value: 37}
-        ],
-        race: [
-            {label:"Asura", value:15.31},
-            {label:"Charr", value:14.32},
-            {label:"Human", value:34.81},
-            {label:"Norn", value:20.25},
-            {label:"Sylvari", value:15.31}
-        ],
-        profession: [
-            { label: "Engineer", value:10.21},
-            { label: "Mesmer", value:10.21},
-            { label: "Necromancer", value:11.31},
-            { label: "Guardian", value:12.40},
-            { label: "Thief", value:12.40},
-            { label: "Elementalist", value:13.39},
-            { label: "Ranger", value:14.49},
-            { label: "Warrior", value:15.59}
-        ],
-        tradeskill: [
-            { label: "Artificer", value: 8.2 },
-            { label: "Armorsmith", value: 10.74},
-            { label: "Huntsman", value: 10.74 },
-            { label: "Chef", value: 13.51 },
-            { label: "Jeweler", value: 13.51 },
-            { label: "Leatherworker", value: 13.51 },
-            { label: "Tailor", value: 13.51 },
-            { label: "Weaponsmith", value: 16.28 }
-        ]
-    }
+    data = GW2VIZ.data
 
     #Race patterns
     svg = d3.select('#svg-el-donut')
@@ -352,6 +320,12 @@ GW2VIZ.visualizations.donutViz = (params) =>
             #Fade out icons
             iconGroup.style({opacity: 0.3})
 
+            #UPDATE bar
+            d3.selectAll('.bar').style({ opacity: 0.1 })
+            d3.select('#bar-' + chartType + '-' + d.data.label)
+                .style({ opacity: 1 })
+                .classed('activeBar', true)
+
         ).on('mouseout', (d,i)=>
             #SLICE
             #Update slice
@@ -383,6 +357,10 @@ GW2VIZ.visualizations.donutViz = (params) =>
 
             #Show icons back to original opacity
             iconGroup.style({opacity: startingIconOpacity})
+
+            #Update bar
+            d3.select('#bar-' + chartType + '-' + d.data.label)
+                .classed('activeBar', false)
         )
         #Call the callback if pased in
         if callback

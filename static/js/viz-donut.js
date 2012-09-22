@@ -3,89 +3,7 @@
 
   GW2VIZ.visualizations.donutViz = function(params) {
     var createChart, data, donutGroup, filterSupport, height, svg, width;
-    data = {
-      gender: [
-        {
-          label: "Male",
-          value: 63
-        }, {
-          label: "Female",
-          value: 37
-        }
-      ],
-      race: [
-        {
-          label: "Asura",
-          value: 15.31
-        }, {
-          label: "Charr",
-          value: 14.32
-        }, {
-          label: "Human",
-          value: 34.81
-        }, {
-          label: "Norn",
-          value: 20.25
-        }, {
-          label: "Sylvari",
-          value: 15.31
-        }
-      ],
-      profession: [
-        {
-          label: "Engineer",
-          value: 10.21
-        }, {
-          label: "Mesmer",
-          value: 10.21
-        }, {
-          label: "Necromancer",
-          value: 11.31
-        }, {
-          label: "Guardian",
-          value: 12.40
-        }, {
-          label: "Thief",
-          value: 12.40
-        }, {
-          label: "Elementalist",
-          value: 13.39
-        }, {
-          label: "Ranger",
-          value: 14.49
-        }, {
-          label: "Warrior",
-          value: 15.59
-        }
-      ],
-      tradeskill: [
-        {
-          label: "Artificer",
-          value: 8.2
-        }, {
-          label: "Armorsmith",
-          value: 10.74
-        }, {
-          label: "Huntsman",
-          value: 10.74
-        }, {
-          label: "Chef",
-          value: 13.51
-        }, {
-          label: "Jeweler",
-          value: 13.51
-        }, {
-          label: "Leatherworker",
-          value: 13.51
-        }, {
-          label: "Tailor",
-          value: 13.51
-        }, {
-          label: "Weaponsmith",
-          value: 16.28
-        }
-      ]
-    };
+    data = GW2VIZ.data;
     svg = d3.select('#svg-el-donut');
     donutGroup = svg.append('svg:g').attr({
       id: 'donutGroup',
@@ -276,9 +194,15 @@
             return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i * 3)) + ")";
           }
         });
-        return iconGroup.style({
+        iconGroup.style({
           opacity: 0.3
         });
+        d3.selectAll('.bar').style({
+          opacity: 0.1
+        });
+        return d3.select('#bar-' + chartType + '-' + d.data.label).style({
+          opacity: 1
+        }).classed('activeBar', true);
       }).on('mouseout', function(d, i) {
         chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 1,
@@ -298,9 +222,10 @@
         thisTextGroup.style({
           opacity: startingTextOpacity
         });
-        return iconGroup.style({
+        iconGroup.style({
           opacity: startingIconOpacity
         });
+        return d3.select('#bar-' + chartType + '-' + d.data.label).classed('activeBar', false);
       });
       if (callback) return callback();
     };

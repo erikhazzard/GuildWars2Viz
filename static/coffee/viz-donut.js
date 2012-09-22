@@ -1,109 +1,33 @@
 var _this = this;
 
 GW2VIZ.visualizations.donutViz = function(params) {
-  var createChart, data, filterSupport, height, svg, width;
-  data = {
-    gender: [
-      {
-        label: "Male",
-        value: 63
-      }, {
-        label: "Female",
-        value: 37
-      }
-    ],
-    race: [
-      {
-        label: "Asura",
-        value: 15.31
-      }, {
-        label: "Charr",
-        value: 14.32
-      }, {
-        label: "Human",
-        value: 34.81
-      }, {
-        label: "Norn",
-        value: 20.25
-      }, {
-        label: "Sylvari",
-        value: 15.31
-      }
-    ],
-    profession: [
-      {
-        label: "Engineer",
-        value: 10.21
-      }, {
-        label: "Mesmer",
-        value: 10.21
-      }, {
-        label: "Necromancer",
-        value: 11.31
-      }, {
-        label: "Guardian",
-        value: 12.40
-      }, {
-        label: "Thief",
-        value: 12.40
-      }, {
-        label: "Elementalist",
-        value: 13.39
-      }, {
-        label: "Ranger",
-        value: 14.49
-      }, {
-        label: "Warrior",
-        value: 15.59
-      }
-    ],
-    tradeskill: [
-      {
-        label: "Artificer",
-        value: 8.2
-      }, {
-        label: "Armorsmith",
-        value: 10.74
-      }, {
-        label: "Huntsman",
-        value: 10.74
-      }, {
-        label: "Chef",
-        value: 13.51
-      }, {
-        label: "Jeweler",
-        value: 13.51
-      }, {
-        label: "Leatherworker",
-        value: 13.51
-      }, {
-        label: "Tailor",
-        value: 13.51
-      }, {
-        label: "Weaponsmith",
-        value: 16.28
-      }
-    ]
-  };
-  svg = d3.select('#svg-el');
+  var createChart, data, donutGroup, filterSupport, height, svg, width;
+  data = GW2VIZ.data;
+  svg = d3.select('#svg-el-donut');
+  donutGroup = svg.append('svg:g').attr({
+    id: 'donutGroup',
+    transform: "translate(" + [0, 20] + ") scale(0.94)"
+  });
   width = svg.attr('width');
   height = svg.attr('height');
   filterSupport = Modernizr.svgfilters;
   createChart = function(options) {
-    var arc, arcs, bgLabelModifier, chartGroup, chartType, edgeSlice, innerRadius, labelSize, pie, pieFill, radius, startTextOpacity, textGroup, usePiePattern;
+    var allLabels, allTextGroups, arc, arcs, bgLabelModifier, callback, chartGroup, chartType, edgeSlice, iconGroup, imageSize, innerRadius, labelSize, pie, pieFill, radius, startingIconOpacity, startingTextOpacity, textGroup, thisTextGroup, usePiePattern;
     labelSize = options.labelSize;
     radius = options.radius;
     innerRadius = options.innerRadius || false;
     chartType = options.chartType;
     usePiePattern = options.usePiePattern;
     pieFill = options.pieFill;
+    callback = options.callback;
     bgLabelModifier = 5;
-    startTextOpacity = 0.2;
+    startingTextOpacity = 0;
+    startingIconOpacity = 0.6;
     d3.selectAll('.patternRace').attr({
       width: radius,
       height: radius
     });
-    chartGroup = svg.append('svg:g').attr({
+    chartGroup = donutGroup.append('svg:g').attr({
       id: chartType + "-donut",
       'class': 'chartGroup',
       transform: "translate(" + [width / 2, height / 2] + ")"
@@ -118,8 +42,9 @@ GW2VIZ.visualizations.donutViz = function(params) {
     });
     arcs.append("svg:path").attr("d", arc).style({
       fill: "#ffffff",
-      stroke: "#707070",
-      "stroke-width": 2
+      stroke: "#505050",
+      filter: "url(#waterColor2)",
+      "stroke-width": 4
     });
     edgeSlice = arcs.append("svg:path").attr({
       d: arc,
@@ -151,18 +76,47 @@ GW2VIZ.visualizations.donutViz = function(params) {
       "stroke-width": 2,
       "stroke-opacity": 1
     });
+    iconGroup = arcs.append('svg:g').attr({
+      'class': function(d, i) {
+        return 'iconGroup iconGroup' + i;
+      }
+    }).style({
+      opacity: startingIconOpacity
+    });
+    imageSize = {
+      height: 54,
+      width: 54
+    };
+    iconGroup.append("svg:image").attr({
+      "xlink:href": function(d, i) {
+        return "/static/img/viz/" + data[chartType][i].label + ".png";
+      },
+      x: 0,
+      y: 0,
+      width: imageSize.width + 'px',
+      height: imageSize.height + 'px',
+      transform: function(d) {
+        d.innerRadius = 0;
+        d.outerRadius = radius;
+        return "translate(" + [arc.centroid(d)[0] - (imageSize.width / 2), arc.centroid(d)[1] - (imageSize.height / 2)] + ")";
+      }
+    });
     textGroup = arcs.append('svg:g').attr({
       'class': function(d, i) {
         return 'textGroup textGroup' + i;
       }
     }).style({
-      opacity: startTextOpacity
+      opacity: startingTextOpacity
     });
     textGroup.append("svg:text").attr({
-      "transform": function(d) {
+      "transform": function(d, i) {
+        var x, y;
         d.innerRadius = 0;
         d.outerRadius = radius;
-        return "translate(" + arc.centroid(d) + ")";
+        x = arc.centroid(d)[0];
+        y = arc.centroid(d)[1];
+        if (data[chartType][i].label.length === 'Necromancer') x += 8;
+        return "translate(" + [x, y] + ")";
       },
       "class": "bgLabel",
       "text-anchor": "middle"
@@ -176,10 +130,14 @@ GW2VIZ.visualizations.donutViz = function(params) {
       return data[chartType][i].label;
     });
     textGroup.append("svg:text").attr({
-      "transform": function(d) {
+      "transform": function(d, i) {
+        var x, y;
         d.innerRadius = 0;
         d.outerRadius = radius;
-        return "translate(" + arc.centroid(d) + ")";
+        x = arc.centroid(d)[0];
+        y = arc.centroid(d)[1];
+        if (data[chartType][i].label === 'Necromancer') x += 14;
+        return "translate(" + [x, y] + ")";
       },
       "class": "label",
       "text-anchor": "middle"
@@ -187,12 +145,11 @@ GW2VIZ.visualizations.donutViz = function(params) {
       fill: "#ffffff",
       "font-weight": "bold",
       "font-size": labelSize + 'px',
-      "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
+      "text-shadow": "0 0 3px #000000, 0 0 18px #000000"
     }).text(function(d, i) {
       return data[chartType][i].label;
     });
     textGroup.append("svg:text").attr({
-      "class": "label",
       "transform": function(d) {
         d.innerRadius = 0;
         d.outerRadius = radius;
@@ -206,53 +163,70 @@ GW2VIZ.visualizations.donutViz = function(params) {
     }).text(function(d, i) {
       return Math.round(data[chartType][i].value) + '%';
     });
-    return arcs.on('mouseover', function(d, i) {
-      chartGroup.select('.edgeSlice' + i).transition().duration(500).style({
+    allTextGroups = d3.selectAll('.textGroup');
+    thisTextGroup = chartGroup.selectAll('.textGroup');
+    allLabels = chartGroup.selectAll('.textGroup .label');
+    arcs.on('mouseover', function(d, i) {
+      var curGroup;
+      chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
         'stroke-width': 9,
         'stroke': '#000000',
         'stroke-opacity': 0.8
       });
-      d3.selectAll('.textGroup').style({
-        opacity: startTextOpacity
+      allTextGroups.style({
+        opacity: startingTextOpacity
       });
-      chartGroup.selectAll('.textGroup').style({
+      thisTextGroup.style({
         opacity: 0.9
       });
-      chartGroup.selectAll('.textGroup' + i).style({
+      curGroup = chartGroup.selectAll('.textGroup' + i);
+      curGroup.style({
         opacity: 1
       });
-      chartGroup.selectAll('.textGroup' + i + ' .label').style({
-        'font-size': labelSize + 5
+      curGroup.selectAll('.label').style({
+        'font-size': labelSize + 6
       });
-      chartGroup.selectAll('.textGroup' + i + ' .bgLabel').style({
-        'font-size': labelSize + bgLabelModifier + 5
-      });
-      return chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
+      curGroup.selectAll('.bgLabel').style({
+        'font-size': labelSize + bgLabelModifier + 6
+      }).attr({
         transform: function(d, i) {
           return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i * 3)) + ")";
         }
       });
+      iconGroup.style({
+        opacity: 0.3
+      });
+      d3.selectAll('.bar').style({
+        opacity: 0.1
+      });
+      return d3.select('#bar-' + chartType + '-' + d.data.label).style({
+        opacity: 1
+      }).classed('activeBar', true);
     }).on('mouseout', function(d, i) {
-      chartGroup.select('.edgeSlice' + i).transition().duration(500).style({
+      chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
         'stroke-width': 1,
         'stroke': '#707070',
         'stroke-opacity': 0.6
       });
-      chartGroup.selectAll('.textGroup .label').style({
+      allLabels.style({
         'font-size': labelSize
       });
       chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
         transform: function(d, i) {
           return "translate(" + arc.centroid(d) + ") rotate(0)";
         }
-      });
-      chartGroup.selectAll('.textGroup' + i + ' .bgLabel').style({
+      }).style({
         'font-size': labelSize + bgLabelModifier
       });
-      return chartGroup.selectAll('.textGroup').style({
-        opacity: startTextOpacity
+      thisTextGroup.style({
+        opacity: startingTextOpacity
       });
+      iconGroup.style({
+        opacity: startingIconOpacity
+      });
+      return d3.select('#bar-' + chartType + '-' + d.data.label).classed('activeBar', false);
     });
+    if (callback) return callback();
   };
   createChart({
     labelSize: 14,
@@ -269,16 +243,22 @@ GW2VIZ.visualizations.donutViz = function(params) {
   });
   createChart({
     labelSize: 16,
-    radius: 264,
+    radius: 270,
     innerRadius: 162,
     chartType: 'profession',
     usePiePattern: true
   });
   return createChart({
     labelSize: 17,
-    radius: 320,
-    innerRadius: 266,
+    radius: 350,
+    innerRadius: 272,
     chartType: 'tradeskill',
-    usePiePattern: true
+    usePiePattern: true,
+    callback: function() {
+      return $('#loading').css({
+        opacity: 0,
+        display: 'none'
+      });
+    }
   });
 };

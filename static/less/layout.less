@@ -76,9 +76,7 @@
 }
 
 /* ========================================================================    
- *
- * SVG Styles
- *
+ * Donut SVG Styles
  * ======================================================================== */
 svg text {
     font-family: @normal-font;
@@ -86,15 +84,44 @@ svg text {
 }
 
 /* ========================================================================    
+ * Right side - bars
+ * ======================================================================== */
+#right-content {
+    .absolute-full-layout;
+    bottom: 32px;
+    left: 740px;
+    right: auto;
+    top: 170px;
+    width: 500px;
+    z-index: 500;
+}
+    #right-content h2 {
+        margin:0 0 .2em 0;
+    }
+/* ========================================================================    
  * Footer
  * ======================================================================== */
-#footer {
+#footer-wrapper {
     .absolute-full-layout;
     font-size: .9em;
-    height: 24px;
+    height: 34px;
     top: auto;
-    z-index: 99;
+    z-index: 600;
 }
+    #footer-other {
+        .absolute-full-layout;
+        bottom: auto;
+        border-bottom: 1px solid #a0a0a0;
+        padding: 0 .5em;
+        height: 18px;
+        text-align: right;
+        z-index:200;
+    }
+    #footer-legal {
+        color: #808080;
+        margin:18px 0 0 0;
+        z-index: 100;
+    }
 /* ========================================================================    
  * Popup
  * ======================================================================== */

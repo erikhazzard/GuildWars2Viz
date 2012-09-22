@@ -5,37 +5,51 @@
 # Contains the visualization code
 #
 # ===========================================================================
-# dummy data
-#--------NORMALIZED
-#DATA = [
-#    { name: 'Engineer', value: 66, color: "#d94d4c" },
-#    { name: 'Theif', value: 80, color: "#d9824d" },
-#    { name: 'Elementalist', value: 85, color: "#eda338" },
-#    { name: 'Guardian', value: 100, color: "#a6a638" },
-#    { name: 'Mesmer', value: 66, color: "#86a965" },
-#    { name: 'Ranger', value: 92, color: "#68c7ff" },
-#    { name: 'Warrior', value: 80, color: "#4ab3d1" },
-#    { name: 'Necromancer', value: 73, color: "#87abab" }
-#]
-#
-#
-#   Static data from graphic (positions are based on graphic
-#    DATA = [
-#        { name: 'Engineer', value: height - 51, color: "#d94d4c" },
-#        { name: 'Theif', value: height - 32, color: "#d9824d" },
-#        { name: 'Elementalist', value: height - 23, color: "#eda338" },
-#        { name: 'Guardian', value: height - 3, color: "#a6a638" },
-#        { name: 'Mesmer', value: height - 51, color: "#86a965" },
-#        { name: 'Ranger', value: height - 13, color: "#68c7ff" },
-#        { name: 'Warrior', value: height - 32, color: "#4ab3d1" },
-#        { name: 'Necromancer', value: height - 42, color: "#87abab" }
-#    ]
+GW2VIZ.visualizations.barViz = (params) =>
+    createChart = GW2VIZ.visualizations.createChart
+    createChart({
+        chartType: 'profession'
+    })
+    createChart({
+        chartType: 'tradeskill'
+    })
+    createChart({
+        chartType: 'race'
+    })
 
+GW2VIZ.visualizations.createChart = (params) =>
+    #Create the bar charts
+    #Check params
+    chartType = params.chartType
 
-GW2VIZ.visualizations.classes = (params) =>
-    #Create the visualization for classes
+    #Maps solid colors for each type
+    colors = {
+        Human: '#a51d11',
+        Norn: '#5dbbb0',
+        Asura: '#6b97c0',
+        Sylvari: '#6e8d4a',
+        Charr: '#9a6d57',
+
+        Ranger: '#7e8659',
+        Elementalist: '#97bccf',
+        Guardian: '#61b499',
+        Thief: '#701e1e',
+        Necromancer: '#0a3018',
+        Engineer: '#625544',
+        Mesmer: '#975b91',
+        Warrior: '#e09056',
+
+        Chef: '#527599',
+        Jeweler: '#8e6695',
+        Leatherworker: '#956d58',
+        Tailor: '#a18e46',
+        Armorsmith: '#8e8e8e',
+        Huntsman: '#6e8b54',
+        Artificer: '#6ebeac',
+        Weaponsmith: '#b25252'
+    }
     #Get svg el
-    svg = d3.select('#svg-el-class-viz')
+    svg = d3.select('#svg-el-' + chartType)
 
     #Get width / height
     width = svg.attr('width')
@@ -45,18 +59,8 @@ GW2VIZ.visualizations.classes = (params) =>
     yAxisGroup = svg.append('svg:g').attr({'class': 'axisGroup'})
     chartGroup = svg.append('svg:g').attr({'class': 'barWrapper'})
 
-    #Get data
-    #--------Percentages
-    DATA = [
-        { name: 'Engineer', value: 10.2, color: "#d94d4c" },
-        { name: 'Theif', value: 12.5, color: "#d9824d" },
-        { name: 'Elementalist', value: 13.3, color: "#eda338" },
-        { name: 'Guardian', value: 15.5, color: "#a6a638" },
-        { name: 'Mesmer', value: 10.2, color: "#86a965" },
-        { name: 'Ranger', value: 14.4, color: "#68c7ff" },
-        { name: 'Warrior', value: 11.5, color: "#4ab3d1" },
-        { name: 'Necromancer', value: 12.5, color: "#87abab" }
-    ]
+    data = GW2VIZ.data[chartType]
+
     #------------------------------------
     #Group config
     #------------------------------------
@@ -68,11 +72,11 @@ GW2VIZ.visualizations.classes = (params) =>
     #   Padding space between bars
     barPadding = 2
     #   Radius for bar 
-    barRadius = 3
+    barRadius = 0
     barStartLeft = 10
 
     #Get the highest data value
-    dataMax = _.max(DATA, (datum)=>
+    dataMax = _.max(data, (datum)=>
         return datum.value
     ).value
 
@@ -85,7 +89,7 @@ GW2VIZ.visualizations.classes = (params) =>
     xScale = d3.scale.linear()
         #Use rangeRound since we want exact integers
         .range([padding.left + barStartLeft, width])
-        .domain([0, DATA.length])
+        .domain([0, data.length])
 
     yScale = d3.scale.linear()
         .range([0, height - padding.top - padding.bottom])
@@ -94,7 +98,7 @@ GW2VIZ.visualizations.classes = (params) =>
     #Add bars
     #------------------------------------
     dataBarGroups = chartGroup.selectAll('g.chartBars')
-       .data(DATA)
+       .data(data)
 
     #Add each bar group
     dataBarGroups.enter()
@@ -105,7 +109,7 @@ GW2VIZ.visualizations.classes = (params) =>
 
     #Get rect bars
     dataBars = dataBarGroups.selectAll('rect.bar')
-        .data(DATA)
+        .data(data)
 
     #Add bars
     #------------------------------------
@@ -113,7 +117,9 @@ GW2VIZ.visualizations.classes = (params) =>
         .append('svg:rect')
         .attr({
             'class': 'bar',
-            width: (barGroupWidth / DATA.length) - barPadding,
+            'id': (d,i)=>
+                return 'bar-' + chartType + '-' + d.label
+            width: (barGroupWidth / data.length) - barPadding,
             x: (d,i)=>
                 return xScale(i)
             height: (d,i)=>
@@ -123,8 +129,11 @@ GW2VIZ.visualizations.classes = (params) =>
             rx: barRadius
         })
         .style({
+            stroke: "#343434"
             fill: (d,i)=>
-                return d.color
+                #return "url(#" + chartType + data[i].label + 'Gradient)'
+                #solid color
+                return colors[data[i].label]
         })
 
     #Cleanup
@@ -132,9 +141,9 @@ GW2VIZ.visualizations.classes = (params) =>
 
     #animate it with transition
     #   These are the final values
-    dataBars.transition()
-        .duration(500)
-        .ease('linear')
+    dataBars
+        #NOTE: Could use transiiton here
+        #.transition()
         .attr({
             height: (d,i)=>
                 return yScale(d.value)
@@ -146,7 +155,7 @@ GW2VIZ.visualizations.classes = (params) =>
     #------------------------------------
     #Get rect bars
     barLabels = dataBarGroups.selectAll('text')
-        .data(DATA)
+        .data(data)
 
     barLabels.enter()
         .append('svg:text')
@@ -155,7 +164,7 @@ GW2VIZ.visualizations.classes = (params) =>
                     return xScale(i) + 6
                 y: height - padding.bottom - padding.top - 3
             }).style({
-                'font-size': '.6em',
+                'font-size': '.9em',
                 fill: '#f0f0f0',
                 'text-shadow': '0 1px 1px #000000'
             }).text((d,i)=>
@@ -195,9 +204,9 @@ GW2VIZ.visualizations.classes = (params) =>
         .style("opacity", .4)
     yAxisGroup.selectAll("text")
         .style({
-            fill: "#ababab",
+            fill: "#343434",
             'font-size': '.6em',
-            'text-shadow': '0 0 1px #000000'
+            'text-shadow': '0 0 1px #ffffff'
         }).text((d,i)=>
             return d + '%'
         )
