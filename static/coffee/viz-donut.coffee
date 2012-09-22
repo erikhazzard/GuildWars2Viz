@@ -156,7 +156,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
         iconGroup.append("svg:image")
             .attr({
                 "xlink:href": (d,i)=>
-                    return "/static/img/viz/" + data[chartType][i].label + ".png"
+                    return "/static/img/viz/" + d.data.label + ".png"
                 x:0, y:0
                 width: imageSize.width + 'px',
                 height: imageSize.height + 'px',

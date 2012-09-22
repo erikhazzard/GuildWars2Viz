@@ -194,6 +194,23 @@
       'stroke-width': '1px',
       fill: 'none'
     });
+    bars.append('svg:image').attr({
+      "xlink:href": function(d, i) {
+        return "/static/img/viz/" + d.label + ".png";
+      },
+      width: (barGroupWidth / data.length) - barPadding,
+      x: function(d, i) {
+        return xScale(i);
+      },
+      height: function(d, i) {
+        return yScale(d.value);
+      },
+      y: function(d, y) {
+        return height - yScale(d.value) - padding.bottom - padding.top;
+      }
+    }).style({
+      opacity: 0.8
+    });
     dataBars.exit().remove();
     bars.on('mouseover', function(d, i) {
       return GW2VIZ.visualizations.barHighlightOver({
@@ -219,7 +236,7 @@
       fill: '#f0f0f0',
       'text-shadow': '0 1px 1px #000000'
     }).text(function(d, i) {
-      return d.value + '%';
+      return Math.round(d.value) + '%';
     }).on('mouseover', function(d, i) {
       return GW2VIZ.visualizations.barHighlightOver({
         chartType: chartType,

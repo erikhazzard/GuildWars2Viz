@@ -255,6 +255,22 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
             fill: 'none'
         })
 
+    #ICON
+    bars.append('svg:image')
+        .attr({
+            "xlink:href": (d,i)=>
+                return "/static/img/viz/" + d.label + ".png"
+            width: (barGroupWidth / data.length) - barPadding,
+            x: (d,i)=>
+                return xScale(i)
+            height: (d,i)=>
+                return yScale(d.value)
+            y: (d,y)=>
+                return height - yScale(d.value) - padding.bottom - padding.top
+        }).style({
+            opacity: 0.8
+        })
+
     #Cleanup
     dataBars.exit().remove()
 
@@ -293,7 +309,7 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
             fill: '#f0f0f0',
             'text-shadow': '0 1px 1px #000000'
         }).text((d,i)=>
-            return d.value + '%'
+            return Math.round(d.value) + '%'
         ).on('mouseover', (d,i)=>
             GW2VIZ.visualizations.barHighlightOver({
                 chartType:chartType,
