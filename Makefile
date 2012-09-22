@@ -22,6 +22,7 @@ THIRD_PARTY = static/lib/underscore.js \
 		static/lib/bootstrap-popover.js \
 		static/lib/bootstrap-modal.js \
 		static/lib/jquery-ui.min.js \
+		static/lib/modernizr.js 
 
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 CS_COMPILER = ./node_modules/coffee-script/bin/coffee -c -b

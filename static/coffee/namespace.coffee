@@ -36,6 +36,6 @@ window.GW2VIZ = GW2VIZ
 # ===========================================================================
 GW2VIZ.init = ()=>
     #Create the class viz
-    GW2VIZ.visualizations.classes()
+    GW2VIZ.visualizations.donutViz()
 
     return true

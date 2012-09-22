@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Donut Chart</title>
+    <title>Guildwars Chart</title>
     <script src='/static/lib/all3rdjs.min.js'></script>
     <link href='/static/css/style-all.css' rel='stylesheet' type='text/css'>
     <style type="text/css">
@@ -13,7 +13,7 @@ body {
     </style>
   </head>
   <body>
-      <svg id='svg-el' width=800 height=600>
+      <svg id='svg-el' width=700 height=700>
         <defs id='filters'>
             <filter x="-0.30000001"
                y="-0.5"
@@ -156,372 +156,129 @@ body {
                      in="result1"
                      id="feComposite5177" />
                 </filter>
+
+            <!-- Gender -->
+              <linearGradient id="genderMaleGradient">
+                <stop offset="10%" stop-color="#000077" />
+                <stop offset="85%" stop-color="#4C6CED" />
+              </linearGradient>
+              <linearGradient id="genderFemaleGradient">
+              <!--
+                <stop offset="10%" stop-color="#eccc4c" />
+                <stop offset="95%" stop-color="#94802F" />
+                -->
+                <stop offset="10%" stop-color="#82377E" />
+                <stop offset="95%" stop-color="#EC00E1" />
+              </linearGradient>
+
+            <!-- Race gradients -->
+              <linearGradient id="raceHumanGradient">
+                <stop offset="5%" stop-color="#dd2f0a" />
+                <stop offset="95%" stop-color="#6c2024" />
+              </linearGradient>
+              <linearGradient id="raceAsuraGradient">
+                <stop offset="0%" stop-color="#5194cb" />
+                <stop offset="30%" stop-color="#6db4e4" />
+                <stop offset="60%" stop-color="#607b94" />
+                <stop offset="90%" stop-color="#344861" />
+                <stop offset="100%" stop-color="#96a3b1" />
+              </linearGradient>
+              <linearGradient id="raceSylvariGradient" 
+                x1="30%" y1="40%" x2="70%" y2="80%" >
+                <stop offset="0%" stop-color="#233813" />
+                <stop offset="40%" stop-color="#74c000" />
+                <stop offset="60%" stop-color="#636758" />
+                <stop offset="90%" stop-color="#343434" />
+                <stop offset="100%" stop-color="#545b4d" /> 
+              </linearGradient>
+              <linearGradient id="raceNornGradient">
+                <stop offset="5%" stop-color="#143c3b" />
+                <stop offset="20%" stop-color="#343434" />
+                <stop offset="50%" stop-color="#00ffe6" />
+                <stop offset="60%" stop-color="#02eed7" />
+                <stop offset="85%" stop-color="#343434" />
+                <stop offset="100%" stop-color="#143c3b" />
+              </linearGradient>
+              <linearGradient id="raceCharrGradient">
+                <stop offset="5%" stop-color="#270c00" />
+                <stop offset="95%" stop-color="#a95d33" />
+              </linearGradient>
+
+            <!-- Profession gradients -->
+              <linearGradient id="professionMesmerGradient" 
+                x1="30%" y1="40%" x2="70%" y2="80%" >
+                <stop offset="0%" stop-color="#584147" />
+                <stop offset="15%" stop-color="#b257a9" />
+                <stop offset="30%" stop-color="#52202b" />
+                <stop offset="60%" stop-color="#ae52a1" />
+                <stop offset="90%" stop-color="#522e50" />
+                <stop offset="100%" stop-color="#584147" />
+              </linearGradient>
+              <linearGradient id="professionWarriorGradient" 
+                x1="10%" y1="40%" x2="70%" y2="80%" >
+                <stop offset="0%" stop-color="#7c6c5f" />
+                <stop offset="5%" stop-color="#7c5331" />
+                <stop offset="10%" stop-color="#964d0b" />
+                <stop offset="30%" stop-color="#b06b24" />
+                <stop offset="75%" stop-color="#e39336" />
+                <stop offset="90%" stop-color="#343434" />
+                <stop offset="100%" stop-color="#9d7649" />
+              </linearGradient>
+              <linearGradient id="professionRangerGradient" 
+                x1="10%" y1="40%" x2="70%" y2="80%" >
+                <stop offset="0%" stop-color="#d6d096" />
+                <stop offset="5%" stop-color="#605c15" />
+                <stop offset="10%" stop-color="#69651e" />
+                <stop offset="30%" stop-color="#3b7e37" />
+                <stop offset="75%" stop-color="#787526" />
+                <stop offset="90%" stop-color="#3b7e37" />
+                <stop offset="100%" stop-color="#3c3403" />
+              </linearGradient>
+              <linearGradient id="professionElementalistGradient">
+                <stop offset="5%" stop-color="#6d421e" />
+                <stop offset="30%" stop-color="#9a5a2c" />
+                <stop offset="35%" stop-color="#d80000" />
+                <stop offset="65%" stop-color="#81e6fb" />
+                <stop offset="70%" stop-color="#ffffff" />
+                <stop offset="80%" stop-color="#4871bf" />
+                <stop offset="98%" stop-color="#297fff" />
+              </linearGradient>
+              <linearGradient id="professionGuardianGradient">
+                <stop offset="5%" stop-color="#185449" />
+                <stop offset="30%" stop-color="#35aa94" />
+                <stop offset="45%" stop-color="#a1e4c5" />
+                <stop offset="70%" stop-color="#afe8e5" />
+                <stop offset="75%" stop-color="#ffffff" />
+                <stop offset="81%" stop-color="#47caa1" />
+                <stop offset="89%" stop-color="#35aa94" />
+                <stop offset="95%" stop-color="#47caa1" />
+              </linearGradient>
+              <linearGradient id="professionThiefGradient">
+                <stop offset="5%" stop-color="#000000" />
+                <stop offset="40%" stop-color="#404040" />
+                <stop offset="55%" stop-color="#e70505" />
+                <stop offset="65%" stop-color="#343434" />
+                <stop offset="95%" stop-color="#101010" />
+              </linearGradient>
+              <linearGradient id="professionNecromancerGradient">
+                <stop offset="5%" stop-color="#101010" />
+                <stop offset="10%" stop-color="#0c3012" />
+                <stop offset="30%" stop-color="#05542f" />
+                <stop offset="55%" stop-color="#49f9a2" />
+                <stop offset="65%" stop-color="#006245" />
+                <stop offset="75%" stop-color="#000000" />
+                <stop offset="85%" stop-color="#05542f" />
+                <stop offset="95%" stop-color="#101010" />
+              </linearGradient>
+              <linearGradient id="professionEngineerGradient">
+                <stop offset="5%" stop-color="#3a2e23" />
+                <stop offset="50%" stop-color="#a29682" />
+                <stop offset="95%" stop-color="#a2815e" />
+              </linearGradient>
         </defs>
       </svg>
 
     <script type="text/javascript">
-
-    //Data object
-    data = {
-        gender: [
-            {label: "male", value: 63},
-            {label: "female", value: 37}
-        ],
-        race: [
-            {label:"Asura", value:15.31}, 
-            {label:"Charr", value:14.32}, 
-            {label:"Human", value:34.81},
-            {label:"Norn", value:20.25},
-            {label:"Sylvari", value:15.31}
-        ],
-        profession: [
-            { label: "Engineer", value:10.21},
-            { label: "Mesmer", value:10.21},
-            { label: "Necromancer", value:11.31},
-            { label: "Guardian", value:12.40},
-            { label: "Theif", value:12.40},
-            { label: "Elementalist", value:13.39},
-            { label: "Ranger", value:14.49},
-            { label: "Warrior", value:15.59}
-        ],
-        tradeskill: [
-            { label: "Artificer", value: 8.2 },
-            { label: "Armorsmith", value: 10.74},
-            { label: "Huntsman", value: 10.74 },
-            { label: "Chef", value: 13.51 },
-            { label: "Jeweler", value: 13.51 },
-            { label: "Leatherworker", value: 13.51 },
-            { label: "Tailor", value: 13.51 },
-            { label: "Weaponsmith", value: 16.28 }
-        ]
-    };
-
-    //Race patterns
-    var svg = d3.select('#svg-el') 
-    var width = svg.attr('width'), height = svg.attr('height');
-    var defs = svg.append('svg:defs').attr('id', 'bgPatterns');
-    var pie, arcs, arc, radius;
-
-    //Add patterns for each race
-    //  Note: width / height get set later
-    var i=0,len=0;
-    for(i=0,len=data.race.length;i<len;i++){
-        defs.append('svg:pattern')
-            .attr({
-                id: "race" + data.race[i].label,
-                'class': 'patternRace',
-                patternUnits: "userSpaceOnUse",
-                width: 0,
-                height: 0
-            })
-            .append('svg:image')
-                .attr({
-                    "xlink:href": "/static/img/viz/" 
-                        + data.race[i].label.toLowerCase() + ".png",
-                    x:0,
-                    y:0,
-                    'class': 'patternRace',
-                    width: 0,
-                    height: 0
-                })
-    }
-    //====================================================================
-    //  
-    // GENDER
-    //
-    //====================================================================
-    //Config
-    var genderLabelFontSize = 14;
-    radius = 68;
-
-    //Create group for chart
-    var genderGroup = svg.append('svg:g')
-        //move the center of the pie chart from 0, 0 to radius, radius
-        .attr({
-            id: "gender-chart",
-            transform: "translate(" + [width/2, height/2] + ")"
-        })
-        .data([data.gender])
-
-    //Arc for visualization
-    arc = d3.svg.arc()
-        .outerRadius(radius);
-    
-    //this will create arc data for us given a list of values
-    pie = d3.layout.pie()
-        //we must tell it out to access the value of each element in our data array
-        .value(function(d) { return d.value; });
-
-    //Create the slicees
-    arcs = genderGroup.selectAll("g.slice")
-        //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 
-        .data(pie)
-        .enter()
-            //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
-            .append("svg:g")
-                //allow us to style things in the slices (like text)
-                .attr("class", "slice");
-
-        //Append just the stroke and white fill
-        arcs.append("svg:path")
-            //set the color for each slice to be chosen from the color function defined above
-            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
-            .attr("d", arc)
-            .style({
-                fill: "#ffffff",
-                stroke: "#707070",
-                "stroke-width": 2
-            })
-
-        //Append just the stroke and white fill, give it a filter too
-        arcs.append("svg:path")
-            .attr("d", arc)
-            .style({
-                fill: "#ffffff",
-                filter: "url(#jaggedEdge)",
-                stroke: "#707070",
-                "stroke-opacity": 0.6,
-                "stroke-width": 1
-            })
-
-        //Append the watercolored background image
-        arcs.append("svg:path")
-            //set the color for each slice to be chosen from the color function defined above
-            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
-            .attr("d", arc)
-            .style({
-                fill: function(d,i){
-                    //return "url(#race" + d.data.label + ")";
-                    //Blue for male, yellow for female
-                    return ['#4444cc', '#ECCC4C'][i];
-                },
-                stroke: "#343434",
-                filter: "url(#waterColor1)",
-                "stroke-width": 2
-            })
-
-        //-------------------------------
-        //add a label to each slice
-        //-------------------------------
-        //  label with some effects as the base
-        arcs.append("svg:text")
-            .attr({
-                "transform": function(d) { 
-                    //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = radius;
-                    //this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + arc.centroid(d) + ")";
-                },
-                //center the text on it's origin
-                "text-anchor": "middle"
-            }).style({
-                fill: "#ababab",
-                filter: "url(#waterColor2)",
-                "font-size": genderLabelFontSize + 5 + "px",
-                opacity: 0.7,
-                "text-shadow": "0 0 1px #000000"
-            })
-            //get the label from our original data array
-            .text(function(d, i) { return data.gender[i].label; });
-
-        //"final" label for race name
-        arcs.append("svg:text")
-            .attr({
-                "transform": function(d) { 
-                    //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = radius;
-                    //this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + arc.centroid(d) + ")";
-                },
-                //center the text on it's origin
-                "text-anchor": "middle"
-            }).style({
-                fill: "#ffffff",
-                "font-weight": "bold",
-                "font-size": genderLabelFontSize + 'px',
-                "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
-            })
-            //get the label from our original data array
-            .text(function(d, i) { return data.gender[i].label; });
-
-        //add a label for % of total
-        //-------------------------------
-        arcs.append("svg:text")
-            .attr({
-                "transform": function(d) { 
-                    //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = radius;
-                    //this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + [
-                        arc.centroid(d)[0],
-                        arc.centroid(d)[1] + genderLabelFontSize 
-                        ] + ")";
-                },
-                //center the text on it's origin
-                "text-anchor": "middle"
-            }).style({
-                fill: "#ffffff",
-                "font-size": "1.1em",
-                "text-shadow": "0 0 3px #000000"
-            })
-            //get the label from our original data array
-            .text(function(d, i) { return Math.round(data.gender[i].value) + '%'; });
-
-    //====================================================================
-    //  
-    // RACES ( first donut )
-    //
-    //====================================================================
-    //-----------------------------------
-    //Config
-    //-----------------------------------
-    var raceLabelFontSize = 17;
-    radius = 140;
-
-    //Update pattern size
-    d3.selectAll('.patternRace').attr({
-        width: radius, height: radius
-    });
-        
-    //Create patterns to use in the charts
-    //Create visualization
-    var raceGroup = svg.append('svg:g')
-        //move the center of the pie chart from 0, 0 to radius, radius
-        .attr({
-            id: "race-donut",
-            transform: "translate(" + [width/2, height/2] + ")"
-        })
-        .data([data.race])
-
-    //Arc for visualization
-    arc = d3.svg.arc()
-        .innerRadius(radius / 2)
-        .outerRadius(radius);
-    
-    //this will create arc data for us given a list of values
-    pie = d3.layout.pie()
-        //we must tell it out to access the value of each element in our data array
-        .value(function(d) { return d.value; });
-
-    //Create the slicees
-    arcs = raceGroup.selectAll("g.slice")
-        //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 
-        .data(pie)
-        .enter()
-            //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
-            .append("svg:g")
-                //allow us to style things in the slices (like text)
-                .attr("class", "slice");
-
-        //Append just the stroke and white fill
-        arcs.append("svg:path")
-            //set the color for each slice to be chosen from the color function defined above
-            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
-            .attr("d", arc)
-            .style({
-                fill: "#ffffff",
-                stroke: "#707070",
-                "stroke-width": 2
-            })
-
-        //Append just the stroke and white fill, give it a filter too
-        arcs.append("svg:path")
-            .attr("d", arc)
-            .style({
-                fill: "#ffffff",
-                filter: "url(#jaggedEdge)",
-                stroke: "#707070",
-                "stroke-opacity": 0.6,
-                "stroke-width": 1
-            })
-
-        //Append the watercolored background image
-        arcs.append("svg:path")
-            //set the color for each slice to be chosen from the color function defined above
-            //this creates the actual SVG path using the associated data (pie) with the arc drawing function
-            .attr("d", arc)
-            .style({
-                fill: function(d){
-                    return "url(#race" + d.data.label + ")";
-                },
-                stroke: "#343434",
-                filter: "url(#waterColor1)",
-                "stroke-width": 2
-            })
-
-        //-------------------------------
-        //add a label to each slice
-        //-------------------------------
-        //  label with some effects as the base
-        arcs.append("svg:text")
-            .attr({
-                "transform": function(d) { 
-                    //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = radius;
-                    //this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + arc.centroid(d) + ")";
-                },
-                //center the text on it's origin
-                "text-anchor": "middle"
-            }).style({
-                fill: "#ababab",
-                filter: "url(#waterColor2)",
-                "font-size": raceLabelFontSize + 5 + "px",
-                opacity: 0.7,
-                "text-shadow": "0 0 1px #000000"
-            })
-            //get the label from our original data array
-            .text(function(d, i) { return data.race[i].label; });
-
-        //"final" label for race name
-        arcs.append("svg:text")
-            .attr({
-                "transform": function(d) { 
-                    //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = radius;
-                    //this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + arc.centroid(d) + ")";
-                },
-                //center the text on it's origin
-                "text-anchor": "middle"
-            }).style({
-                fill: "#ffffff",
-                "font-weight": "bold",
-                "font-size": raceLabelFontSize + 'px',
-                "text-shadow": "0 0 3px #000000, 0 0 9px #000000"
-            })
-            //get the label from our original data array
-            .text(function(d, i) { return data.race[i].label; });
-
-        //add a label for % of total
-        //-------------------------------
-        arcs.append("svg:text")
-            .attr({
-                "transform": function(d) { 
-                    //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = radius;
-                    //this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + [
-                        arc.centroid(d)[0],
-                        arc.centroid(d)[1] + raceLabelFontSize 
-                        ] + ")";
-                },
-                //center the text on it's origin
-                "text-anchor": "middle"
-            }).style({
-                fill: "#ffffff",
-                "font-size": "1.1em",
-                "text-shadow": "0 0 3px #000000"
-            })
-            //get the label from our original data array
-            .text(function(d, i) { return Math.round(data.race[i].value) + '%'; });
-
     </script>
   </body>
 </html>

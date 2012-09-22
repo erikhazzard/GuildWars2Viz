@@ -6,6 +6,8 @@ var createChart = function(options){
     var radius = options.radius;
     var innerRadius = options.innerRadius || false;
     var chartType = options.chartType;
+    var usePiePattern = options.usePiePattern;
+    var pieFill = options.pieFill; 
 
     //Update pattern size
     d3.selectAll('.patternRace').attr({
@@ -72,8 +74,12 @@ var createChart = function(options){
             //this creates the actual SVG path using the associated data (pie) with the arc drawing function
             .attr("d", arc)
             .style({
-                fill: function(d){
-                    return "url(#" + chartType + d.data.label + ")";
+                fill: function(d,i){
+                    if(usePiePattern === true){
+                        return "url(#" + chartType + d.data.label + ")";
+                    }else{
+                        return pieFill[i];
+                    }
                 },
                 stroke: "#343434",
                 filter: "url(#waterColor1)",
