@@ -16,7 +16,7 @@
   };
 
   GW2VIZ.visualizations.createChart = function(params) {
-    var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
+    var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, bars, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, filteredBars, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
     chartType = params.chartType;
     colors = {
       Human: '#a51d11',
@@ -58,7 +58,7 @@
       left: 34
     };
     barGroupWidth = width - padding.left - padding.right;
-    barPadding = 2;
+    barPadding = 8;
     barRadius = 0;
     barStartLeft = 10;
     dataMax = _.max(data, function(datum) {
@@ -73,7 +73,39 @@
     });
     dataBarGroups.exit().remove();
     dataBars = dataBarGroups.selectAll('rect.bar').data(data);
-    dataBars.enter().append('svg:rect').attr({
+    bars = dataBars.enter().append('svg:g').attr({
+      id: function(d, i) {
+        return 'barWrapper-' + chartType + '-' + d.label;
+      }
+    });
+    filteredBars = bars.append('svg:rect').attr({
+      'class': function(d, i) {
+        var posX, posY;
+        posY = parseInt(height - (yScale(d.value) + 20) - padding.bottom - padding.top);
+        if (posY < 1) posY = 1;
+        posX = parseInt(xScale(i)) - 6;
+        return 'barFilter posX' + posX + ' posY' + posY;
+      },
+      width: (barGroupWidth / data.length) + 8,
+      x: function(d, i) {
+        return -5000;
+      },
+      height: function(d, i) {
+        return yScale(d.value) + 20;
+      },
+      y: function(d, y) {
+        return -500;
+      }
+    }).style({
+      stroke: "#343434",
+      "stroke-width": 8,
+      filter: 'url(#waterColor1)',
+      opacity: 1.0,
+      fill: function(d, i) {
+        return "url(#" + chartType + data[i].label + 'Gradient)';
+      }
+    });
+    bars.append('svg:rect').attr({
       'class': 'bar',
       'id': function(d, i) {
         return 'bar-' + chartType + '-' + d.label;
@@ -83,27 +115,42 @@
         return xScale(i);
       },
       height: function(d, i) {
-        return 0;
+        return yScale(d.value);
       },
       y: function(d, y) {
-        return height - padding.top - padding.bottom;
+        return height - yScale(d.value) - padding.bottom - padding.top;
       },
       rx: barRadius
     }).style({
-      stroke: "#343434",
+      stroke: "#454545",
+      'stroke-width': '3px',
+      filter: "url(#jaggedEdge)",
       fill: function(d, i) {
-        return colors[data[i].label];
+        return "url(#" + chartType + data[i].label + 'Gradient)';
       }
     });
-    dataBars.exit().remove();
-    dataBars.attr({
+    bars.append('svg:rect').attr({
+      'class': 'bar',
+      'id': function(d, i) {
+        return 'bar-' + chartType + '-' + d.label;
+      },
+      width: (barGroupWidth / data.length) - barPadding,
+      x: function(d, i) {
+        return xScale(i);
+      },
       height: function(d, i) {
         return yScale(d.value);
       },
       y: function(d, y) {
         return height - yScale(d.value) - padding.bottom - padding.top;
-      }
+      },
+      rx: barRadius
+    }).style({
+      stroke: "#000000",
+      'stroke-width': '1px',
+      fill: 'none'
     });
+    dataBars.exit().remove();
     barLabels = dataBarGroups.selectAll('text').data(data);
     barLabels.enter().append('svg:text').attr({
       x: function(d, i) {

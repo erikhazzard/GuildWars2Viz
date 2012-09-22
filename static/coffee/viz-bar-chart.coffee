@@ -70,7 +70,7 @@ GW2VIZ.visualizations.createChart = (params) =>
 
     #Chart config
     #   Padding space between bars
-    barPadding = 2
+    barPadding = 8
     #   Radius for bar 
     barRadius = 0
     barStartLeft = 10
@@ -113,8 +113,49 @@ GW2VIZ.visualizations.createChart = (params) =>
 
     #Add bars
     #------------------------------------
-    dataBars.enter()
-        .append('svg:rect')
+    bars = dataBars.enter()
+        .append('svg:g').attr({
+            id: (d,i)=>
+                return 'barWrapper-' + chartType + '-' + d.label
+        })
+
+    #FILTER ACTIVE EFFECT
+    #Add bar for the filter effect
+    filteredBars = bars.append('svg:rect')
+        .attr({
+            'class': (d,i)=>
+                #Get y position
+                posY = parseInt(
+                    height - (yScale(d.value) + 20)- padding.bottom - padding.top)
+                #Make sure it's not negative
+                if posY < 1
+                    posY = 1
+                #Get X
+                posX = parseInt(xScale(i)) - 6
+
+                return 'barFilter posX' + posX + ' posY' + posY
+
+            width: (barGroupWidth / data.length) + 8,
+            x: (d,i)=>
+                return -5000
+            height: (d,i)=>
+                return yScale(d.value) + 20
+            y: (d,y)=>
+                return -500
+        })
+        .style({
+            stroke: "#343434"
+            "stroke-width": 8
+            filter: 'url(#waterColor1)'
+            opacity: 1.0
+            fill: (d,i)=>
+                return "url(#" + chartType + data[i].label + 'Gradient)'
+                #return colors[data[i].label]
+        })
+
+    #NORMAL BARS
+    #Add bars
+    bars.append('svg:rect')
         .attr({
             'class': 'bar',
             'id': (d,i)=>
@@ -123,33 +164,58 @@ GW2VIZ.visualizations.createChart = (params) =>
             x: (d,i)=>
                 return xScale(i)
             height: (d,i)=>
-                return 0
+                return yScale(d.value)
             y: (d,y)=>
-                return height - padding.top - padding.bottom
+                return height - yScale(d.value) - padding.bottom - padding.top
             rx: barRadius
         })
         .style({
-            stroke: "#343434"
+            stroke: "#454545"
+            'stroke-width': '3px'
+            filter: "url(#jaggedEdge)"
             fill: (d,i)=>
-                #return "url(#" + chartType + data[i].label + 'Gradient)'
+                return "url(#" + chartType + data[i].label + 'Gradient)'
                 #solid color
-                return colors[data[i].label]
+                #return colors[data[i].label]
         })
 
-    #Cleanup
-    dataBars.exit().remove()
-
-    #animate it with transition
-    #   These are the final values
-    dataBars
-        #NOTE: Could use transiiton here
-        #.transition()
+    #BAR OUTLINE
+    bars.append('svg:rect')
         .attr({
+            'class': 'bar',
+            'id': (d,i)=>
+                return 'bar-' + chartType + '-' + d.label
+            width: (barGroupWidth / data.length) - barPadding,
+            x: (d,i)=>
+                return xScale(i)
             height: (d,i)=>
                 return yScale(d.value)
             y: (d,y)=>
                 return height - yScale(d.value) - padding.bottom - padding.top
+            rx: barRadius
         })
+        .style({
+            stroke: "#000000"
+            'stroke-width': '1px'
+            fill: 'none'
+        })
+
+
+    #Cleanup
+    dataBars.exit().remove()
+
+    ##animate it with transition
+    ##   These are the final values
+    #
+    #bars.selectAll('.bar')
+    #    #NOTE: Could use transiiton here
+    #    #.transition()
+    #    .attr({
+    #        height: (d,i)=>
+    #            return yScale(d.value)
+    #        y: (d,y)=>
+    #            return height - yScale(d.value) - padding.bottom - padding.top
+    #    })
 
     #Text labels
     #------------------------------------

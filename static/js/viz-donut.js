@@ -168,7 +168,7 @@
       thisTextGroup = chartGroup.selectAll('.textGroup');
       allLabels = chartGroup.selectAll('.textGroup .label');
       arcs.on('mouseover', function(d, i) {
-        var curGroup;
+        var barClass, barWrapper, curGroup, posX, posY;
         chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 9,
           'stroke': '#000000',
@@ -197,12 +197,17 @@
         iconGroup.style({
           opacity: 0.3
         });
-        d3.selectAll('.bar').style({
-          opacity: 0.1
+        barWrapper = d3.select('#barWrapper-' + chartType + '-' + d.data.label);
+        barWrapper.select('.bar').style({
+          opacity: 0.7
         });
-        return d3.select('#bar-' + chartType + '-' + d.data.label).style({
-          opacity: 1
-        }).classed('activeBar', true);
+        barClass = barWrapper.select('.barFilter').attr('class');
+        posX = parseInt(barClass.match(/posX[0-9]+/)[0].replace(/posX/, ''));
+        posY = parseInt(barClass.match(/posY[0-9]+/)[0].replace(/posY/, ''));
+        return barWrapper.select('.barFilter').attr({
+          x: posX,
+          y: posY
+        });
       }).on('mouseout', function(d, i) {
         chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 1,
@@ -225,7 +230,10 @@
         iconGroup.style({
           opacity: startingIconOpacity
         });
-        return d3.select('#bar-' + chartType + '-' + d.data.label).classed('activeBar', false);
+        return d3.select('#barWrapper-' + chartType + '-' + d.data.label + ' .barFilter').attr({
+          x: -5000,
+          y: -5000
+        });
       });
       if (callback) return callback();
     };
