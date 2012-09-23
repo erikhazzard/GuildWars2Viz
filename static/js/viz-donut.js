@@ -208,7 +208,7 @@
         arcs.on('mouseover', function(d, i) {
           var curGroup;
           if (qualityLevel > 1) {
-            chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+            chartGroup.select('.edgeSlice' + i).style({
               'stroke-width': 9,
               'stroke': '#000000',
               'stroke-opacity': 0.8
@@ -254,7 +254,7 @@
           }
         }).on('mouseout', function(d, i) {
           if (qualityLevel > 1) {
-            chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+            chartGroup.select('.edgeSlice' + i).style({
               'stroke-width': 1,
               'stroke': '#707070',
               'stroke-opacity': 0.6

@@ -331,7 +331,6 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 #For high quality do animation, otherwise instantly show it
                 if qualityLevel > 1
                     chartGroup.select('.edgeSlice' + i)
-                        .transition().duration(300)
                         .style({
                             'stroke-width': 9,
                             'stroke': '#000000',
@@ -384,7 +383,6 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 #Update slice
                 if qualityLevel > 1
                     chartGroup.select('.edgeSlice' + i)
-                        .transition().duration(300)
                         .style({
                             'stroke-width': 1,
                             'stroke': '#707070',
