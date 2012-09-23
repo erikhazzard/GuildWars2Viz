@@ -119,7 +119,7 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
     #------------------------------------
     #Group config
     #------------------------------------
-    padding = { top: 10, right: 10, bottom: 20, left: 34 }
+    padding = { top: 10, right: 10, bottom: 0, left: 34 }
 
     barGroupWidth = width - padding.left - padding.right
 

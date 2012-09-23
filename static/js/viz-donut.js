@@ -197,11 +197,13 @@
         iconGroup.style({
           opacity: 0.3
         });
-        return GW2VIZ.visualizations.barHighlightOver({
-          chartType: chartType,
-          d: d,
-          i: i
-        });
+        if (chartType !== 'gender') {
+          return GW2VIZ.visualizations.barHighlightOver({
+            chartType: chartType,
+            d: d,
+            i: i
+          });
+        }
       }).on('mouseout', function(d, i) {
         chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
           'stroke-width': 1,
@@ -224,11 +226,13 @@
         iconGroup.style({
           opacity: startingIconOpacity
         });
-        return GW2VIZ.visualizations.barHighlightOut({
-          chartType: chartType,
-          d: d,
-          i: i
-        });
+        if (chartType !== 'gender') {
+          return GW2VIZ.visualizations.barHighlightOut({
+            chartType: chartType,
+            d: d,
+            i: i
+          });
+        }
       });
       if (callback) return callback();
     };

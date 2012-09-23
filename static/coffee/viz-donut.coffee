@@ -320,12 +320,14 @@ GW2VIZ.visualizations.donutViz = (params) =>
             #Fade out icons
             iconGroup.style({opacity: 0.3})
 
-            #UPDATE bar
-            GW2VIZ.visualizations.barHighlightOver({
-                chartType:chartType,
-                d: d
-                i: i
-            })
+            #Dont update bar (none exists) if it's gender
+            if chartType != 'gender'
+                #UPDATE bar
+                GW2VIZ.visualizations.barHighlightOver({
+                    chartType:chartType,
+                    d: d
+                    i: i
+                })
 
         ).on('mouseout', (d,i)=>
             #SLICE
@@ -359,12 +361,14 @@ GW2VIZ.visualizations.donutViz = (params) =>
             #Show icons back to original opacity
             iconGroup.style({opacity: startingIconOpacity})
 
-            #Update bar chart
-            GW2VIZ.visualizations.barHighlightOut({
-                chartType:chartType,
-                d: d
-                i: i
-            })
+            #Dont update bar (none exists) if it's gender
+            if chartType != 'gender'
+                #Update bar chart
+                GW2VIZ.visualizations.barHighlightOut({
+                    chartType:chartType,
+                    d: d
+                    i: i
+                })
         )
         #Call the callback if pased in
         if callback

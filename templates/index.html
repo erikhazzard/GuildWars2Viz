@@ -21,6 +21,7 @@
         <div id='logo-wrapper'>
             <img src='/static/img/assets/gw_logo_type.png' />
             <h2>Visualization</h2>
+            <div class='clear'></div>
         </div>
     </div>
     
@@ -351,33 +352,38 @@
     <!-- The bar charts live here -->
     <div id='right-content'>
         <!-- SVG elements -->
-        This is a visualization of the distribution of gender, race, profession, and tradeskill choices. 
-        This is an unoffical reproduction created by <a href='http://vasir.net' alt='Erik Hazzard'>Erik Hazzard</a> based on
-            <a href='/static/img/viz/gw2_data.jpg' target='_blank' title='Data Source'>a published GW2 image</a>
-        <br />
+        <div class='description-wrapper'>
+            <div class='description'>
+                This visualization shows the distribution of gender, race, profession, and tradeskill choices. 
+            </div>
+             
+            <span class='small-text'>
+                This is an unoffical reproduction created by <a href='http://vasir.net' alt='Erik Hazzard'>Erik Hazzard</a> Supported Browser: <a href='https://www.google.com/intl/en/chrome/browser/' title='Google Chrome'>Google Chrome</a>
+            </span>
+        </div>
         <!-- Tradeskills -->
-        <div class='barMetaWrapper'>
-            <div class='barMetaTitle'>Tradeskill</div>
-            <div class='barMeta' id='tradeskill-meta'></div>
+        <div class='bar-meta-wrapper'>
+            <div class='bar-meta-title'>Tradeskill</div>
+            <div class='bar-meta' id='tradeskill-meta'></div>
             <div class='clear'></div>
         </div>
-        <svg id='svg-el-tradeskill' width=460 height=120 ></svg>
+        <svg id='svg-el-tradeskill' width=470 height=100 ></svg>
 
         <!-- Professions -->
-        <div class='barMetaWrapper'>
-            <div class='barMetaTitle'>Profession</div>
-            <div class='barMeta' id='profession-meta'></div>
+        <div class='bar-meta-wrapper'>
+            <div class='bar-meta-title'>Profession</div>
+            <div class='bar-meta' id='profession-meta'></div>
             <div class='clear'></div>
         </div>
-        <svg id='svg-el-profession' width=460 height=120 ></svg>
+        <svg id='svg-el-profession' width=470 height=100 ></svg>
 
         <!-- Races -->
-        <div class='barMetaWrapper'>
-            <div class='barMetaTitle'>Race</div>
-            <div class='barMeta' id='race-meta'></div>
+        <div class='bar-meta-wrapper'>
+            <div class='bar-meta-title'>Race</div>
+            <div class='bar-meta' id='race-meta'></div>
             <div class='clear'></div>
         </div>
-        <svg id='svg-el-race' width=460 height=120 ></svg>
+        <svg id='svg-el-race' width=470 height=100 ></svg>
     </div>
 
     <div id='footer-wrapper'>

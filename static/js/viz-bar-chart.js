@@ -98,7 +98,7 @@
     padding = {
       top: 10,
       right: 10,
-      bottom: 20,
+      bottom: 0,
       left: 34
     };
     barGroupWidth = width - padding.left - padding.right;

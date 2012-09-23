@@ -3094,12 +3094,19 @@ pre,
   z-index: 100;
 }
 #logo-wrapper {
+  overflow: auto;
   position: absolute;
-  left: 660px;
-  top: 20px;
+  left: 610px;
+  right: 0;
+  top: 4px;
+}
+#logo-wrapper img {
+  float: left;
+  margin: 0 1em 0 0;
 }
 #logo-wrapper h2 {
-  font-size: 2.5em;
+  font-size: 2.7em;
+  float: left;
   color: #ffffff;
   text-shadow: 0 0 2px #000000;
 }
@@ -3147,19 +3154,33 @@ svg text {
   right: 0;
   top: 0;
   bottom: 32px;
-  left: 740px;
+  left: 728px;
   padding: 0 0 1em 0;
   right: auto;
-  top: 170px;
-  width: 600px;
+  top: 120px;
+  width: 508px;
   z-index: 500;
 }
-#right-content .barMetaWrapper {
+#right-content .description-wrapper {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(200, 200, 200, 0.7);
+  width: 500px;
+}
+#right-content .description {
+  border-bottom: 1px solid #d0d0d0;
+  font-size: 1.2em;
+  padding: 2px 4px;
+}
+#right-content .small-text {
+  font-size: 0.9em;
+  color: #707070;
+}
+#right-content .bar-meta-wrapper {
   position: relative;
   overflow: auto;
   width: 100%;
 }
-#right-content .barMetaTitle {
+#right-content .bar-meta-title {
   float: left;
   font-family: 'Alegreya SC', Arial, Verdana, sans-serif;
   font-size: 1.8em;
@@ -3168,15 +3189,15 @@ svg text {
   overflow: auto;
   position: relative;
 }
-#right-content .barMeta {
+#right-content .bar-meta {
   float: left;
   font-family: 'Alegreya', Arial, Verdana, sans-serif;
   font-weight: normal;
   font-size: 1.4em;
-  margin: 0 0 .2em 1em;
+  margin: 0 0 0em 1em;
   padding: .2em 0 0 0;
 }
-#right-content .barMeta .value {
+#right-content .bar-meta .value {
   color: #404040;
   font-family: 'Alegreya SC', Arial, Verdana, sans-serif;
   font-size: 1.2em;
