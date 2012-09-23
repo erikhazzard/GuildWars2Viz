@@ -96,10 +96,7 @@ GW2VIZ.visualizations.barCreateChart = function(params) {
   barPadding = 8;
   barRadius = 0;
   barStartLeft = 10;
-  dataMax = _.max(data, function(datum) {
-    return datum.value;
-  }).value;
-  dataMax += 4;
+  dataMax = 36;
   xScale = d3.scale.linear().range([padding.left + barStartLeft, width]).domain([0, data.length]);
   yScale = d3.scale.linear().range([0, height - padding.top - padding.bottom]).domain([0, dataMax]);
   dataBarGroups = chartGroup.selectAll('g.chartBars').data(data);
@@ -117,6 +114,7 @@ GW2VIZ.visualizations.barCreateChart = function(params) {
     'class': function(d, i) {
       var posX, posY;
       posY = parseInt(height - (yScale(d.value) + 20) - padding.bottom - padding.top);
+      if (GW2VIZ.qualityLevel < 1) posY += 22;
       if (posY < 1) posY = 1;
       posX = parseInt(xScale(i)) - 6;
       return 'barFilter posX' + posX + ' posY' + posY;
@@ -126,7 +124,11 @@ GW2VIZ.visualizations.barCreateChart = function(params) {
       return -5000;
     },
     height: function(d, i) {
-      return yScale(d.value) + 20;
+      if (GW2VIZ.qualityLevel < 1) {
+        return yScale(d.value);
+      } else {
+        return yScale(d.value) + 20;
+      }
     },
     y: function(d, y) {
       return -500;
@@ -134,10 +136,16 @@ GW2VIZ.visualizations.barCreateChart = function(params) {
   }).style({
     stroke: "#343434",
     "stroke-width": 8,
-    filter: 'url(#waterColor1)',
+    filter: function() {
+      if (GW2VIZ.qualityLevel < 1) {
+        return '';
+      } else {
+        return 'url(#waterColor1)';
+      }
+    },
     opacity: 1.0,
     fill: function(d, i) {
-      return "url(#" + chartType + data[i].label + 'Gradient)';
+      return "url(#" + chartType + d.label + 'Gradient)';
     }
   });
   bars.append('svg:rect').attr({
@@ -159,9 +167,15 @@ GW2VIZ.visualizations.barCreateChart = function(params) {
   }).style({
     stroke: "#454545",
     'stroke-width': '3px',
-    filter: "url(#jaggedEdge)",
+    filter: function() {
+      if (GW2VIZ.qualityLevel < 1) {
+        return '';
+      } else {
+        return "url(#jaggedEdge)";
+      }
+    },
     fill: function(d, i) {
-      return "url(#" + chartType + data[i].label + 'Gradient)';
+      return "url(#" + chartType + d.label + 'Gradient)';
     }
   });
   bars.append('svg:rect').attr({

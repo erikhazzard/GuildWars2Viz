@@ -121,12 +121,13 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
     barStartLeft = 10
 
     #Get the highest data value
-    dataMax = _.max(data, (datum)=>
-        return datum.value
-    ).value
+    #dataMax = _.max(data, (datum)=>
+    #    return datum.value
+    #).value
 
     #Add some padding to it
-    dataMax += 4
+    #dataMax += 4
+    dataMax = 36
 
     #------------------------------------
     #x / y scale

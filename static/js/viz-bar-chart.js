@@ -97,10 +97,7 @@
     barPadding = 8;
     barRadius = 0;
     barStartLeft = 10;
-    dataMax = _.max(data, function(datum) {
-      return datum.value;
-    }).value;
-    dataMax += 4;
+    dataMax = 36;
     xScale = d3.scale.linear().range([padding.left + barStartLeft, width]).domain([0, data.length]);
     yScale = d3.scale.linear().range([0, height - padding.top - padding.bottom]).domain([0, dataMax]);
     dataBarGroups = chartGroup.selectAll('g.chartBars').data(data);
