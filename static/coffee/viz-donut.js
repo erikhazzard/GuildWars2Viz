@@ -15,6 +15,11 @@ GW2VIZ.visualizations.donutViz = function(params) {
   });
   width = svg.attr('width');
   height = svg.attr('height');
+  if (documentWidth < 1200) {
+    svg.attr({
+      width: documentWidth - parseInt($('#right-content').width(), 10)
+    });
+  }
   filterSupport = Modernizr.svgfilters;
   createChart = function(options) {
     var allLabels, allTextGroups, arc, arcs, bgLabelModifier, callback, chartGroup, chartType, edgeSlice, iconGroup, imageSize, innerRadius, labelSize, pie, pieFill, radius, startingIconOpacity, startingTextOpacity, textGroup, thisTextGroup, usePiePattern;

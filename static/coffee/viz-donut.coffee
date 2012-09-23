@@ -29,8 +29,14 @@ GW2VIZ.visualizations.donutViz = (params) =>
         id: 'donutGroup',
         transform: "translate(" + [0,20] + ") scale(" + scaleAmount + ")"
     })
+
+    #Get width / height of SVG
     width = svg.attr('width')
     height = svg.attr('height')
+
+    #update if necessary
+    if documentWidth < 1200
+        svg.attr({width: documentWidth - parseInt($('#right-content').width(), 10)})
 
     #Detect filter support
     filterSupport = Modernizr.svgfilters
