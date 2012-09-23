@@ -4,7 +4,7 @@ PID_FILE=/var/run/gunicorn_guildwars2viz
 WORKERS=1
 BIND_ADDRESS=127.0.0.1:7090
 WORKER_CLASS=gevent
-LOGFILE=/var/log/gunicorn/guildwars2viz
+LOGFILE=/var/log/gunicorn/guildwars2viz.log
 
 cd /home/erik/Code/GuildWars2Viz
 source /home/erik/Code/GuildWars2Viz/env/bin/activate
