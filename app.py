@@ -4,8 +4,8 @@
 #
 # ==============================================================================
 import flask
-import pymongo 
-import redis
+#import pymongo 
+#import redis
 import datetime
 import json
 import re
