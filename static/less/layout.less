@@ -68,12 +68,59 @@
     bottom: auto;
     font-size: 5em;
     font-family: @header-font;
-    height: 100px;
+    height: 120px;
     right: auto;
     text-align: center;
     top: 200px;
     width: 700px;
     z-index:9999;
+    animation: pulsating_heart 1.8s;
+    -moz-animation: pulsating_heart 1.8s;
+    -webkit-animation: pulsating_heart 1.8s;
+    animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-direction: alternate;
+    -moz-animation-direction: alternate;
+    -webkit-animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    -moz-animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+}
+/* ========================================================================
+ *
+ * Animation
+ *
+ * ======================================================================== */
+@keyframes pulsating_heart {
+    from {
+        color: #ffffff;
+        text-shadow: 0 0 2px #000000, 0 0 5px #000000;
+    }
+    to {
+        color: #ffffff;
+        text-shadow: 0 0 2px #000000, 0 0 65px #dc241f;
+    }
+}
+@-moz-keyframes pulsating_heart {
+    from {
+        color: #ffffff;
+        text-shadow: 0 0 2px #000000, 0 0 5px #000000;
+    }
+    to {
+        color: #ffffff;
+        text-shadow: 0 0 2px #000000, 0 0 65px #dc241f;
+    }
+}
+@-webkit-keyframes pulsating_heart {
+    from {
+        color: #ffffff;
+        text-shadow: 0 0 2px #000000, 0 0 5px #000000;
+    }
+    to {
+        color: #ffffff;
+        text-shadow: 0 0 2px #000000, 0 0 65px #dc241f;
+    }
 }
 
 /* ========================================================================    
