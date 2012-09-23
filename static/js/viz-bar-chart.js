@@ -62,29 +62,7 @@
   GW2VIZ.visualizations.barCreateChart = function(params) {
     var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, bars, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, documentHeight, documentWidth, filteredBars, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
     chartType = params.chartType;
-    colors = {
-      Human: '#a51d11',
-      Norn: '#5dbbb0',
-      Asura: '#6b97c0',
-      Sylvari: '#6e8d4a',
-      Charr: '#9a6d57',
-      Ranger: '#7e8659',
-      Elementalist: '#97bccf',
-      Guardian: '#61b499',
-      Thief: '#701e1e',
-      Necromancer: '#0a3018',
-      Engineer: '#625544',
-      Mesmer: '#975b91',
-      Warrior: '#e09056',
-      Chef: '#527599',
-      Jeweler: '#8e6695',
-      Leatherworker: '#956d58',
-      Tailor: '#a18e46',
-      Armorsmith: '#8e8e8e',
-      Huntsman: '#6e8b54',
-      Artificer: '#6ebeac',
-      Weaponsmith: '#b25252'
-    };
+    colors = GW2VIZ.visualizations.colors;
     svg = d3.select('#svg-el-' + chartType);
     width = svg.attr('width');
     height = svg.attr('height');
@@ -140,6 +118,7 @@
       'class': function(d, i) {
         var posX, posY;
         posY = parseInt(height - (yScale(d.value) + 20) - padding.bottom - padding.top);
+        if (GW2VIZ.qualityLevel < 1) posY += 22;
         if (posY < 1) posY = 1;
         posX = parseInt(xScale(i)) - 6;
         return 'barFilter posX' + posX + ' posY' + posY;
@@ -149,7 +128,11 @@
         return -5000;
       },
       height: function(d, i) {
-        return yScale(d.value) + 20;
+        if (GW2VIZ.qualityLevel < 1) {
+          return yScale(d.value);
+        } else {
+          return yScale(d.value) + 20;
+        }
       },
       y: function(d, y) {
         return -500;
@@ -157,10 +140,16 @@
     }).style({
       stroke: "#343434",
       "stroke-width": 8,
-      filter: 'url(#waterColor1)',
+      filter: function() {
+        if (GW2VIZ.qualityLevel < 1) {
+          return '';
+        } else {
+          return 'url(#waterColor1)';
+        }
+      },
       opacity: 1.0,
       fill: function(d, i) {
-        return "url(#" + chartType + data[i].label + 'Gradient)';
+        return "url(#" + chartType + d.label + 'Gradient)';
       }
     });
     bars.append('svg:rect').attr({
@@ -182,9 +171,15 @@
     }).style({
       stroke: "#454545",
       'stroke-width': '3px',
-      filter: "url(#jaggedEdge)",
+      filter: function() {
+        if (GW2VIZ.qualityLevel < 1) {
+          return '';
+        } else {
+          return "url(#jaggedEdge)";
+        }
+      },
       fill: function(d, i) {
-        return "url(#" + chartType + data[i].label + 'Gradient)';
+        return "url(#" + chartType + d.label + 'Gradient)';
       }
     });
     bars.append('svg:rect').attr({

@@ -61,35 +61,13 @@ GW2VIZ.visualizations.barViz = function(params) {
 GW2VIZ.visualizations.barCreateChart = function(params) {
   var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, bars, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, documentHeight, documentWidth, filteredBars, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
   chartType = params.chartType;
-  colors = {
-    Human: '#a51d11',
-    Norn: '#5dbbb0',
-    Asura: '#6b97c0',
-    Sylvari: '#6e8d4a',
-    Charr: '#9a6d57',
-    Ranger: '#7e8659',
-    Elementalist: '#97bccf',
-    Guardian: '#61b499',
-    Thief: '#701e1e',
-    Necromancer: '#0a3018',
-    Engineer: '#625544',
-    Mesmer: '#975b91',
-    Warrior: '#e09056',
-    Chef: '#527599',
-    Jeweler: '#8e6695',
-    Leatherworker: '#956d58',
-    Tailor: '#a18e46',
-    Armorsmith: '#8e8e8e',
-    Huntsman: '#6e8b54',
-    Artificer: '#6ebeac',
-    Weaponsmith: '#b25252'
-  };
+  colors = GW2VIZ.visualizations.colors;
   svg = d3.select('#svg-el-' + chartType);
   width = svg.attr('width');
   height = svg.attr('height');
   documentWidth = $(document).width();
   if (documentWidth < 1220) {
-    width = documentWidth - $('#left-content').css('width');
+    width = documentWidth - (parseInt($('#left-content').width(), 10) + 30);
     svg.attr({
       width: width
     });

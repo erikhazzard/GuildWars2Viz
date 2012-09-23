@@ -38,8 +38,8 @@ GW2VIZ.visualizations.donutViz = (params) =>
     if documentWidth < 1200
         svg.attr({width: documentWidth - parseInt($('#right-content').width(), 10)})
 
-    #Detect filter support
-    filterSupport = Modernizr.svgfilters
+    #Store ref to quality level
+    qualityLevel = GW2VIZ.qualityLevel
 
     #====================================================================
     #
@@ -112,7 +112,12 @@ GW2VIZ.visualizations.donutViz = (params) =>
             .style({
                 fill: "#ffffff",
                 stroke: "#505050",
-                filter: "url(#waterColor2)",
+                filter: ()=>
+                    if qualityLevel < 2
+                        #No filter for lower quality
+                        return ''
+                    else
+                        return "url(#waterColor2)"
                 "stroke-width": 4
             })
 
@@ -127,7 +132,12 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 fill: "#ffffff",
                 stroke: "#707070",
                 "stroke-opacity": 0.6,
-                filter: "url(#jaggedEdge)",
+                filter: ()=>
+                    if qualityLevel < 1
+                        #No filter for lower quality
+                        return ''
+                    else
+                        return "url(#jaggedEdge)"
                 "stroke-width": 1
             })
 
@@ -150,7 +160,13 @@ GW2VIZ.visualizations.donutViz = (params) =>
                         return pieFill[i]
                 ,
                 stroke: "#343434",
-                filter: "url(#waterColor1)",
+                filter: ()=>
+                    #Water color filder is expensive and not performant in FF
+                    if qualityLevel < 2
+                        return ''
+                    else
+                        return "url(#waterColor1)"
+
                 "stroke-width": 2,
                 "stroke-opacity": 1
             })
@@ -225,7 +241,11 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 "text-anchor": "middle"
             }).style({
                 fill: "#ababab",
-                filter: "url(#waterColor2)",
+                filter: ()=>
+                    if qualityLevel < 2
+                        return ''
+                    else
+                        return "url(#waterColor2)"
                 "font-size": labelSize + bgLabelModifier + "px",
                 opacity: 0.7,
                 "text-shadow": "0 0 1px #000000"
@@ -306,13 +326,22 @@ GW2VIZ.visualizations.donutViz = (params) =>
         arcs.on('mouseover', (d,i)=>
             #Update slice
             #-----------------------
-            chartGroup.select('.edgeSlice' + i)
-                .transition().duration(300)
-                .style({
-                'stroke-width': 9,
-                'stroke': '#000000',
-                'stroke-opacity': 0.8
-            })
+            #For high quality do animation, otherwise instantly show it
+            if qualityLevel > 1
+                chartGroup.select('.edgeSlice' + i)
+                    .transition().duration(300)
+                    .style({
+                        'stroke-width': 9,
+                        'stroke': '#000000',
+                        'stroke-opacity': 0.8
+                    })
+            else
+                chartGroup.select('.edgeSlice' + i)
+                    .style({
+                        'stroke-width': 9,
+                        'stroke': '#000000',
+                        'stroke-opacity': 1
+                    })
 
             #Update text label
             #LABEL
@@ -350,13 +379,22 @@ GW2VIZ.visualizations.donutViz = (params) =>
         ).on('mouseout', (d,i)=>
             #SLICE
             #Update slice
-            chartGroup.select('.edgeSlice' + i)
-                .transition().duration(300)
-                .style({
-                    'stroke-width': 1,
-                    'stroke': '#707070',
-                    'stroke-opacity': 0.6
-                })
+            if qualityLevel > 1
+                chartGroup.select('.edgeSlice' + i)
+                    .transition().duration(300)
+                    .style({
+                        'stroke-width': 1,
+                        'stroke': '#707070',
+                        'stroke-opacity': 0.6
+                    })
+            else
+                chartGroup.select('.edgeSlice' + i)
+                    .transition().duration(300)
+                    .style({
+                        'stroke-width': 1,
+                        'stroke': '#707070',
+                        'stroke-opacity': 0.6
+                    })
 
             #LABELS
             #Reset the label font size

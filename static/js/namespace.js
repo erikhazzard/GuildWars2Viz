@@ -3,7 +3,7 @@
     _this = this;
 
   GW2VIZ = (function() {
-    var app, init, util;
+    var app, filterSupport, init, qualityLevel, qualiyLevel, util;
     app = {};
     init = function() {
       return true;
@@ -13,10 +13,15 @@
         return text.charAt(0).toUpperCase() + text.substring(1);
       }
     };
+    filterSupport = Modernizr.svgfilters;
+    qualiyLevel = 2;
+    if ($.browser.mozilla) qualityLevel = 1;
+    if ($.browser.msie || !filterSupport) qualityLevel = 0;
     return {
       init: init,
       util: util,
       data: {},
+      qualityLevel: qualityLevel,
       visualizations: {}
     };
   })();
@@ -106,6 +111,29 @@
           value: 16.28
         }
       ]
+    };
+    GW2VIZ.visualizations.colors = {
+      Human: '#a51d11',
+      Norn: '#5dbbb0',
+      Asura: '#6b97c0',
+      Sylvari: '#6e8d4a',
+      Charr: '#9a6d57',
+      Ranger: '#7e8659',
+      Elementalist: '#97bccf',
+      Guardian: '#61b499',
+      Thief: '#701e1e',
+      Necromancer: '#0a3018',
+      Engineer: '#625544',
+      Mesmer: '#975b91',
+      Warrior: '#e09056',
+      Chef: '#527599',
+      Jeweler: '#8e6695',
+      Leatherworker: '#956d58',
+      Tailor: '#a18e46',
+      Armorsmith: '#8e8e8e',
+      Huntsman: '#6e8b54',
+      Artificer: '#6ebeac',
+      Weaponsmith: '#b25252'
     };
     GW2VIZ.visualizations.donutViz();
     GW2VIZ.visualizations.barViz();

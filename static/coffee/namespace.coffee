@@ -17,12 +17,29 @@ GW2VIZ = (()=>
             return text.charAt(0).toUpperCase() + text.substring(1)
     }
 
+    #Detect filter support
+    filterSupport = Modernizr.svgfilters
+    #Quality level
+    #   0 = lowest quality (IE level)
+    #   1 = medium quality (FF)
+    #   2 = normal / high quality (Chrome / Safari)
+    qualiyLevel = 2
+    
+    #Determine wheter to use a lower quality effect or not
+    if $.browser.mozilla
+        qualityLevel = 1
+
+    #If IE, lowest quality
+    if $.browser.msie or not filterSupport
+        qualityLevel = 0
+
     #Public API returned
     return {
         init: init
         util: util
         data: {}
         
+        qualityLevel: qualityLevel
         visualizations: {}
     }
 
@@ -71,6 +88,32 @@ GW2VIZ.init = ()=>
         ]
     }
 
+    #Maps solid colors for each type
+    GW2VIZ.visualizations.colors = {
+        Human: '#a51d11',
+        Norn: '#5dbbb0',
+        Asura: '#6b97c0',
+        Sylvari: '#6e8d4a',
+        Charr: '#9a6d57',
+
+        Ranger: '#7e8659',
+        Elementalist: '#97bccf',
+        Guardian: '#61b499',
+        Thief: '#701e1e',
+        Necromancer: '#0a3018',
+        Engineer: '#625544',
+        Mesmer: '#975b91',
+        Warrior: '#e09056',
+
+        Chef: '#527599',
+        Jeweler: '#8e6695',
+        Leatherworker: '#956d58',
+        Tailor: '#a18e46',
+        Armorsmith: '#8e8e8e',
+        Huntsman: '#6e8b54',
+        Artificer: '#6ebeac',
+        Weaponsmith: '#b25252'
+    }
 
     #Create the class viz
     GW2VIZ.visualizations.donutViz()

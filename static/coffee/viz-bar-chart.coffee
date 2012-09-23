@@ -78,31 +78,8 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
     chartType = params.chartType
 
     #Maps solid colors for each type
-    colors = {
-        Human: '#a51d11',
-        Norn: '#5dbbb0',
-        Asura: '#6b97c0',
-        Sylvari: '#6e8d4a',
-        Charr: '#9a6d57',
+    colors = GW2VIZ.visualizations.colors
 
-        Ranger: '#7e8659',
-        Elementalist: '#97bccf',
-        Guardian: '#61b499',
-        Thief: '#701e1e',
-        Necromancer: '#0a3018',
-        Engineer: '#625544',
-        Mesmer: '#975b91',
-        Warrior: '#e09056',
-
-        Chef: '#527599',
-        Jeweler: '#8e6695',
-        Leatherworker: '#956d58',
-        Tailor: '#a18e46',
-        Armorsmith: '#8e8e8e',
-        Huntsman: '#6e8b54',
-        Artificer: '#6ebeac',
-        Weaponsmith: '#b25252'
-    }
     #Get svg el
     svg = d3.select('#svg-el-' + chartType)
 
@@ -195,6 +172,11 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
                 #Get y position
                 posY = parseInt(
                     height - (yScale(d.value) + 20)- padding.bottom - padding.top)
+                
+                #If no filters are enabled, we want to draw a box to the sides
+                #   but NOT above the current bar
+                if GW2VIZ.qualityLevel < 1
+                    posY += 22
                 #Make sure it's not negative
                 if posY < 1
                     posY = 1
@@ -207,18 +189,24 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
             x: (d,i)=>
                 return -5000
             height: (d,i)=>
-                return yScale(d.value) + 20
+                if GW2VIZ.qualityLevel < 1
+                    return yScale(d.value)
+                else
+                    return yScale(d.value) + 20
             y: (d,y)=>
                 return -500
         })
         .style({
             stroke: "#343434"
             "stroke-width": 8
-            filter: 'url(#waterColor1)'
+            filter: ()=>
+                if GW2VIZ.qualityLevel < 1
+                    return ''
+                else
+                    return 'url(#waterColor1)'
             opacity: 1.0
             fill: (d,i)=>
-                return "url(#" + chartType + data[i].label + 'Gradient)'
-                #return colors[data[i].label]
+                return "url(#" + chartType + d.label + 'Gradient)'
         })
 
     #NORMAL BARS
@@ -240,9 +228,13 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
         .style({
             stroke: "#454545"
             'stroke-width': '3px'
-            filter: "url(#jaggedEdge)"
+            filter: ()=>
+                if GW2VIZ.qualityLevel < 1
+                    return ''
+                else
+                    "url(#jaggedEdge)"
             fill: (d,i)=>
-                return "url(#" + chartType + data[i].label + 'Gradient)'
+                return "url(#" + chartType + d.label + 'Gradient)'
                 #solid color
                 #return colors[data[i].label]
         })

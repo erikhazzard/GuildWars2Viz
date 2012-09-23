@@ -82,7 +82,9 @@ GW2VIZ.visualizations.donutViz = function(params) {
         }
       },
       stroke: "#343434",
-      filter: "url(#waterColor1)",
+      filter: function() {
+        return "url(#waterColor1)";
+      },
       "stroke-width": 2,
       "stroke-opacity": 1
     });

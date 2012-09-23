@@ -2,7 +2,7 @@
   var _this = this;
 
   GW2VIZ.visualizations.donutViz = function(params) {
-    var baseScaleAmount, createChart, data, documentHeight, documentWidth, donutGroup, filterSupport, height, scaleAmount, svg, width;
+    var baseScaleAmount, createChart, data, documentHeight, documentWidth, donutGroup, height, qualityLevel, scaleAmount, svg, width;
     data = GW2VIZ.data;
     svg = d3.select('#svg-el-donut');
     baseScaleAmount = 0.94;
@@ -21,7 +21,7 @@
         width: documentWidth - parseInt($('#right-content').width(), 10)
       });
     }
-    filterSupport = Modernizr.svgfilters;
+    qualityLevel = GW2VIZ.qualityLevel;
     createChart = function(options) {
       var allLabels, allTextGroups, arc, arcs, bgLabelModifier, callback, chartGroup, chartType, edgeSlice, iconGroup, imageSize, innerRadius, labelSize, pie, pieFill, radius, startingIconOpacity, startingTextOpacity, textGroup, thisTextGroup, usePiePattern;
       labelSize = options.labelSize;
@@ -54,7 +54,13 @@
       arcs.append("svg:path").attr("d", arc).style({
         fill: "#ffffff",
         stroke: "#505050",
-        filter: "url(#waterColor2)",
+        filter: function() {
+          if (qualityLevel < 2) {
+            return '';
+          } else {
+            return "url(#waterColor2)";
+          }
+        },
         "stroke-width": 4
       });
       edgeSlice = arcs.append("svg:path").attr({
@@ -66,7 +72,13 @@
         fill: "#ffffff",
         stroke: "#707070",
         "stroke-opacity": 0.6,
-        filter: "url(#jaggedEdge)",
+        filter: function() {
+          if (qualityLevel < 1) {
+            return '';
+          } else {
+            return "url(#jaggedEdge)";
+          }
+        },
         "stroke-width": 1
       });
       arcs.append("svg:path").attr({
@@ -83,7 +95,13 @@
           }
         },
         stroke: "#343434",
-        filter: "url(#waterColor1)",
+        filter: function() {
+          if (qualityLevel < 2) {
+            return '';
+          } else {
+            return "url(#waterColor1)";
+          }
+        },
         "stroke-width": 2,
         "stroke-opacity": 1
       });
@@ -133,7 +151,13 @@
         "text-anchor": "middle"
       }).style({
         fill: "#ababab",
-        filter: "url(#waterColor2)",
+        filter: function() {
+          if (qualityLevel < 2) {
+            return '';
+          } else {
+            return "url(#waterColor2)";
+          }
+        },
         "font-size": labelSize + bgLabelModifier + "px",
         opacity: 0.7,
         "text-shadow": "0 0 1px #000000"
@@ -179,11 +203,19 @@
       allLabels = chartGroup.selectAll('.textGroup .label');
       arcs.on('mouseover', function(d, i) {
         var curGroup;
-        chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
-          'stroke-width': 9,
-          'stroke': '#000000',
-          'stroke-opacity': 0.8
-        });
+        if (qualityLevel > 1) {
+          chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+            'stroke-width': 9,
+            'stroke': '#000000',
+            'stroke-opacity': 0.8
+          });
+        } else {
+          chartGroup.select('.edgeSlice' + i).style({
+            'stroke-width': 9,
+            'stroke': '#000000',
+            'stroke-opacity': 1
+          });
+        }
         allTextGroups.style({
           opacity: startingTextOpacity
         });
@@ -215,11 +247,19 @@
           });
         }
       }).on('mouseout', function(d, i) {
-        chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
-          'stroke-width': 1,
-          'stroke': '#707070',
-          'stroke-opacity': 0.6
-        });
+        if (qualityLevel > 1) {
+          chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+            'stroke-width': 1,
+            'stroke': '#707070',
+            'stroke-opacity': 0.6
+          });
+        } else {
+          chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+            'stroke-width': 1,
+            'stroke': '#707070',
+            'stroke-opacity': 0.6
+          });
+        }
         allLabels.style({
           'font-size': labelSize
         });
