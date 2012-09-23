@@ -60,7 +60,7 @@
   };
 
   GW2VIZ.visualizations.barCreateChart = function(params) {
-    var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, bars, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, filteredBars, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
+    var barGroupWidth, barLabels, barPadding, barRadius, barStartLeft, bars, chartGroup, chartType, colors, data, dataBarGroups, dataBars, dataMax, documentHeight, documentWidth, filteredBars, height, padding, svg, tickYScale, width, xScale, yAxisGroup, yAxisTicks, yScale;
     chartType = params.chartType;
     colors = {
       Human: '#a51d11',
@@ -88,6 +88,20 @@
     svg = d3.select('#svg-el-' + chartType);
     width = svg.attr('width');
     height = svg.attr('height');
+    documentWidth = $(document).width();
+    if (documentWidth < 1220) {
+      width = documentWidth - (parseInt($('#left-content').width(), 10) + 30);
+      svg.attr({
+        width: width
+      });
+    }
+    documentHeight = $(document).height();
+    if (documentHeight < 600) {
+      height = 70;
+      svg.attr({
+        height: height
+      });
+    }
     yAxisGroup = svg.append('svg:g').attr({
       'class': 'axisGroup'
     });

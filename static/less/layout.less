@@ -46,7 +46,7 @@
     z-index: 100;
 }
     #logo-wrapper {
-        overflow: auto;
+        overflow: hidden;
         position: absolute;
         left: 610px;
         right: 0;
@@ -102,13 +102,12 @@ svg text {
     padding: 0 0 1em 0;
     right: auto;
     top: 120px;
-    width: 508px;
     z-index: 500;
 }
     #right-content .description-wrapper {
         background: rgba(255,255,255,0.8);
         border: 1px solid rgba(200,200,200,0.7);
-        width: 500px;
+        width: 96%;
     }
         #right-content .description {
             border-bottom: 1px solid #d0d0d0;
@@ -119,7 +118,12 @@ svg text {
             font-size: 0.9em;
             color: #707070;
         }
-    #right-content .bar-meta-wrapper { position: relative; overflow: auto; width:100%; }
+    #right-content .bar-meta-wrapper { 
+        position: relative; 
+        overflow: auto; 
+        max-width: 500px;
+        width:100%;
+    }
     #right-content .bar-meta-title {
         float: left;
         font-family: @header-font;

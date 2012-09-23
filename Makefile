@@ -9,6 +9,7 @@ LESS_FILES = static/less/less-variables.less \
 			 static/less/base-elements.less \
 			 static/less/buttons.less \
 			 static/less/layout.less \
+			 static/less/responsive-1220.less \
 			 static/less/responsive-800.less \
 			 static/less/responsive-600.less
 

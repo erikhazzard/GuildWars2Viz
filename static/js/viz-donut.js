@@ -2,12 +2,17 @@
   var _this = this;
 
   GW2VIZ.visualizations.donutViz = function(params) {
-    var createChart, data, donutGroup, filterSupport, height, svg, width;
+    var baseScaleAmount, createChart, data, documentHeight, documentWidth, donutGroup, filterSupport, height, scaleAmount, svg, width;
     data = GW2VIZ.data;
     svg = d3.select('#svg-el-donut');
+    baseScaleAmount = 0.94;
+    documentWidth = $(document).width();
+    documentHeight = $(document).height();
+    scaleAmount = documentWidth / 1380;
+    if (scaleAmount > baseScaleAmount) scaleAmount = baseScaleAmount;
     donutGroup = svg.append('svg:g').attr({
       id: 'donutGroup',
-      transform: "translate(" + [0, 20] + ") scale(0.94)"
+      transform: "translate(" + [0, 20] + ") scale(" + scaleAmount + ")"
     });
     width = svg.attr('width');
     height = svg.attr('height');

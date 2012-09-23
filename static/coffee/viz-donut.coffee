@@ -12,10 +12,22 @@ GW2VIZ.visualizations.donutViz = (params) =>
     #Race patterns
     svg = d3.select('#svg-el-donut')
 
+    #Amount to scale chart
+    baseScaleAmount = 0.94
+
+    #Adjust based on width / height
+    documentWidth = $(document).width()
+    documentHeight = $(document).height()
+
+    #Set sacle amount. 0.94 is the base
+    scaleAmount = documentWidth / 1380
+    if scaleAmount > baseScaleAmount
+        scaleAmount = baseScaleAmount
+
     #Create group for donut charts and make it slightly smaller
     donutGroup = svg.append('svg:g').attr({
         id: 'donutGroup',
-        transform: "translate(" + [0,20] + ") scale(0.94)"
+        transform: "translate(" + [0,20] + ") scale(" + scaleAmount + ")"
     })
     width = svg.attr('width')
     height = svg.attr('height')

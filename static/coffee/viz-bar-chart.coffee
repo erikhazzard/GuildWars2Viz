@@ -107,8 +107,21 @@ GW2VIZ.visualizations.barCreateChart = (params) =>
     svg = d3.select('#svg-el-' + chartType)
 
     #Get width / height
+    #   update based on screen resolution
     width = svg.attr('width')
     height = svg.attr('height')
+
+    #Width 
+    documentWidth = $(document).width()
+    if documentWidth < 1220
+        width = documentWidth - (parseInt($('#left-content').width(), 10) + 30)
+        svg.attr({ width: width })
+
+    #Height
+    documentHeight = $(document).height()
+    if documentHeight < 600
+        height = 70
+        svg.attr({ height: height })
 
     #Add group for viz
     yAxisGroup = svg.append('svg:g').attr({'class': 'axisGroup'})
