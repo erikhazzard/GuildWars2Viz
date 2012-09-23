@@ -3117,9 +3117,13 @@ pre,
   right: 0;
   top: 0;
   bottom: auto;
+  font-size: 5em;
+  font-family: 'Alegreya SC', Arial, Verdana, sans-serif;
   height: 100px;
   right: auto;
-  width: 800px;
+  text-align: center;
+  top: 200px;
+  width: 700px;
   z-index: 9999;
 }
 /* ========================================================================    
