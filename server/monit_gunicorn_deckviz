@@ -1,4 +1,0 @@
-check process gunicorn-deckviz
-    with pidfile /var/run/upstart_deckviz.pid
-    start program = "/sbin/start deckviz"
-    stop program = "/sbin/stop deckviz"

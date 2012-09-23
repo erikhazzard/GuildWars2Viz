@@ -1,0 +1,4 @@
+check process gunicorn-guildwars2viz
+    with pidfile /var/run/upstart_guildwars2viz.pid
+    start program = "/sbin/start guildwars2viz"
+    stop program = "/sbin/stop guildwars2viz"
