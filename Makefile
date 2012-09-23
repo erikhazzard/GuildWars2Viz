@@ -28,12 +28,10 @@ THIRD_PARTY = static/lib/underscore.js \
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 CS_COMPILER = ./node_modules/coffee-script/bin/coffee -c -b
 JS_TARGETS = static/js/namespace.js \
-	static/js/app.js \
-	static/js/util.js \
-	static/js/cards.js \
-	static/js/deck.js
+	static/js/viz-donut.js \
+	static/js/viz-bar-chart.js
 
-all: coffeejs $(JS_FINAL) less
+all: coffeejs js less
 
 less: 
 	@echo "\n${HR}"
@@ -49,20 +47,16 @@ less:
 coffeejs:
 	@echo "\n${HR}"
 	@echo "Compiling Coffee"
-	$(CS_COMPILER) static/coffee/namespace.coffee
-	$(CS_COMPILER) static/coffee/app.coffee
-	$(CS_COMPILER) static/coffee/util.coffee
-	$(CS_COMPILER) static/coffee/cards.coffee
-	$(CS_COMPILER) static/coffee/deck.coffee
-	$(CS_COMPILER) static/coffee/tests/tests.coffee
+	@coffee --compile --output static/js static/coffee
 	@echo "${CHECK} Done"
 	@echo "\n${HR}"
-	@mv static/coffee/*.js static/js/
-	@mv static/coffee/tests/*.js static/js/tests/
-	@cat $(JS_TARGETS) > static/js/build/deckviz.js
-	$(JS_COMPILER) static/js/build/deckviz.js > static/js/build/deckviz.min.js
-	@cat static/js/build/copyright.js | cat - static/js/build/deckviz.min.js > temp && mv temp static/js/build/deckviz.min.js
-	@rm static/js/build/deckviz.js
+
+js:
+	@echo "${HR}\nRunning uglify\n${HR}"
+	@cat $(JS_TARGETS) > static/js/build/all.js
+	$(JS_COMPILER) static/js/build/all.js > static/js/build/all.min.js
+	@cat static/js/build/copyright.js | cat - static/js/build/all.min.js > temp && mv temp static/js/build/all.min.js
+	@rm static/js/build/all.js
 	@echo "Compiling and minifying javascript...	${CHECK} Done"
 	@echo "\n${HR}"
 	@echo "Files successfully built at ${DATE}."

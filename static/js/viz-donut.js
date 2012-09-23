@@ -23,7 +23,7 @@
     }
     qualityLevel = GW2VIZ.qualityLevel;
     createChart = function(options) {
-      var allLabels, allTextGroups, arc, arcs, bgLabelModifier, callback, chartGroup, chartType, edgeSlice, iconGroup, imageSize, innerRadius, labelSize, pie, pieFill, radius, startingIconOpacity, startingTextOpacity, textGroup, thisTextGroup, usePiePattern;
+      var allLabels, allTextGroups, arc, arcs, bgLabelModifier, callback, chartGroup, chartType, edgeSlice, filteredSlice, iconGroup, imageSize, innerRadius, labelSize, pie, pieFill, radius, startingIconOpacity, startingTextOpacity, textGroup, thisTextGroup, usePiePattern;
       labelSize = options.labelSize;
       radius = options.radius;
       innerRadius = options.innerRadius || false;
@@ -51,7 +51,7 @@
       arcs = chartGroup.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", function(d, i) {
         return "slice slice" + i;
       });
-      arcs.append("svg:path").attr("d", arc).style({
+      filteredSlice = arcs.append("svg:path").attr("d", arc).style({
         fill: "#ffffff",
         stroke: "#505050",
         filter: function() {
@@ -96,7 +96,7 @@
         },
         stroke: "#343434",
         filter: function() {
-          if (qualityLevel < 2) {
+          if (qualityLevel < 1) {
             return '';
           } else {
             return "url(#waterColor1)";
@@ -120,15 +120,18 @@
         "xlink:href": function(d, i) {
           return "/static/img/viz/" + d.data.label + ".png";
         },
-        x: 0,
-        y: 0,
-        width: imageSize.width + 'px',
-        height: imageSize.height + 'px',
-        transform: function(d) {
+        x: function(d) {
           d.innerRadius = 0;
           d.outerRadius = radius;
-          return "translate(" + [arc.centroid(d)[0] - (imageSize.width / 2), arc.centroid(d)[1] - (imageSize.height / 2)] + ")";
-        }
+          return arc.centroid(d)[0] - (imageSize.width / 2);
+        },
+        y: function(d) {
+          d.innerRadius = 0;
+          d.outerRadius = radius;
+          return arc.centroid(d)[1] - (imageSize.height / 2);
+        },
+        width: imageSize.width + 'px',
+        height: imageSize.height + 'px'
       });
       textGroup = arcs.append('svg:g').attr({
         'class': function(d, i) {
@@ -144,7 +147,7 @@
           d.outerRadius = radius;
           x = arc.centroid(d)[0];
           y = arc.centroid(d)[1];
-          if (data[chartType][i].label.length === 'Necromancer') x += 8;
+          if (d.data.label.length === 'Necromancer') x += 8;
           return "translate(" + [x, y] + ")";
         },
         "class": "bgLabel",
@@ -162,7 +165,7 @@
         opacity: 0.7,
         "text-shadow": "0 0 1px #000000"
       }).text(function(d, i) {
-        return data[chartType][i].label;
+        return d.data.label;
       });
       textGroup.append("svg:text").attr({
         "transform": function(d, i) {
@@ -171,7 +174,7 @@
           d.outerRadius = radius;
           x = arc.centroid(d)[0];
           y = arc.centroid(d)[1];
-          if (data[chartType][i].label === 'Necromancer') x += 14;
+          if (d.data.label === 'Necromancer') x += 14;
           return "translate(" + [x, y] + ")";
         },
         "class": "label",
@@ -182,7 +185,7 @@
         "font-size": labelSize + 'px',
         "text-shadow": "0 0 3px #000000, 0 0 18px #000000"
       }).text(function(d, i) {
-        return data[chartType][i].label;
+        return d.data.label;
       });
       textGroup.append("svg:text").attr({
         "transform": function(d) {
@@ -196,94 +199,100 @@
         "font-size": "1.1em",
         "text-shadow": "0 0 3px #000000"
       }).text(function(d, i) {
-        return Math.round(data[chartType][i].value) + '%';
+        return Math.round(d.data.value) + '%';
       });
       allTextGroups = d3.selectAll('.textGroup');
       thisTextGroup = chartGroup.selectAll('.textGroup');
       allLabels = chartGroup.selectAll('.textGroup .label');
-      arcs.on('mouseover', function(d, i) {
-        var curGroup;
-        if (qualityLevel > 1) {
-          chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
-            'stroke-width': 9,
-            'stroke': '#000000',
-            'stroke-opacity': 0.8
+      if (qualityLevel > 1) {
+        arcs.on('mouseover', function(d, i) {
+          var curGroup;
+          if (qualityLevel > 1) {
+            chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+              'stroke-width': 9,
+              'stroke': '#000000',
+              'stroke-opacity': 0.8
+            });
+          } else {
+            chartGroup.select('.edgeSlice' + i).style({
+              'stroke-width': 9,
+              'stroke': '#000000',
+              'stroke-opacity': 1
+            });
+          }
+          allTextGroups.style({
+            opacity: startingTextOpacity
           });
-        } else {
-          chartGroup.select('.edgeSlice' + i).style({
-            'stroke-width': 9,
-            'stroke': '#000000',
-            'stroke-opacity': 1
+          thisTextGroup.style({
+            opacity: 0.9
           });
-        }
-        allTextGroups.style({
-          opacity: startingTextOpacity
-        });
-        thisTextGroup.style({
-          opacity: 0.9
-        });
-        curGroup = chartGroup.selectAll('.textGroup' + i);
-        curGroup.style({
-          opacity: 1
-        });
-        curGroup.selectAll('.label').style({
-          'font-size': labelSize + 6
-        });
-        curGroup.selectAll('.bgLabel').style({
-          'font-size': labelSize + bgLabelModifier + 6
-        }).attr({
-          transform: function(d, i) {
-            return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i * 3)) + ")";
+          curGroup = chartGroup.selectAll('.textGroup' + i);
+          curGroup.style({
+            opacity: 1
+          });
+          curGroup.selectAll('.label').style({
+            'font-size': labelSize + 6
+          });
+          curGroup.selectAll('.bgLabel').style({
+            'font-size': labelSize + bgLabelModifier + 6
+          }).attr({
+            transform: function(d, i) {
+              return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i * 3)) + ")";
+            }
+          });
+          if (qualityLevel > 1) {
+            iconGroup.style({
+              opacity: 0.3
+            });
+          }
+          if (chartType !== 'gender') {
+            return GW2VIZ.visualizations.barHighlightOver({
+              chartType: chartType,
+              d: d,
+              i: i
+            });
+          }
+        }).on('mouseout', function(d, i) {
+          if (qualityLevel > 1) {
+            chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+              'stroke-width': 1,
+              'stroke': '#707070',
+              'stroke-opacity': 0.6
+            });
+          } else {
+            chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
+              'stroke-width': 1,
+              'stroke': '#707070',
+              'stroke-opacity': 0.6
+            });
+          }
+          allLabels.style({
+            'font-size': labelSize
+          });
+          chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
+            transform: function(d, i) {
+              return "translate(" + arc.centroid(d) + ") rotate(0)";
+            }
+          }).style({
+            'font-size': labelSize + bgLabelModifier
+          });
+          thisTextGroup.style({
+            opacity: startingTextOpacity
+          });
+          if (qualityLevel > 1) {
+            iconGroup.style({
+              opacity: startingIconOpacity
+            });
+          }
+          if (chartType !== 'gender') {
+            return GW2VIZ.visualizations.barHighlightOut({
+              chartType: chartType,
+              d: d,
+              i: i
+            });
           }
         });
-        iconGroup.style({
-          opacity: 0.3
-        });
-        if (chartType !== 'gender') {
-          return GW2VIZ.visualizations.barHighlightOver({
-            chartType: chartType,
-            d: d,
-            i: i
-          });
-        }
-      }).on('mouseout', function(d, i) {
-        if (qualityLevel > 1) {
-          chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
-            'stroke-width': 1,
-            'stroke': '#707070',
-            'stroke-opacity': 0.6
-          });
-        } else {
-          chartGroup.select('.edgeSlice' + i).transition().duration(300).style({
-            'stroke-width': 1,
-            'stroke': '#707070',
-            'stroke-opacity': 0.6
-          });
-        }
-        allLabels.style({
-          'font-size': labelSize
-        });
-        chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
-          transform: function(d, i) {
-            return "translate(" + arc.centroid(d) + ") rotate(0)";
-          }
-        }).style({
-          'font-size': labelSize + bgLabelModifier
-        });
-        thisTextGroup.style({
-          opacity: startingTextOpacity
-        });
-        iconGroup.style({
-          opacity: startingIconOpacity
-        });
-        if (chartType !== 'gender') {
-          return GW2VIZ.visualizations.barHighlightOut({
-            chartType: chartType,
-            d: d,
-            i: i
-          });
-        }
-      });
+      }
       if (callback) return callback();
     };
     createChart({

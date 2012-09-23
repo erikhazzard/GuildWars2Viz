@@ -23,7 +23,7 @@ GW2VIZ = (()=>
     #   0 = lowest quality (IE level)
     #   1 = medium quality (FF)
     #   2 = normal / high quality (Chrome / Safari)
-    qualiyLevel = 2
+    qualityLevel = 2
     
     #Determine wheter to use a lower quality effect or not
     if $.browser.mozilla

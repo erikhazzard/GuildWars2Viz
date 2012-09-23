@@ -2,7 +2,7 @@ var GW2VIZ,
   _this = this;
 
 GW2VIZ = (function() {
-  var app, filterSupport, init, qualityLevel, qualiyLevel, util;
+  var app, filterSupport, init, qualityLevel, util;
   app = {};
   init = function() {
     return true;
@@ -13,7 +13,7 @@ GW2VIZ = (function() {
     }
   };
   filterSupport = Modernizr.svgfilters;
-  qualiyLevel = 2;
+  qualityLevel = 2;
   if ($.browser.mozilla) qualityLevel = 1;
   if ($.browser.msie || !filterSupport) qualityLevel = 0;
   return {

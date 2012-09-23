@@ -105,7 +105,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
                     )
 
         #Append just the stroke and white fill
-        arcs.append("svg:path")
+        filteredSlice = arcs.append("svg:path")
             #set the color for each slice to be chosen from the color function defined above
             #this creates the actual SVG path using the associated data (pie) with the arc drawing function
             .attr("d", arc)
@@ -162,7 +162,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
                 stroke: "#343434",
                 filter: ()=>
                     #Water color filder is expensive and not performant in FF
-                    if qualityLevel < 2
+                    if qualityLevel < 1
                         return ''
                     else
                         return "url(#waterColor1)"
@@ -186,24 +186,24 @@ GW2VIZ.visualizations.donutViz = (params) =>
             height: 54,
             width: 54
         }
+
         #Icon image
         iconGroup.append("svg:image")
             .attr({
                 "xlink:href": (d,i)=>
                     return "/static/img/viz/" + d.data.label + ".png"
-                x:0, y:0
-                width: imageSize.width + 'px',
-                height: imageSize.height + 'px',
-                #Make sure we change fontsize for this label
-                transform: (d)=>
-                    #we have to make sure to set these before calling arc.centroid
+                x:(d)=>
                     d.innerRadius = 0
                     d.outerRadius = radius
-                    #this gives us a pair of coordinates like [50, 50]
-                    return "translate(" + [
-                        arc.centroid(d)[0] - (imageSize.width / 2),
-                        arc.centroid(d)[1] - (imageSize.height / 2)
-                        ] + ")"
+                    arc.centroid(d)[0] - (imageSize.width / 2)
+                    
+                y:(d)=>
+                    d.innerRadius = 0
+                    d.outerRadius = radius
+                    arc.centroid(d)[1] - (imageSize.height / 2)
+
+                width: imageSize.width + 'px',
+                height: imageSize.height + 'px',
             })
         #-------------------------------
         #LABEL
@@ -230,12 +230,12 @@ GW2VIZ.visualizations.donutViz = (params) =>
                     y = arc.centroid(d)[1]
                     #If the length of the text is too big, move the text to the
                     #   right so it doesn't get cut off
-                    if data[chartType][i].label.length == 'Necromancer'
+                    if d.data.label.length == 'Necromancer'
                         x += 8
 
                     #this gives us a pair of coordinates like [50, 50]
                     return "translate(" + [x,y] + ")"
-                ,
+
                 "class": "bgLabel",
                 #center the text on it's origin
                 "text-anchor": "middle"
@@ -252,7 +252,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
             })
             #get the label from our original data array
             .text((d, i)=>
-                return data[chartType][i].label
+                return d.data.label
             )
 
         #"final" label for name
@@ -267,7 +267,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
                     y = arc.centroid(d)[1]
                     #If the length of the text is too big, move the text to the
                     #   right so it doesn't get cut off
-                    if data[chartType][i].label == 'Necromancer'
+                    if d.data.label == 'Necromancer'
                         x += 14
 
                     #this gives us a pair of coordinates like [50, 50]
@@ -285,7 +285,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
             })
             #get the label from our original data array
             .text((d, i)=>
-                return data[chartType][i].label
+                return d.data.label
             )
 
         #add a label for % of total
@@ -312,7 +312,7 @@ GW2VIZ.visualizations.donutViz = (params) =>
             })
             #get the label from our original data array
             .text((d, i)=>
-                return Math.round(data[chartType][i].value) + '%' 
+                return Math.round(d.data.value) + '%' 
             )
 
         #---------------------------
@@ -323,109 +323,114 @@ GW2VIZ.visualizations.donutViz = (params) =>
         thisTextGroup = chartGroup.selectAll('.textGroup')
         allLabels = chartGroup.selectAll('.textGroup .label')
 
-        arcs.on('mouseover', (d,i)=>
-            #Update slice
-            #-----------------------
-            #For high quality do animation, otherwise instantly show it
-            if qualityLevel > 1
-                chartGroup.select('.edgeSlice' + i)
-                    .transition().duration(300)
-                    .style({
-                        'stroke-width': 9,
-                        'stroke': '#000000',
-                        'stroke-opacity': 0.8
-                    })
-            else
-                chartGroup.select('.edgeSlice' + i)
-                    .style({
-                        'stroke-width': 9,
-                        'stroke': '#000000',
-                        'stroke-opacity': 1
-                    })
+        #Only enable interaction for high quality
+        if qualityLevel > 1
+            arcs.on('mouseover', (d,i)=>
+                #Update slice
+                #-----------------------
+                #For high quality do animation, otherwise instantly show it
+                if qualityLevel > 1
+                    chartGroup.select('.edgeSlice' + i)
+                        .transition().duration(300)
+                        .style({
+                            'stroke-width': 9,
+                            'stroke': '#000000',
+                            'stroke-opacity': 0.8
+                        })
+                else
+                    chartGroup.select('.edgeSlice' + i)
+                        .style({
+                            'stroke-width': 9,
+                            'stroke': '#000000',
+                            'stroke-opacity': 1
+                        })
 
-            #Update text label
-            #LABEL
-            #-----------------------
-            #LABEL Opacity
-            allTextGroups.style({ opacity:startingTextOpacity })
-            thisTextGroup.style({ opacity:0.9 })
-            #Get the current selected item
-            curGroup = chartGroup.selectAll('.textGroup' + i)
-            curGroup.style({ opacity: 1 })
-            curGroup.selectAll('.label').style({
-                'font-size': labelSize + 6
-            })
-
-            #Update the big bglabel
-            curGroup.selectAll('.bgLabel').style({
-                'font-size': labelSize + bgLabelModifier + 6
-            }).attr({
-                transform: (d,i)=>
-                    return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i*3)) + ")"
-            })
-
-            #Fade out icons
-            iconGroup.style({opacity: 0.3})
-
-            #Dont update bar (none exists) if it's gender
-            if chartType != 'gender'
-                #UPDATE bar
-                GW2VIZ.visualizations.barHighlightOver({
-                    chartType:chartType,
-                    d: d
-                    i: i
+                #Update text label
+                #LABEL
+                #-----------------------
+                #LABEL Opacity
+                allTextGroups.style({ opacity:startingTextOpacity })
+                thisTextGroup.style({ opacity:0.9 })
+                #Get the current selected item
+                curGroup = chartGroup.selectAll('.textGroup' + i)
+                curGroup.style({ opacity: 1 })
+                curGroup.selectAll('.label').style({
+                    'font-size': labelSize + 6
                 })
 
-        ).on('mouseout', (d,i)=>
-            #SLICE
-            #Update slice
-            if qualityLevel > 1
-                chartGroup.select('.edgeSlice' + i)
-                    .transition().duration(300)
-                    .style({
-                        'stroke-width': 1,
-                        'stroke': '#707070',
-                        'stroke-opacity': 0.6
-                    })
-            else
-                chartGroup.select('.edgeSlice' + i)
-                    .transition().duration(300)
-                    .style({
-                        'stroke-width': 1,
-                        'stroke': '#707070',
-                        'stroke-opacity': 0.6
-                    })
-
-            #LABELS
-            #Reset the label font size
-            allLabels.style({
-                'font-size': labelSize
-            })
-            #Reset the bg label font size
-            chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
-                transform: (d,i)=>
-                    return "translate(" + arc.centroid(d) + ") rotate(0)"
-            }).style({
-                'font-size': labelSize + bgLabelModifier
-            })
-
-            #LABEL Opacity
-            thisTextGroup.style({
-                opacity:startingTextOpacity
-            })
-
-            #Show icons back to original opacity
-            iconGroup.style({opacity: startingIconOpacity})
-
-            #Dont update bar (none exists) if it's gender
-            if chartType != 'gender'
-                #Update bar chart
-                GW2VIZ.visualizations.barHighlightOut({
-                    chartType:chartType,
-                    d: d
-                    i: i
+                #Update the big bglabel
+                curGroup.selectAll('.bgLabel').style({
+                    'font-size': labelSize + bgLabelModifier + 6
+                }).attr({
+                    transform: (d,i)=>
+                        return "translate(" + arc.centroid(d) + ") rotate(" + (18 + (i*3)) + ")"
                 })
-        )
+
+                #Fade out icons
+                if qualityLevel > 1
+                    iconGroup.style({opacity: 0.3})
+
+                #Dont update bar (none exists) if it's gender
+                if chartType != 'gender'
+                    #UPDATE bar
+                    GW2VIZ.visualizations.barHighlightOver({
+                        chartType:chartType,
+                        d: d
+                        i: i
+                    })
+
+            ).on('mouseout', (d,i)=>
+                #SLICE
+                #Update slice
+                if qualityLevel > 1
+                    chartGroup.select('.edgeSlice' + i)
+                        .transition().duration(300)
+                        .style({
+                            'stroke-width': 1,
+                            'stroke': '#707070',
+                            'stroke-opacity': 0.6
+                        })
+                else
+                    chartGroup.select('.edgeSlice' + i)
+                        .transition().duration(300)
+                        .style({
+                            'stroke-width': 1,
+                            'stroke': '#707070',
+                            'stroke-opacity': 0.6
+                        })
+
+                #LABELS
+                #Reset the label font size
+                allLabels.style({
+                    'font-size': labelSize
+                })
+                #Reset the bg label font size
+                chartGroup.selectAll('.textGroup' + i + ' .bgLabel').attr({
+                    transform: (d,i)=>
+                        return "translate(" + arc.centroid(d) + ") rotate(0)"
+                }).style({
+                    'font-size': labelSize + bgLabelModifier
+                })
+
+                #LABEL Opacity
+                thisTextGroup.style({
+                    opacity:startingTextOpacity
+                })
+
+                #Show icons back to original opacity
+                if qualityLevel > 1
+                    iconGroup.style({opacity: startingIconOpacity})
+
+                #Dont update bar (none exists) if it's gender
+                if chartType != 'gender'
+                    #Update bar chart
+                    GW2VIZ.visualizations.barHighlightOut({
+                        chartType:chartType,
+                        d: d
+                        i: i
+                    })
+            )
+
         #Call the callback if pased in
         if callback
             callback()
