@@ -214,7 +214,8 @@ svg text {
     .absolute-full-layout;
     position: fixed;
     font-size: .9em;
-    height: 18px;
+    height: 38px;
+    overflow: hidden;
     top: auto;
     z-index: 400;
 }
@@ -224,17 +225,21 @@ svg text {
         bottom: auto;
         border-top: 1px solid #cdcdcd;
         border-left: 1px solid #cdcdcd;
-        height: 18px;
+        height: 34px;
         left: auto;
+        overflow: hidden;
         padding: 0 .5em;
         text-align: right;
         width: 700px;
         z-index:200;
     }
     #footer-legal {
-        color: #bebebe;
-        font-size:.8em;
+        .absolute-full-layout;
+        color: #a0a0a0;
+        font-size:.7em;
+        overflow: hidden;
         max-width: 80%;
+        right: 720px;
         z-index: 100;
     }
 /* ========================================================================    
