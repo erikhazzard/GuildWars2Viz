@@ -1,4 +1,7 @@
 # Guildwars 2 Visualization
+http://guildwars2viz.com/
+
+
 Interactive data visualization of guild wars 2 gender, races, professions, and tradeskill choices. Uses D3 and SVG filters.
 
 ## Dependencies (For running server locally)
